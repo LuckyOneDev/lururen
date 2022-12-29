@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using lururen.Extensions;
 
 namespace lururen.EventSystem
 {
     internal class EventBus
     {
-        Stack<IEvent> BufferedEvents;
-        Dictionary<IEvent, List<IEventSubscriber>> EventSubscribers;
+        public Stack<IEvent> BufferedEvents { get; set; } = new();
+        public Dictionary<IEvent, List<IEventSubscriber>> EventSubscribers { get; set; } = new();
+
         public void Init()
         {
             BufferedEvents = new();
@@ -20,7 +22,7 @@ namespace lururen.EventSystem
             while (BufferedEvents.Any())
             {
                 var evt = BufferedEvents.Pop();
-                EventSubscribers[evt].ForEach(subscriber =>
+                EventSubscribers[evt].AsParallel().ForAll(subscriber =>
                 {
                     subscriber.OnEvent(evt.GetArgs());
                 });
@@ -31,16 +33,9 @@ namespace lururen.EventSystem
             BufferedEvents.Push(evt);
         }
 
-        public void Subscribe(IEventSubscriber self, IEvent evt)
+        public void Subscribe(IEvent evt, IEventSubscriber self)
         {
-            if (EventSubscribers[evt] != null)
-            {
-                EventSubscribers[evt].Add(self);
-            }
-            else
-            {
-                EventSubscribers[evt] = new List<IEventSubscriber>() { self };
-            }
+            EventSubscribers.AddOrCreateList(evt, self);
         }
 
         public void Unsubscribe(IEventSubscriber self, IEvent evt)

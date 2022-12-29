@@ -8,18 +8,17 @@ namespace lururen.CommandSystem
 {
     internal class CommandQueue
     {
-        Queue<ICommand> commands = new Queue<ICommand>();
+        private Queue<ICommand> Commands { get; } = new();
         public void Push(ICommand command)
         {
-            commands.Enqueue(command);
+            Commands.Enqueue(command);
         }
 
         public void Process()
         {
-            while (commands.Count > 0)
+            while (Commands.TryDequeue(out var command))
             {
-                var command = commands.Dequeue();
-                command.Send();
+                command.Run();
             }
 
         }

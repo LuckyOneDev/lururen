@@ -6,6 +6,7 @@ using System.Numerics;
 
 namespace lururen.Common
 {
+    // System.Numerics.Vector3 ?????
     internal struct ScalarPoint
     {
         public ScalarPoint(int x = 0, int y = 0, int z = 0)

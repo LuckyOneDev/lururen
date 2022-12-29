@@ -12,6 +12,7 @@ namespace lururen.EntitySystem
         public abstract void Update();
         public abstract void Dispose();
         public abstract void OnEvent(EventArgs args);
-        public abstract List<Type> GetInteractions();
+        public List<IEvent> SubscribedEvents { get; set; } = new();
+        public IEntityController? Controller { get; set; }
     }
 }

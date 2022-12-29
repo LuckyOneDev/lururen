@@ -5,26 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using lururen.Common;
 using lururen.EntitySystem;
+using lururen.Extensions;
 
 namespace lururen.EnviromentSystem
 {
     internal abstract class Enviroment : IDisposable
     {
-        Dictionary<ScalarPoint, List<Entity>> Entities;
-        List<Entity> UpdatableEntities;
+        private Dictionary<ScalarPoint, List<Entity>> PassiveEntities { get; set; } = new();
+        private Dictionary<ScalarPoint, List<Entity>> ActiveEntities { get; set; } = new();
 
         public void Init()
         {
-            Entities = new Dictionary<ScalarPoint, List<Entity>>();
-            UpdatableEntities = new List<Entity>();
+            // Add initialization logic here
         }
         public void Update()
         {
-            UpdatableEntities.ForEach(entity => entity.Update());
+            ActiveEntities.Values.SelectMany(x => x).AsParallel().ForAll(x => x.Update());
         }
         public void Dispose()
         {
-            Entities.Clear();
+            ActiveEntities.Clear();
+            PassiveEntities.Clear();
         }
 
         public List<Entity> SearchInRadius(ScalarPoint point, int radius)
@@ -32,27 +33,41 @@ namespace lururen.EnviromentSystem
             throw new NotImplementedException();
         }
 
-        public void AddEntity(Entity entity, ScalarPoint position, bool updatable = false)
+        public void AddEntityPassive(ScalarPoint position, Entity entity)
         {
-            if (Entities[position] != null)
-            {
-                Entities[position].Add(entity);
-            }
-            else
-            {
-                Entities[position] = new List<Entity>() { entity };
-            }
-
-            if (updatable)
-            {
-                UpdatableEntities.Add(entity);
-            }
+            PassiveEntities.AddOrCreateList(position, entity);
+        }
+        public void AddEntityActive(ScalarPoint position, Entity entity)
+        {
+            ActiveEntities.AddOrCreateList(position, entity);
         }
 
+
+        private void RemoveEntityPassive(Entity entity)
+        {
+            ActiveEntities.RemoveFromList(entity);
+        }
+
+        private void RemoveEntityActive(Entity entity)
+        {
+            PassiveEntities.RemoveFromList(entity);
+        }
         public void RemoveEntity(Entity entity)
         {
-            //Entities.Remove(entity);
-            throw new NotImplementedException();
+            RemoveEntityActive(entity);
+            RemoveEntityPassive(entity);
         }
+
+        public void Activate(Entity entity)
+        {
+            PassiveEntities.MoveValueToOther(ActiveEntities, entity);
+        }
+
+        public void DeActivate(Entity entity)
+        {
+            ActiveEntities.MoveValueToOther(PassiveEntities, entity);
+        }
+
+
     }
 }

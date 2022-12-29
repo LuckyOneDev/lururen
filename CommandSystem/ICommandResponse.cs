@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lururen.CommandSystem
 {
-    internal interface ICommandResponse
+    public interface ICommandResponse
     {
     }
 }
