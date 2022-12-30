@@ -22,7 +22,7 @@ namespace lururen.EventSystem
             while (BufferedEvents.Any())
             {
                 var evt = BufferedEvents.Pop();
-                EventSubscribers[evt].AsParallel().ForAll(subscriber =>
+                EventSubscribers[evt].ForEach(subscriber =>
                 {
                     subscriber.OnEvent(evt.GetArgs());
                 });
