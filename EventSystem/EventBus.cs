@@ -12,10 +12,9 @@ namespace lururen.EventSystem
         public Stack<IEvent> BufferedEvents { get; set; } = new();
         public Dictionary<IEvent, List<IEventSubscriber>> EventSubscribers { get; set; } = new();
 
-        public void Init()
+        public virtual void Init()
         {
-            BufferedEvents = new();
-            EventSubscribers = new();
+
         }
         public void ProcessEvents()
         {

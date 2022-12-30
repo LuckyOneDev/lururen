@@ -14,15 +14,15 @@ namespace lururen.EnviromentSystem
         private Dictionary<ScalarPoint, List<Entity>> PassiveEntities { get; set; } = new();
         private Dictionary<ScalarPoint, List<Entity>> ActiveEntities { get; set; } = new();
 
-        public void Init()
+        public virtual void Init()
         {
             // Add initialization logic here
         }
-        public void Update()
+        public virtual void Update()
         {
             ActiveEntities.Values.SelectMany(x => x).AsParallel().ForAll(x => x.Update());
         }
-        public void Dispose()
+        public virtual void Dispose()
         {
             ActiveEntities.Clear();
             PassiveEntities.Clear();
@@ -63,7 +63,7 @@ namespace lururen.EnviromentSystem
             PassiveEntities.MoveValueToOther(ActiveEntities, entity);
         }
 
-        public void DeActivate(Entity entity)
+        public void Deactivate(Entity entity)
         {
             ActiveEntities.MoveValueToOther(PassiveEntities, entity);
         }
