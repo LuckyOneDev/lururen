@@ -11,7 +11,7 @@ namespace lururen.CommandSystem
     /// </summary>
     public interface ICommand
     {
-        public void Run();
+        public void Run();  
         // response field is implemented on by-class basis
     }
 }

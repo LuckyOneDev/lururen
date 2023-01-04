@@ -11,8 +11,8 @@ namespace lururen.EnviromentSystem
 {
     internal abstract class Enviroment : IDisposable
     {
-        private Dictionary<ScalarPoint, List<Entity>> PassiveEntities { get; set; } = new();
-        private Dictionary<ScalarPoint, List<Entity>> ActiveEntities { get; set; } = new();
+        private Dictionary<SVector3, List<Entity>> PassiveEntities { get; set; } = new();
+        private Dictionary<SVector3, List<Entity>> ActiveEntities { get; set; } = new();
 
         public void Init()
         {
@@ -28,16 +28,16 @@ namespace lururen.EnviromentSystem
             PassiveEntities.Clear();
         }
 
-        public List<Entity> SearchInRadius(ScalarPoint point, int radius)
+        public List<Entity> SearchInRadius(SVector3 point, int radius)
         {
             throw new NotImplementedException();
         }
 
-        public void AddEntityPassive(ScalarPoint position, Entity entity)
+        public void AddEntityPassive(SVector3 position, Entity entity)
         {
             PassiveEntities.AddOrCreateList(position, entity);
         }
-        public void AddEntityActive(ScalarPoint position, Entity entity)
+        public void AddEntityActive(SVector3 position, Entity entity)
         {
             ActiveEntities.AddOrCreateList(position, entity);
         }
