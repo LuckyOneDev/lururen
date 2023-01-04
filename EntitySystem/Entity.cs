@@ -8,6 +8,17 @@ namespace lururen.EntitySystem
     /// </summary>
     public abstract class Entity : IDisposable, IEventSubscriber
     {
+        public void Initialize()
+        {
+            // preinit logic here
+
+            // TODO: Add connection to event bus
+            //       depending on Subscribed events list
+
+            // TODO: Add Controller initialization logic
+
+            Init();
+        }
         public abstract void Init();
         public abstract void Update();
         public abstract void Dispose();
