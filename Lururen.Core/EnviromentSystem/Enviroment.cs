@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Lururen.Common;
-using Lururen.EntitySystem;
-using Lururen.Extensions;
+using Lururen.Core.Common;
+using Lururen.Core.EntitySystem;
+using Lururen.Core.Extensions;
 
 namespace Lururen.Core.EnviromentSystem
 {

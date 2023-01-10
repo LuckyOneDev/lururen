@@ -1,4 +1,4 @@
-﻿using Lururen.EventSystem;
+﻿using Lururen.Core.EventSystem;
 
 namespace Lururen.Core.EntitySystem
 {
