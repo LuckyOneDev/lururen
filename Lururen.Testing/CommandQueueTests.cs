@@ -17,6 +17,7 @@ public class CommandQueueTests
         CommandQueue queue = new CommandQueue();
         TestCommand testCmd = new TestCommand();
         queue.Push(testCmd);
+        Assert.False(testCmd.Executed);
         queue.ProcessCommands();
         Assert.True(testCmd.Executed);
     }

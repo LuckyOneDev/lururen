@@ -28,8 +28,9 @@
 
             eventbus.Subscribe(testEvent, testSubscriber);
             eventbus.PushEvent(testEvent);
-            eventbus.ProcessEvents();
 
+            Assert.False(testSubscriber.EventHappened);
+            eventbus.ProcessEvents();
             Assert.True(testSubscriber.EventHappened);
         }
     }
