@@ -7,7 +7,7 @@ using Lururen.Core.Extensions;
 
 namespace Lururen.Core.EventSystem
 {
-    internal class EventBus
+    public class EventBus
     {
         public Stack<IEvent> BufferedEvents { get; set; } = new();
         public Dictionary<IEvent, List<IEventSubscriber>> EventSubscribers { get; set; } = new();
@@ -40,6 +40,10 @@ namespace Lururen.Core.EventSystem
         public void Unsubscribe(IEventSubscriber self, IEvent evt)
         {
             EventSubscribers[evt].Remove(self);
+        }
+        public void Flush()
+        {
+            BufferedEvents.Clear();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Lururen.Core.EventSystem
 {
-    internal interface IEventSubscriber
+    public interface IEventSubscriber
     {
         public void OnEvent(EventArgs args);
     }

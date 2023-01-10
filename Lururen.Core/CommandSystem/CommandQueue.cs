@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lururen.Core.CommandSystem
 {
-    internal class CommandQueue
+    public class CommandQueue
     {
         private Queue<ICommand> Commands { get; } = new();
         public void Push(ICommand command)
@@ -14,13 +14,17 @@ namespace Lururen.Core.CommandSystem
             Commands.Enqueue(command);
         }
 
-        public void Process()
+        public void ProcessCommands()
         {
             while (Commands.TryDequeue(out var command))
             {
                 command.Run();
             }
+        }
 
+        public void Flush()
+        {
+            Commands.Clear();
         }
     }
 }

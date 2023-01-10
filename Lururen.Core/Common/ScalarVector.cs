@@ -9,7 +9,7 @@ namespace Lururen.Core.Common
     /// <summary>
     /// Scalar vector implementation
     /// </summary>
-    internal struct SVector3
+    public struct SVector3
     {
         public SVector3(int x = 0, int y = 0, int z = 0)
         {

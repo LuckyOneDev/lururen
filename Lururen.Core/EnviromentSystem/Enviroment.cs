@@ -9,7 +9,7 @@ using Lururen.Core.Extensions;
 
 namespace Lururen.Core.EnviromentSystem
 {
-    internal abstract class Enviroment : IDisposable
+    public abstract class Environment : IDisposable
     {
         private Dictionary<SVector3, List<Entity>> PassiveEntities { get; set; } = new();
         private Dictionary<SVector3, List<Entity>> ActiveEntities { get; set; } = new();
@@ -58,12 +58,12 @@ namespace Lururen.Core.EnviromentSystem
             RemoveEntityPassive(entity);
         }
 
-        public void Activate(Entity entity)
+        public void ActivateEntity(Entity entity)
         {
             PassiveEntities.MoveValueToOther(ActiveEntities, entity);
         }
 
-        public void Deactivate(Entity entity)
+        public void DeactivateEntity(Entity entity)
         {
             ActiveEntities.MoveValueToOther(PassiveEntities, entity);
         }
