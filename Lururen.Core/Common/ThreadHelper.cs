@@ -13,9 +13,8 @@ namespace Lururen.Core.Common
         /// </summary>
         /// <param name="action"></param>
         /// <param name="interval"></param>
-        /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public static CancellationToken PeriodicThread(Action action, TimeSpan interval)
+        public static CancellationTokenSource PeriodicThread(Action action, TimeSpan interval)
         {
             using CancellationTokenSource source = new CancellationTokenSource();
             var cancellationToken = source.Token;

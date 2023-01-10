@@ -12,15 +12,27 @@ namespace Lururen.Core.App
     /// </summary>
     public abstract class Application
     {
-        public CommandQueue CommandQueue { get; set; }
-        public EventBus EventBus { get; set; }
-        public List<EnviromentSystem.Environment> Environments { get; set; }
-        public Application() 
+        public Application()
         {
             CommandQueue = new CommandQueue();
             EventBus = new EventBus();
             Environments = new List<EnviromentSystem.Environment>();
         }
+
+        public CommandQueue CommandQueue { get; set; }
+        public List<EnviromentSystem.Environment> Environments { get; set; }
+        public EventBus EventBus { get; set; }
+        private CancellationTokenSource CancellationToken { get; set; }
+
+        public abstract void Dispose();
+
+        public void Flush()
+        {
+            EventBus.Flush();
+            CommandQueue.Flush();
+        }
+
+        public abstract void Init();
 
         public void LoadEnviroment(EnviromentSystem.Environment env)
         {
@@ -36,25 +48,15 @@ namespace Lururen.Core.App
             EventBus.ProcessEvents();
             CommandQueue.ProcessCommands();
         }
-
-        public void Flush()
-        {
-            EventBus.Flush();
-            CommandQueue.Flush();
-        }
-
         public void Start()
         {
             // Start eventbus and commandqueue
-            var cancellationToken = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromSeconds(1));
+            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromSeconds(1));
         }
 
         public void Stop()
         {
-
+            CancellationToken.Cancel();
         }
-
-        public abstract void Init();
-        public abstract void Dispose();
     }
 }
