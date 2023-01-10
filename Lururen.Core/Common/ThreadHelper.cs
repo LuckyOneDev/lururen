@@ -26,7 +26,7 @@ namespace Lururen.Core.Common
                     await Task.Delay(interval, cancellationToken);
                 }
             }).Start();
-            return source.Token;
+            return source;
         }
     }
 }
