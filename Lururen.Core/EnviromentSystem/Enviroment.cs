@@ -9,7 +9,7 @@ using Lururen.Core.Extensions;
 
 namespace Lururen.Core.EnviromentSystem
 {
-    public abstract class Environment : IDisposable
+    public class Environment : IDisposable
     {
         private Dictionary<SVector3, List<Entity>> PassiveEntities { get; set; } = new();
         private Dictionary<SVector3, List<Entity>> ActiveEntities { get; set; } = new();
@@ -30,7 +30,27 @@ namespace Lururen.Core.EnviromentSystem
 
         public List<Entity> SearchInRadius(SVector3 point, int radius)
         {
-            throw new NotImplementedException();
+            List<Entity> result = new List<Entity>();
+            for (int x = point.X - radius; x < point.X + radius; x++)
+            {
+                for (int y = point.Y - radius; y < point.Y + radius; y++)
+                {
+                    for (int z = point.Z - radius; z < point.Z + radius; z++)
+                    {
+                        SVector3 current = new SVector3(x, y, z);
+                        if (ActiveEntities.ContainsKey(current))
+                        {
+                            result.AddRange(ActiveEntities[current]);
+                        }
+
+                        if (PassiveEntities.ContainsKey(current))
+                        {
+                            result.AddRange(PassiveEntities[current]);
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
         public void AddEntityPassive(SVector3 position, Entity entity)
@@ -68,6 +88,26 @@ namespace Lururen.Core.EnviromentSystem
             ActiveEntities.MoveValueToOther(PassiveEntities, entity);
         }
 
+        public bool IsEntityActive(Entity entity)
+        {
+            bool active = ActiveEntities.Values.Any(entList => entList.Contains(entity));
+            if (active)
+            {
+                return true;
+            } 
+            else
+            {
+                bool exists = PassiveEntities.Values.Any(entList => entList.Contains(entity));
+                if (exists)
+                {
+                    return false;
+                } 
+                else
+                {
+                    throw new Exception("Entity does not exist in this enviroment.");
+                }
+            }
 
+        }
     }
 }
