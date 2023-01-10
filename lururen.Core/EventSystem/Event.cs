@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lururen.EventSystem
+namespace lururen.Core.EventSystem
 {
     internal abstract class Event : IEvent
     {

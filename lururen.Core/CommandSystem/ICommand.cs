@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lururen.CommandSystem
+namespace lururen.Core.CommandSystem
 {
     /// <summary>
     /// Command is requested action that is performed inside engine.
     /// </summary>
     public interface ICommand
     {
-        public void Run();  
+        public void Run();
         // response field is implemented on by-class basis
     }
 }

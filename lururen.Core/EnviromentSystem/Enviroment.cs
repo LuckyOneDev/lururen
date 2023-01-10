@@ -7,7 +7,7 @@ using lururen.Common;
 using lururen.EntitySystem;
 using lururen.Extensions;
 
-namespace lururen.EnviromentSystem
+namespace lururen.Core.EnviromentSystem
 {
     internal abstract class Enviroment : IDisposable
     {

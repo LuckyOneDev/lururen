@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace lururen.Common
+namespace lururen.Core.Common
 {
     /// <summary>
     /// Scalar vector implementation
@@ -28,7 +28,7 @@ namespace lururen.Common
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        public static double Distance(SVector3 a, SVector3 b) 
+        public static double Distance(SVector3 a, SVector3 b)
         {
             return Math.Cbrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y) + (a.Z - b.Z) * (a.Z - b.Z));
         }

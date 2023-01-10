@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using lururen.Extensions;
 
-namespace lururen.EventSystem
+namespace lururen.Core.EventSystem
 {
     internal class EventBus
     {
