@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using lururen.Extensions;
+using Lururen.Extensions;
 
-namespace lururen.Core.EventSystem
+namespace Lururen.Core.EventSystem
 {
     internal class EventBus
     {

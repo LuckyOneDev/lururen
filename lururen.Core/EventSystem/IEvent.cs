@@ -1,4 +1,4 @@
-﻿namespace lururen.Core.EventSystem
+﻿namespace Lururen.Core.EventSystem
 {
     public interface IEvent
     {

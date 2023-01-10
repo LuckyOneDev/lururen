@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using lururen.Common;
-using lururen.EntitySystem;
-using lururen.Extensions;
+using Lururen.Common;
+using Lururen.EntitySystem;
+using Lururen.Extensions;
 
-namespace lururen.Core.EnviromentSystem
+namespace Lururen.Core.EnviromentSystem
 {
     internal abstract class Enviroment : IDisposable
     {

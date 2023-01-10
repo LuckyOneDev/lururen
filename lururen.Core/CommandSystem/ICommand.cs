@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lururen.Core.CommandSystem
+namespace Lururen.Core.CommandSystem
 {
     /// <summary>
     /// Command is requested action that is performed inside engine.

@@ -1,4 +1,4 @@
-﻿namespace lururen.Core.App
+﻿namespace Lururen.Core.App
 {
     /// <summary>
     /// This class contains static methods for looking up information about and controlling the run-time data.

@@ -1,4 +1,4 @@
-﻿namespace lururen.Core.EventSystem
+﻿namespace Lururen.Core.EventSystem
 {
     internal interface IEventSubscriber
     {

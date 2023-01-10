@@ -1,6 +1,6 @@
-﻿using lururen.EventSystem;
+﻿using Lururen.EventSystem;
 
-namespace lururen.Core.EntitySystem
+namespace Lururen.Core.EntitySystem
 {
     /// <summary>
     /// Entity is any object that should contain data and/or logic of in game objects.

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace lururen.Core.EntitySystem
+namespace Lururen.Core.EntitySystem
 {
     public interface IEntityController
     {

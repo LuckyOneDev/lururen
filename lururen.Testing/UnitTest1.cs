@@ -1,4 +1,4 @@
-namespace lururen.Testing;
+namespace Lururen.Testing;
 
 public class UnitTest1
 {

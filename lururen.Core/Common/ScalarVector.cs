@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace lururen.Core.Common
+namespace Lururen.Core.Common
 {
     /// <summary>
     /// Scalar vector implementation
