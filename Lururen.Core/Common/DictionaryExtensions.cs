@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Lururen.Core.Extensions
+namespace Lururen.Core.Common
 {
     public static class DictionaryExtensions
     {
