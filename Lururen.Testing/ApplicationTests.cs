@@ -40,12 +40,34 @@ namespace Lururen.Testing
             }
         }
 
-        [Fact]
-        public void UpdatingEnviromentWithActiveEntityTest()
+        // Represents heavy update operation
+        public class TestHeavyEntity : TestEntity
+        {
+            public override void Update()
+            {
+                base.Update();
+                Task.Delay(10).Wait();
+            }
+
+            public override void OnEvent(EventArgs args)
+            {
+            }
+        }
+
+        public static IEnumerable<object[]> SomeEntitiesData()
+        {
+            yield return new object[] { new TestEntity() };
+            yield return new object[] { new TestHeavyEntity() };
+        }
+
+
+        [Theory]
+        [MemberData(nameof(SomeEntitiesData))]
+        public void UpdatingEnviromentWithActiveEntityTest(TestEntity testEntity)
         {
             TestApp app = new TestApp();
             Environment env = app.CreateEnvironment();
-            TestEntity ent = new TestEntity();
+            TestEntity ent = testEntity;
             env.AddEntity(ent, Active: true);
 
             Assert.Equal(0, ent.updateCount);
@@ -60,8 +82,13 @@ namespace Lururen.Testing
 
             app.Start(TimeSpan.FromMilliseconds(1));
             Thread.Sleep(5);
-
             Assert.InRange(ent.updateCount, 1, 6);
+
+            app.Stop();
+            var updates = ent.updateCount;
+            Thread.Sleep(5);
+            Assert.InRange(ent.updateCount, updates, updates + 2);
+
             Assert.Equal(1, ent.initCount);
             Assert.Equal(0, ent.disposeCount);
         }
