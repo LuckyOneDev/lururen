@@ -25,6 +25,7 @@ namespace Lururen.Core.App
         public List<Environment> Environments { get; set; }
         public EventBus EventBus { get; set; }
         private CancellationTokenSource CancellationToken { get; set; }
+        public System.Timers.Timer CancelTimer { get; private set; }
 
         public abstract void Dispose();
 
@@ -58,17 +59,17 @@ namespace Lururen.Core.App
 
         public void Start(TimeSpan frameDelay)
         {
-            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
+            CancelTimer = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
         }
 
         public void Start(int fps = 60)
         {
-            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromMilliseconds(1000 / fps));
+            CancelTimer = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromMilliseconds(1000 / fps));
         }
 
         public void Stop()
         {
-            CancellationToken.Cancel();
+            CancelTimer.Stop();
         }
     }
 }
