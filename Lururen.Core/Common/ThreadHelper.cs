@@ -17,14 +17,22 @@ namespace Lururen.Core.Common
         /// <returns></returns>
         public static CancellationTokenSource PeriodicThread(Action action, TimeSpan interval)
         {
-            using CancellationTokenSource source = new CancellationTokenSource();
+            CancellationTokenSource source = new CancellationTokenSource();
             var cancellationToken = source.Token;
             new Thread(async () =>
             {
-                while (!cancellationToken.IsCancellationRequested)
+                try
                 {
-                    action();
-                    await Task.Delay(interval, cancellationToken);
+                    while (true)
+                    {
+                        cancellationToken.ThrowIfCancellationRequested();
+                        action();
+                        await Task.Delay(interval, cancellationToken);
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    // Thread successfully stopped. Nothing to do here
                 }
             }).Start();
             return source;

@@ -18,9 +18,8 @@ namespace Lururen.Core.EventSystem
         }
         public void ProcessEvents()
         {
-            while (BufferedEvents.Any())
+            while (BufferedEvents.TryPop(out IEvent? evt))
             {
-                var evt = BufferedEvents.Pop();
                 if (EventSubscribers.TryGetValue(evt.GetType(), out var subscribers))
                 {
                     subscribers.ForEach(subscriber =>
@@ -42,7 +41,10 @@ namespace Lururen.Core.EventSystem
 
         public void Unsubscribe(IEventSubscriber self, Type eventType)
         {
-            EventSubscribers[eventType].Remove(self);
+            if (EventSubscribers.TryGetValue(eventType, out var result))
+            {
+                result.Remove(self);
+            }
         }
         public void Flush()
         {

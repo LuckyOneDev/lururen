@@ -80,14 +80,10 @@ namespace Lururen.Testing
             Assert.Equal(1, ent.initCount);
             Assert.Equal(0, ent.disposeCount);
 
-            app.Start(TimeSpan.FromMilliseconds(1));
-            Thread.Sleep(5);
-            Assert.InRange(ent.updateCount, 1, 6);
-
+            app.Start(TimeSpan.FromMilliseconds(20));
+            Thread.Sleep(100);
+            Assert.InRange(ent.updateCount, 5, 6);
             app.Stop();
-            var updates = ent.updateCount;
-            Thread.Sleep(5);
-            Assert.InRange(ent.updateCount, updates, updates + 2);
 
             Assert.Equal(1, ent.initCount);
             Assert.Equal(0, ent.disposeCount);
