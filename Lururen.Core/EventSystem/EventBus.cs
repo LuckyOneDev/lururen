@@ -21,10 +21,13 @@ namespace Lururen.Core.EventSystem
             while (BufferedEvents.Any())
             {
                 var evt = BufferedEvents.Pop();
-                EventSubscribers[evt.GetType()].ForEach(subscriber =>
+                if (EventSubscribers.TryGetValue(evt.GetType(), out var subscribers))
                 {
-                    subscriber.OnEvent(evt.GetArgs());
-                });
+                    subscribers.ForEach(subscriber =>
+                    {
+                        subscriber.OnEvent(evt.GetArgs());
+                    });
+                }
             }
         }
         public void PushEvent(IEvent evt)
