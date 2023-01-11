@@ -4,6 +4,7 @@ using Lururen.Core.EnviromentSystem;
 using Lururen.Core.EventSystem;
 using System;
 using System.Threading;
+using Environment = Lururen.Core.EnviromentSystem.Environment;
 
 namespace Lururen.Core.App
 {
@@ -34,7 +35,11 @@ namespace Lururen.Core.App
 
         public abstract void Init();
 
-        public void LoadEnviroment(EnviromentSystem.Environment env)
+        public Environment CreateEnvironment()
+        {
+            return new Environment(this);
+        }
+        public void LoadEnviroment(Environment env)
         {
             Environments.Add(env);
             env.Init();

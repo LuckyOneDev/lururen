@@ -25,7 +25,7 @@ namespace Lururen.Core.Common
             this Dictionary<TKey, List<TValue>> dict,
             TValue value) where TKey : notnull
         {
-            dict.Values.AsParallel().ForAll(x => x.Remove(value));
+            dict.Values.AsParallel().ForAll(x => x?.Remove(value));
         }
         public static void MoveValueToOther<TKey, TValue>(
             this Dictionary<TKey, List<TValue>> dict,

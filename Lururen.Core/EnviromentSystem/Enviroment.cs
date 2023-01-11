@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lururen.Core.App;
 using Lururen.Core.Common;
 using Lururen.Core.EntitySystem;
 
@@ -10,8 +11,13 @@ namespace Lururen.Core.EnviromentSystem
 {
     public class Environment : IDisposable
     {
+        public Application Application { get; private set; }
         private Dictionary<SVector3, List<Entity>> PassiveEntities { get; set; } = new();
         private Dictionary<SVector3, List<Entity>> ActiveEntities { get; set; } = new();
+        public Environment(Application application)
+        {
+            Application = application;
+        }
 
         public virtual void Init()
         {
@@ -52,13 +58,27 @@ namespace Lururen.Core.EnviromentSystem
             return result;
         }
 
+        public void AddEntity(SVector3 position, Entity entity, bool Active = false)
+        {
+            if (Active)
+            {
+                ActiveEntities.AddOrCreateList(position, entity);
+            } else
+            {
+                PassiveEntities.AddOrCreateList(position, entity);
+            }
+            entity.SysInit(Application);
+        }
+
         public void AddEntityPassive(SVector3 position, Entity entity)
         {
             PassiveEntities.AddOrCreateList(position, entity);
+            entity.SysInit(Application);
         }
         public void AddEntityActive(SVector3 position, Entity entity)
         {
             ActiveEntities.AddOrCreateList(position, entity);
+            entity.SysInit(Application);
         }
 
 
