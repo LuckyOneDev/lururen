@@ -76,9 +76,10 @@ namespace Lururen.Testing
             Application app = new TestApp();
             Environment env = app.CreateEnvironment();
             env.Init();
-            env.AddEntityActive(new SVector3(x, y, z), new TestEntity());
+            var testEnt = new TestEntity();
+            env.AddEntityActive(new SVector3(x, y, z), testEnt);
             var found = env.SearchInRadius(SVector3.Zero, r);
-            Assert.NotEmpty(found);
+            Assert.Contains(testEnt, found);
         }
 
         [Fact]
