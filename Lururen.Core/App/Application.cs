@@ -21,7 +21,7 @@ namespace Lururen.Core.App
         }
 
         public CommandQueue CommandQueue { get; set; }
-        public List<EnviromentSystem.Environment> Environments { get; set; }
+        public List<Environment> Environments { get; set; }
         public EventBus EventBus { get; set; }
         private CancellationTokenSource CancellationToken { get; set; }
 
@@ -53,10 +53,15 @@ namespace Lururen.Core.App
             EventBus.ProcessEvents();
             CommandQueue.ProcessCommands();
         }
+
+        public void Start(TimeSpan frameDelay)
+        {
+            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
+        }
+
         public void Start()
         {
-            // Start eventbus and commandqueue
-            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromSeconds(1));
+            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromTicks(60));
         }
 
         public void Stop()

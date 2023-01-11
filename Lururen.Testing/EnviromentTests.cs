@@ -1,4 +1,5 @@
-﻿using Lururen.Core.Common;
+﻿using Lururen.Core.App;
+using Lururen.Core.Common;
 using Lururen.Core.EntitySystem;
 using Environment = Lururen.Core.EnviromentSystem.Environment;
 
@@ -25,14 +26,24 @@ namespace Lururen.Testing
             public override void OnEvent(EventArgs args)
             {
             }
+        }
 
-            
+        public class TestApp : Application
+        {
+            public override void Dispose()
+            {
+            }
+
+            public override void Init()
+            {
+            }
         }
 
         [Fact]
         public void UpdateTest()
         {
-            Environment env = new Environment();
+            Application app = new TestApp();
+            Environment env = app.CreateEnvironment();
             env.Init();
             var testEnt = new TestEntity();
             env.AddEntityActive(SVector3.Zero, testEnt);
@@ -47,7 +58,8 @@ namespace Lururen.Testing
         [InlineData(0, 2, 1, 1)]
         public void SearchInRadius_None_Test(int x, int y, int z, int r)
         {
-            Environment env = new Environment();
+            Application app = new TestApp();
+            Environment env = app.CreateEnvironment();
             env.Init();
             env.AddEntityActive(new SVector3(x, y, z), new TestEntity());
             var found = env.SearchInRadius(SVector3.Zero, r);
@@ -61,7 +73,8 @@ namespace Lururen.Testing
         [InlineData(0, 1, 1, 2)]
         public void SearchInRadius_One_Test(int x, int y, int z, int r)
         {
-            Environment env = new Environment();
+            Application app = new TestApp();
+            Environment env = app.CreateEnvironment();
             env.Init();
             env.AddEntityActive(new SVector3(x, y, z), new TestEntity());
             var found = env.SearchInRadius(SVector3.Zero, r);
@@ -71,7 +84,8 @@ namespace Lururen.Testing
         [Fact]
         public void ActivationDeactivationTest()
         {
-            Environment env = new Environment();
+            Application app = new TestApp();
+            Environment env = app.CreateEnvironment();
             env.Init();
             var testEnt = new TestEntity();
             env.AddEntityPassive(SVector3.Zero, testEnt);
