@@ -1,4 +1,5 @@
-﻿using Lururen.Core.EventSystem;
+﻿using Lururen.Core.App;
+using Lururen.Core.EventSystem;
 
 namespace Lururen.Core.EntitySystem
 {
@@ -8,16 +9,27 @@ namespace Lururen.Core.EntitySystem
     /// </summary>
     public abstract class Entity : IDisposable, IEventSubscriber
     {
-        public void Initialize()
+        public bool IsInitialized { get; protected set; } = false;
+        /// <summary>
+        /// Called by system to register entity in engine
+        /// </summary>
+        public void SysInit(Application appInstance)
         {
-            // preinit logic here
+            // Connection to event bus depending on Subscribed events list
+            SubscribedEvents.ForEach(evt => 
+            {
+                appInstance.EventBus.Subscribe(evt.GetType(), this);
+            });
 
-            // TODO: Add connection to event bus
-            //       depending on Subscribed events list
+            // Controller initialization logic
+            if (Controller != null) { Controller.Parent = this; }
 
-            // TODO: Add Controller initialization logic
-
-            Init();
+            // In case we want to reinit entity. Init is only called once still.
+            if (!IsInitialized)
+            {
+                Init();
+            }
+            IsInitialized = true;
         }
         public abstract void Init();
         public abstract void Update();
