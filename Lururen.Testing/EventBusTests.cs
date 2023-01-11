@@ -26,7 +26,7 @@
             var testEvent = new TestEvent();
             var testSubscriber = new TestEventSubscriber();
 
-            eventbus.Subscribe(testEvent, testSubscriber);
+            eventbus.Subscribe(typeof(TestEvent), testSubscriber);
             eventbus.PushEvent(testEvent);
 
             Assert.False(testSubscriber.EventHappened);

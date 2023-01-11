@@ -10,7 +10,7 @@ namespace Lururen.Core.EventSystem
     public class EventBus
     {
         public Stack<IEvent> BufferedEvents { get; set; } = new();
-        public Dictionary<IEvent, List<IEventSubscriber>> EventSubscribers { get; set; } = new();
+        public Dictionary<Type, List<IEventSubscriber>> EventSubscribers { get; set; } = new();
 
         public virtual void Init()
         {
@@ -21,7 +21,7 @@ namespace Lururen.Core.EventSystem
             while (BufferedEvents.Any())
             {
                 var evt = BufferedEvents.Pop();
-                EventSubscribers[evt].ForEach(subscriber =>
+                EventSubscribers[evt.GetType()].ForEach(subscriber =>
                 {
                     subscriber.OnEvent(evt.GetArgs());
                 });
@@ -32,14 +32,14 @@ namespace Lururen.Core.EventSystem
             BufferedEvents.Push(evt);
         }
 
-        public void Subscribe(IEvent evt, IEventSubscriber self)
+        public void Subscribe(Type eventType, IEventSubscriber self)
         {
-            EventSubscribers.AddOrCreateList(evt, self);
+            EventSubscribers.AddOrCreateList(eventType, self);
         }
 
-        public void Unsubscribe(IEventSubscriber self, IEvent evt)
+        public void Unsubscribe(IEventSubscriber self, Type eventType)
         {
-            EventSubscribers[evt].Remove(self);
+            EventSubscribers[eventType].Remove(self);
         }
         public void Flush()
         {
