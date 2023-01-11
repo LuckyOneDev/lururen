@@ -1,9 +1,4 @@
-﻿using Lururen.Core.App;
-using Lururen.Core.Common;
-using Lururen.Core.EntitySystem;
-using Environment = Lururen.Core.EnviromentSystem.Environment;
-
-namespace Lururen.Testing
+﻿namespace Lururen.Testing
 {
     public class EnviromentTests
     {
@@ -46,7 +41,7 @@ namespace Lururen.Testing
             Environment env = app.CreateEnvironment();
             env.Init();
             var testEnt = new TestEntity();
-            env.AddEntityActive(SVector3.Zero, testEnt);
+            env.AddEntityActive(testEnt, SVector3.Zero);
             env.Update();
             Assert.True(testEnt.WasUpdated);
         }
@@ -61,7 +56,7 @@ namespace Lururen.Testing
             Application app = new TestApp();
             Environment env = app.CreateEnvironment();
             env.Init();
-            env.AddEntityActive(new SVector3(x, y, z), new TestEntity());
+            env.AddEntityActive(new TestEntity(), new SVector3(x, y, z));
             var found = env.SearchInRadius(SVector3.Zero, r);
             Assert.Empty(found);
         }
@@ -77,7 +72,7 @@ namespace Lururen.Testing
             Environment env = app.CreateEnvironment();
             env.Init();
             var testEnt = new TestEntity();
-            env.AddEntityActive(new SVector3(x, y, z), testEnt);
+            env.AddEntityActive(testEnt, new SVector3(x, y, z));
             var found = env.SearchInRadius(SVector3.Zero, r);
             Assert.Contains(testEnt, found);
         }
@@ -89,7 +84,7 @@ namespace Lururen.Testing
             Environment env = app.CreateEnvironment();
             env.Init();
             var testEnt = new TestEntity();
-            env.AddEntityPassive(SVector3.Zero, testEnt);
+            env.AddEntityPassive(testEnt, SVector3.Zero);
             Assert.False(env.IsEntityActive(testEnt));
             env.ActivateEntity(testEnt);
             Assert.True(env.IsEntityActive(testEnt));

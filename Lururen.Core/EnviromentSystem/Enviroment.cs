@@ -21,7 +21,8 @@ namespace Lururen.Core.EnviromentSystem
 
         public virtual void Init()
         {
-            // Add initialization logic here
+            PassiveEntities.Values.SelectMany(x => x).AsParallel().ForAll(entity => entity.SysInit(Application));
+            ActiveEntities.Values.SelectMany(x => x).AsParallel().ForAll(entity => entity.SysInit(Application));
         }
         public virtual void Update()
         {
@@ -58,7 +59,7 @@ namespace Lururen.Core.EnviromentSystem
             return result;
         }
 
-        public void AddEntity(SVector3 position, Entity entity, bool Active = false)
+        public void AddEntity(Entity entity, SVector3 position = new SVector3(), bool Active = false)
         {
             if (Active)
             {
@@ -67,18 +68,15 @@ namespace Lururen.Core.EnviromentSystem
             {
                 PassiveEntities.AddOrCreateList(position, entity);
             }
-            entity.SysInit(Application);
         }
 
-        public void AddEntityPassive(SVector3 position, Entity entity)
+        public void AddEntityPassive(Entity entity, SVector3 position)
         {
             PassiveEntities.AddOrCreateList(position, entity);
-            entity.SysInit(Application);
         }
-        public void AddEntityActive(SVector3 position, Entity entity)
+        public void AddEntityActive(Entity entity, SVector3 position)
         {
             ActiveEntities.AddOrCreateList(position, entity);
-            entity.SysInit(Application);
         }
 
 

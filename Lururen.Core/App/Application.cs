@@ -20,6 +20,7 @@ namespace Lururen.Core.App
             Environments = new List<EnviromentSystem.Environment>();
         }
 
+        public bool IsRunning => CancellationToken! != null;
         public CommandQueue CommandQueue { get; set; }
         public List<Environment> Environments { get; set; }
         public EventBus EventBus { get; set; }
@@ -46,12 +47,13 @@ namespace Lururen.Core.App
         }
 
         /// <summary>
-        /// Immidiatly processes everything
+        /// Immidiatly processes everything and goes to next frame
         /// </summary>
         public void ProcessAll()
         {
             EventBus.ProcessEvents();
             CommandQueue.ProcessCommands();
+            Environments.ForEach(env => env.Update());
         }
 
         public void Start(TimeSpan frameDelay)
@@ -59,9 +61,9 @@ namespace Lururen.Core.App
             CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
         }
 
-        public void Start()
+        public void Start(int fps = 60)
         {
-            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromTicks(60));
+            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromMilliseconds(1000 / fps));
         }
 
         public void Stop()
