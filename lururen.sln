@@ -3,19 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lururen.Testing", "Lururen.Testing\Lururen.Testing.csproj", "{8C176573-B61E-45B4-BD53-C2EAD0F63752}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lururen.Testing", "Lururen.Testing\Lururen.Testing.csproj", "{8C176573-B61E-45B4-BD53-C2EAD0F63752}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lururen.Net", "Lururen.Net\Lururen.Net.csproj", "{1D6B63A2-99D6-4267-BE0E-C95BA2688C3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lururen.Networking", "Lururen.Net\Lururen.Networking.csproj", "{1D6B63A2-99D6-4267-BE0E-C95BA2688C3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lururen.Core", "Lururen.Core\Lururen.Core.csproj", "{261882DC-E265-4227-A5B4-832296A09058}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lururen.Core", "Lururen.Core\Lururen.Core.csproj", "{261882DC-E265-4227-A5B4-832296A09058}"
 EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {F4326AEE-6EAE-4140-BC68-A523F936EB4F}
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -61,5 +55,11 @@ Global
 		{261882DC-E265-4227-A5B4-832296A09058}.Release|x64.Build.0 = Release|Any CPU
 		{261882DC-E265-4227-A5B4-832296A09058}.Release|x86.ActiveCfg = Release|Any CPU
 		{261882DC-E265-4227-A5B4-832296A09058}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F4326AEE-6EAE-4140-BC68-A523F936EB4F}
 	EndGlobalSection
 EndGlobal

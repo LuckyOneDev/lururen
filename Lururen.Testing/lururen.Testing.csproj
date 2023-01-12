@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lururen.Core\Lururen.Core.csproj" />
+    <ProjectReference Include="..\Lururen.Net\Lururen.Networking.csproj" />
   </ItemGroup>
 
 </Project>

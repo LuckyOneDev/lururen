@@ -5,3 +5,5 @@ global using Lururen.Core.EventSystem;
 global using Lururen.Core.App;
 global using Lururen.Core.Common;
 global using Lururen.Core.EntitySystem;
+global using Lururen.Networking;
+global using Lururen.Net;
