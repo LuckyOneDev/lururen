@@ -40,6 +40,7 @@ namespace Lururen.Core.App
         {
             return new Environment(this);
         }
+
         public void LoadEnviroment(Environment env)
         {
             Environments.Add(env);
