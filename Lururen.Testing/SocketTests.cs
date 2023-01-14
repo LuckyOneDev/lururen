@@ -3,6 +3,8 @@ using Lururen.Networking.SimpleSocketBus;
 
 namespace Lururen.Testing
 {
+    // Test need to run seqeuntially because test server holds port 7777
+    // Also could be rewritten to use different ports for each instance
     public class SocketTests
     {
         class TestEntity : Entity
