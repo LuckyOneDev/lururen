@@ -45,6 +45,8 @@ namespace Lururen.Networking.SimpleSocketBus
                 data.Add(buffer);
             }
             var joinedData = data.SelectMany(i => i).ToArray();
+
+            if (joinedData.Length == 0) throw new Exception("Null socket data");
             return Decode<T>(joinedData);
         }
 

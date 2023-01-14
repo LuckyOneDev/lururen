@@ -33,6 +33,7 @@ namespace Lururen.Networking.SimpleSocketBus
 
         public async Task Stop()
         {
+            await SocketHelper.Send(Socket, new DisconnectMessage());
             await Socket.DisconnectAsync(true);
         }
 

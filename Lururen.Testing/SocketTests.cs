@@ -45,6 +45,25 @@ namespace Lururen.Testing
             }
         }
 
+        class TestMultiDataBus : SocketDataBus
+        {
+            static int counter = 0;
+            public override async Task<IEnumerable<Entity>> OnMessage(IMessage command)
+            {
+                if (command is TestMessage)
+                {
+                    List<Entity> result = new List<Entity>() { new TestEntity("TestData" + counter) };
+                    counter++;
+                    return result;
+                }
+                else
+                {
+                    return new List<Entity>();
+                }
+
+            }
+        }
+
         class TestNetBus : SocketNetBus
         {
 
@@ -55,7 +74,7 @@ namespace Lururen.Testing
         }
 
         [Fact]
-        public async Task SocketMessageTransmit()
+        public async Task SocketMessageTransmitTest()
         {
             var dataBus = new TestDataBus();
             var netBus = new TestNetBus();
@@ -66,11 +85,56 @@ namespace Lururen.Testing
 
             var result = (await netBus.SendMessage(new TestMessage())).ToList();
 
-            _ = dataBus.Stop();
+            await netBus.Stop();
+            await dataBus.Stop();
+            
 
             var testEnt = (TestEntity)result[0];
 
             Assert.Equal("TestData", testEnt.TestData);
+        }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(5)]
+        public async Task MultiClientTest(int clientAmount)
+        {
+            var dataBus = new TestMultiDataBus();
+            var clients = new INetBus[clientAmount];
+            for (int i = 0; i < clientAmount; i++)
+            {
+                clients[i] = new TestNetBus();
+            }
+
+            _ = dataBus.Start();
+
+            for (int i = 0; i < clientAmount; i++)
+            {
+                await clients[i].Start();
+            }
+
+            var results = new Entity[clientAmount];
+
+            for (int i = 0; i < clientAmount; i++)
+            {
+                results[i] = (await clients[i].SendMessage(new TestMessage())).First();
+            }
+
+            for (int i = 0; i < clientAmount; i++)
+            {
+                await clients[i].Stop();
+            }
+
+            _ = dataBus.Stop();
+
+            for (int i = 0; i < clientAmount; i++)
+            {
+                var testEnt = (TestEntity)results[i];
+                Assert.Equal("TestData" + i, testEnt.TestData);
+            }
+
+            
         }
     }
 }

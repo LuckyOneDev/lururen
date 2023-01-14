@@ -38,15 +38,21 @@ namespace Lururen.Networking.SimpleSocketBus
         async Task StartSession(Socket handler)
         {
             IMessage message = null;
-            while (message is not DisconnectMessage)
+            try
             {
-                message = await SocketHelper.Recieve<IMessage>(handler);
-                var response = await OnMessage(message);
-                await SocketHelper.Send(handler, response);
+                while (message is not DisconnectMessage)
+                {
+                    message = await SocketHelper.Recieve<IMessage>(handler);
+                    var response = await OnMessage(message);
+                    await SocketHelper.Send(handler, response);
+                }
+                handler.Close();
+            } catch (Exception ex)
+            {
+                handler.Close();
             }
-            handler.Dispose();
         }
-
+         
         public async Task Stop()
         {
             Running = false;
