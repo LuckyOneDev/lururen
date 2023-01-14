@@ -13,7 +13,7 @@ namespace Lururen.Networking.SimpleSocketBus
 {
     public abstract class SocketDataBus : IDataBus
     {
-        public SocketDataBus(int port=7777)
+        public SocketDataBus(int port = 7777)
         {
             this.Port = port;
         }
