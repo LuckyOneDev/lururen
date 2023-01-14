@@ -16,15 +16,17 @@ namespace Lururen.Networking.LocalBus
             return OnMessage(message);
         }
 
-        public bool Running => true;
+        public bool Running { get; set; }
 
         public Task Start()
         {
+            Running = true;
             return Task.CompletedTask;
         }
 
         public Task Stop()
         {
+            Running = false;
             return Task.CompletedTask;
         }
 

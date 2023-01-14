@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lururen.Networking.Common
 {
-    internal class DisconnectMessage
+    public class DisconnectMessage
     {
     }
 }

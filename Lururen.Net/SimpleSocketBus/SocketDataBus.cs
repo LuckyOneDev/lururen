@@ -21,7 +21,7 @@ namespace Lururen.Networking.SimpleSocketBus
         public int Port { get; private set; }
 
         public async Task Start()
-        {  
+        {
             IPEndPoint ipPoint = new IPEndPoint(IPAddress.Any, Port);
             using Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Bind(ipPoint);

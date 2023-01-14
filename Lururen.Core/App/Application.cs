@@ -21,11 +21,11 @@ namespace Lururen.Core.App
             Environments = new List<Environment>();
         }
         public IDataBus DataBus { get; }
-        public bool IsRunning => CancellationToken != null;
+        public bool IsRunning => CancellationTokenSource != null;
         public CommandQueue CommandQueue { get; set; }
         public List<Environment> Environments { get; set; }
         public EventBus EventBus { get; set; }
-        private CancellationTokenSource CancellationToken { get; set; }
+        private CancellationTokenSource? CancellationTokenSource { get; set; }
 
         public abstract void Dispose();
 
@@ -61,18 +61,18 @@ namespace Lururen.Core.App
         public void Start(TimeSpan frameDelay)
         {
             Init();
-            CancellationToken = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
+            CancellationTokenSource = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
             DataBus.Start();
         }
 
-        public void Start(int fps = 60)
+        public void Start(int tps = 60)
         {
-            Start(TimeSpan.FromMilliseconds(1000 / fps));
+            Start(TimeSpan.FromMilliseconds(1000 / tps));
         }
 
         public void Stop()
         {
-            CancellationToken.Cancel();
+            CancellationTokenSource.Cancel();
         }
     }
 }
