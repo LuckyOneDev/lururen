@@ -1,5 +1,5 @@
 ﻿using Lururen.Networking.Common;
-using Lururen.Networking.SocketBus;
+using Lururen.Networking.SimpleSocketBus;
 
 namespace Lururen.Testing
 {
@@ -7,7 +7,12 @@ namespace Lururen.Testing
     {
         class TestEntity : Entity
         {
-            public readonly string TestData = "Test";
+            public TestEntity(string Data) 
+            { 
+                TestData = Data;
+            }
+
+            public string TestData { get; set; }
             public override void Dispose()
             {
             }
@@ -30,7 +35,7 @@ namespace Lururen.Testing
             {
                 if (command is TestMessage)
                 {
-                    List<Entity> result = new List<Entity>() { new TestEntity() };
+                    List<Entity> result = new List<Entity>() { new TestEntity("TestData") };
                     return result;
                 } else
                 {
@@ -56,13 +61,16 @@ namespace Lururen.Testing
             var netBus = new TestNetBus();
 
             _ = dataBus.Start();
-            await netBus.Connect();
+
+            await netBus.Start();
 
             var result = (await netBus.SendMessage(new TestMessage())).ToList();
 
-            dataBus.Stop();
+            _ = dataBus.Stop();
 
-            Assert.Equal(new TestEntity().TestData, ((TestEntity)result[0]).TestData);
+            var testEnt = (TestEntity)result[0];
+
+            Assert.Equal("TestData", testEnt.TestData);
         }
     }
 }
