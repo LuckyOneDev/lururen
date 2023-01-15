@@ -1,14 +1,6 @@
 ﻿using Lururen.Core.EntitySystem;
 using Lururen.Networking.Common;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Lururen.Networking.SimpleSocketBus
 {
@@ -20,7 +12,7 @@ namespace Lururen.Networking.SimpleSocketBus
             this.Port = port;
         }
 
-        public Socket Socket { get; private set; }
+        private Socket? Socket { get; set; }
         public string Host { get; protected set; }
         public int Port { get; protected set; }
 
@@ -33,17 +25,25 @@ namespace Lururen.Networking.SimpleSocketBus
 
         public async Task Stop()
         {
-            await SocketHelper.Send(Socket, new DisconnectMessage());
-            await Socket.DisconnectAsync(true);
+            if (Socket.Poll(1000, SelectMode.SelectWrite))
+            {
+                await SocketHelper.Send(Socket, new DisconnectMessage());
+                await Socket.DisconnectAsync(true);
+            } else
+            {
+                Socket.Close();
+            }
+
         }
 
         public async Task<IEnumerable<Entity>> SendMessage(IMessage message)
         {
-            if (this.Socket is not null)
+            if (this.Socket is not null && Socket.Poll(1000, SelectMode.SelectWrite))
             {
                 await SocketHelper.Send(Socket, message);
                 return await SocketHelper.Recieve<IEnumerable<Entity>>(Socket);
-            } else
+            }
+            else
             {
                 throw new Exception("Socket was not initialized");
             }

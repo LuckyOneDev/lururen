@@ -10,7 +10,6 @@ namespace Lururen.Networking.Common
     public interface IDataBus : IDisposable
     {
         bool Running { get; }
-
         public Task<IEnumerable<Entity>> OnMessage(IMessage command);
         Task Start();
         Task Stop();

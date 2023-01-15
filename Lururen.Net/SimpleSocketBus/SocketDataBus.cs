@@ -13,6 +13,7 @@ namespace Lururen.Networking.SimpleSocketBus
 {
     public abstract class SocketDataBus : IDataBus
     {
+        public List<Socket> Clients { get; set; } = new();
         public SocketDataBus(int port = 7777)
         {
             this.Port = port;
@@ -37,25 +38,36 @@ namespace Lururen.Networking.SimpleSocketBus
 
         async Task StartSession(Socket handler)
         {
-            IMessage message = null;
-            try
+            if (handler is not null)
             {
-                while (message is not DisconnectMessage)
+                Clients.Add(handler);
+                IMessage? message = null;
+                try
                 {
-                    message = await SocketHelper.Recieve<IMessage>(handler);
-                    var response = await OnMessage(message);
-                    await SocketHelper.Send(handler, response);
+                    while (message is not DisconnectMessage && !handler.Poll(1000, SelectMode.SelectRead))
+                    {
+                        message = await SocketHelper.Recieve<IMessage>(handler);
+                        var response = await OnMessage(message);
+                        await SocketHelper.Send(handler, response);
+                    }
+                    Clients.Remove(handler);
+                    handler.Close();
                 }
-                handler.Close();
-            } catch (Exception ex)
-            {
-                handler.Close();
+                catch (Exception ex)
+                {
+                    // Add logging 
+                    Clients.Remove(handler);
+                    handler.Close();
+                }
             }
         }
          
-        public async Task Stop()
+        public Task Stop()
         {
             Running = false;
+            Parallel.ForEach(Clients, x => x.Close());
+            Clients.Clear();
+            return Task.CompletedTask;
         }
 
         public abstract Task<IEnumerable<Entity>> OnMessage(IMessage command);

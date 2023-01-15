@@ -3,18 +3,19 @@ using Lururen.Networking.SimpleSocketBus;
 
 namespace Lururen.Testing
 {
-    // Test need to run seqeuntially because test server holds port 7777
+    // Tests need to run seqeuntially because test server holds port 7777
     // Also could be rewritten to use different ports for each instance
     public class SocketTests
     {
-        class TestEntity : Entity
+        private class TestEntity : Entity
         {
-            public TestEntity(string Data) 
-            { 
+            public TestEntity(string Data)
+            {
                 TestData = Data;
             }
 
             public string TestData { get; set; }
+
             public override void Dispose()
             {
             }
@@ -31,30 +32,32 @@ namespace Lururen.Testing
             {
             }
         }
-        class TestDataBus : SocketDataBus
+
+        private class TestDataBus : SocketDataBus
         {
-            public override async Task<IEnumerable<Entity>> OnMessage(IMessage command)
+            public override Task<IEnumerable<Entity>> OnMessage(IMessage command)
             {
                 if (command is TestMessage)
                 {
-                    List<Entity> result = new List<Entity>() { new TestEntity("TestData") };
-                    return result;
-                } else
-                {
-                    return new List<Entity>();
+                    List<Entity> result = new() { new TestEntity("TestData") };
+                    return Task.FromResult<IEnumerable<Entity>>(result);
                 }
-                
+                else
+                {
+                    return Task.FromResult<IEnumerable<Entity>>(new List<Entity>());
+                }
             }
         }
 
-        class TestMultiDataBus : SocketDataBus
+        private class TestMultiDataBus : SocketDataBus
         {
-            static int counter = 0;
+            private static int counter = 0;
+
             public override async Task<IEnumerable<Entity>> OnMessage(IMessage command)
             {
                 if (command is TestMessage)
                 {
-                    List<Entity> result = new List<Entity>() { new TestEntity("TestData" + counter) };
+                    List<Entity> result = new() { new TestEntity("TestData" + counter) };
                     counter++;
                     return result;
                 }
@@ -62,21 +65,19 @@ namespace Lururen.Testing
                 {
                     return new List<Entity>();
                 }
-
             }
         }
 
-        class TestNetBus : SocketNetBus
+        private class TestNetBus : SocketNetBus
         {
-
         }
 
-        class TestMessage : IMessage
+        private class TestMessage : IMessage
         {
         }
 
         [Fact]
-        public async Task SocketMessageTransmitTest()
+        public async Task MessageTransmitTest()
         {
             var dataBus = new TestDataBus();
             var netBus = new TestNetBus();
@@ -89,7 +90,6 @@ namespace Lururen.Testing
 
             await netBus.Stop();
             await dataBus.Stop();
-            
 
             var testEnt = (TestEntity)result[0];
 
@@ -135,8 +135,26 @@ namespace Lururen.Testing
                 var testEnt = (TestEntity)results[i];
                 Assert.Equal("TestData" + i, testEnt.TestData);
             }
+        }
 
-            
+        [Fact]
+        public async Task UnexpectedDisconnectTest()
+        {
+            var dataBus = new TestDataBus();
+            var netBus = new TestNetBus();
+
+            _ = dataBus.Start();
+
+            await netBus.Start();
+
+            await netBus.SendMessage(new TestMessage());
+
+            netBus.Dispose();
+            Task.Delay(100).Wait();
+
+            Assert.Empty(dataBus.Clients);
+
+            await dataBus.Stop();
         }
     }
 }
