@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Lururen.Core.Common
 {
@@ -15,27 +16,15 @@ namespace Lururen.Core.Common
         /// <param name="action"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        public static CancellationTokenSource PeriodicThread(Action action, TimeSpan interval)
+        public static System.Timers.Timer PeriodicThread(Action action, TimeSpan interval)
         {
-            CancellationTokenSource source = new CancellationTokenSource();
-            var cancellationToken = source.Token;
-            new Thread(async () =>
-            {
-                try
-                {
-                    while (true)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                        action();
-                        await Task.Delay(interval, cancellationToken);
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    // Thread successfully stopped. Nothing to do here
-                }
-            }).Start();
-            return source;
+            // Create a timer with a two second interval.
+            var aTimer = new System.Timers.Timer(interval);
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += (object source, ElapsedEventArgs e) => { action(); };
+            aTimer.AutoReset = true;
+            aTimer.Enabled = true;
+            return aTimer;
         }
     }
 }
