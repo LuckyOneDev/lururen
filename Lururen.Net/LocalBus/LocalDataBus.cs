@@ -1,4 +1,5 @@
-﻿using Lururen.Core.EntitySystem;
+﻿using Lururen.Core.CommandSystem;
+using Lururen.Core.EntitySystem;
 using Lururen.Networking.Common;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,22 @@ namespace Lururen.Networking.LocalBus
 {
     internal abstract class LocalNetDataBus : INetBus, IDataBus
     {
-        public abstract Task<IEnumerable<Entity>> OnMessage(IMessage command);
-        public Task<IEnumerable<Entity>> SendMessage(IMessage message)
+        public bool Running { get; protected set; }
+
+        public event OnDataEventHandler OnData;
+        public event OnCommandEventHandler OnCommand;
+
+        public Task SendCommand(ICommand message)
         {
-            return OnMessage(message);
+            OnCommand.Invoke(Guid.Empty, message); 
+            return Task.CompletedTask;
         }
 
-        public bool Running { get; set; }
+        public Task SendData(Guid clientGuid, object data)
+        {
+            OnData.Invoke(data);
+            return Task.CompletedTask;
+        }
 
         public Task Start()
         {
@@ -32,6 +42,7 @@ namespace Lururen.Networking.LocalBus
 
         public void Dispose()
         {
+
         }
     }
 }

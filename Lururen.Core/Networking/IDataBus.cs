@@ -1,17 +1,19 @@
-﻿using Lururen.Core.EntitySystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Lururen.Core.CommandSystem;
 
 namespace Lururen.Networking.Common
 {
+    public delegate void OnCommandEventHandler(Guid clientGuid, ICommand command);
+
     public interface IDataBus : IDisposable
     {
+        public event OnCommandEventHandler OnCommand;
+
         bool Running { get; }
-        public Task<IEnumerable<Entity>> OnMessage(IMessage command);
+
+        public Task SendData(Guid clientGuid, object data);
+
         Task Start();
+
         Task Stop();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Lururen.Networking.Common;
 using Lururen.Networking.SimpleSocketBus;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 
 namespace Lururen.Testing
 {
@@ -32,68 +33,53 @@ namespace Lururen.Testing
             {
             }
         }
-
-        private class TestDataBus : SocketDataBus
+        private class TestCommand : ICommand
         {
-            public override Task<IEnumerable<Entity>> OnMessage(IMessage command)
+            public void Run(Guid client, Application app)
             {
-                if (command is TestMessage)
-                {
-                    List<Entity> result = new() { new TestEntity("TestData") };
-                    return Task.FromResult<IEnumerable<Entity>>(result);
-                }
-                else
-                {
-                    return Task.FromResult<IEnumerable<Entity>>(new List<Entity>());
-                }
+                app.DataBus.SendData(client, "Test Data");
             }
         }
 
-        private class TestMultiDataBus : SocketDataBus
+        private class MultiClientTestCommand : ICommand
         {
-            private static int counter = 0;
-
-            public override async Task<IEnumerable<Entity>> OnMessage(IMessage command)
+            public Guid requestId = Guid.NewGuid();
+            public void Run(Guid client, Application app)
             {
-                if (command is TestMessage)
-                {
-                    List<Entity> result = new() { new TestEntity("TestData" + counter) };
-                    counter++;
-                    return result;
-                }
-                else
-                {
-                    return new List<Entity>();
-                }
+                app.DataBus.SendData(client, "Test " + requestId);
             }
         }
 
-        private class TestNetBus : SocketNetBus
+        private class TestApp : Application
         {
-        }
+            public override void Init()
+            {
+                this.DataBus = new SocketDataBus();
+            }
 
-        private class TestMessage : IMessage
-        {
+            public override void Dispose()
+            {
+            }
         }
 
         [Fact]
         public async Task MessageTransmitTest()
         {
-            var dataBus = new TestDataBus();
-            var netBus = new TestNetBus();
-
-            _ = dataBus.Start();
+            var app = new TestApp();
+            var netBus = new SocketNetBus();
+            app.Start();
 
             await netBus.Start();
 
-            var result = (await netBus.SendMessage(new TestMessage())).ToList();
+            await netBus.SendCommand(new TestCommand());
 
-            await netBus.Stop();
-            await dataBus.Stop();
+            netBus.OnData += async (object Data) =>
+            {
+                await netBus.Stop();
+                app.Stop();
 
-            var testEnt = (TestEntity)result[0];
-
-            Assert.Equal("TestData", testEnt.TestData);
+                Assert.Equal("Test Data", Data);
+            };
         }
 
         [Theory]
@@ -102,59 +88,49 @@ namespace Lururen.Testing
         [InlineData(5)]
         public async Task MultiClientTest(int clientAmount)
         {
-            var dataBus = new TestMultiDataBus();
+            var app = new TestApp();
             var clients = new INetBus[clientAmount];
             for (int i = 0; i < clientAmount; i++)
             {
-                clients[i] = new TestNetBus();
+                clients[i] = new SocketNetBus();
             }
 
-            _ = dataBus.Start();
+            app.Start();
 
             for (int i = 0; i < clientAmount; i++)
             {
                 await clients[i].Start();
             }
 
-            var results = new Entity[clientAmount];
-
             for (int i = 0; i < clientAmount; i++)
             {
-                results[i] = (await clients[i].SendMessage(new TestMessage())).First();
-            }
+                var cmd = new MultiClientTestCommand();
 
-            for (int i = 0; i < clientAmount; i++)
-            {
-                await clients[i].Stop();
-            }
+                clients[i].OnData += (object data) =>
+                {
+                    Assert.Equal("Test " + cmd.requestId, data);
+                };
 
-            _ = dataBus.Stop();
-
-            for (int i = 0; i < clientAmount; i++)
-            {
-                var testEnt = (TestEntity)results[i];
-                Assert.Equal("TestData" + i, testEnt.TestData);
+                await clients[i].SendCommand(cmd);
             }
         }
 
         [Fact]
         public async Task UnexpectedDisconnectTest()
         {
-            var dataBus = new TestDataBus();
-            var netBus = new TestNetBus();
+            var app = new TestApp();
+            var netBus = new SocketNetBus();
 
-            _ = dataBus.Start();
+            app.Start();
 
             await netBus.Start();
 
-            await netBus.SendMessage(new TestMessage());
+            await netBus.SendCommand(new TestCommand());
 
             netBus.Dispose();
-            Task.Delay(100).Wait();
+            Task.Delay(10).Wait();
 
-            Assert.Empty(dataBus.Clients);
-
-            await dataBus.Stop();
+            Assert.Empty(((SocketDataBus)app.DataBus).Clients);
         }
     }
 }

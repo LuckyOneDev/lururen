@@ -8,12 +8,13 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Lururen.Core.CommandSystem;
 
 namespace Lururen.Networking.SimpleSocketBus
 {
-    public abstract class SocketDataBus : IDataBus
+    public class SocketDataBus : IDataBus
     {
-        public List<Socket> Clients { get; set; } = new();
+        public Dictionary<Guid, Socket> Clients { get; set; } = new();
         public SocketDataBus(int port = 7777)
         {
             this.Port = port;
@@ -21,10 +22,12 @@ namespace Lururen.Networking.SimpleSocketBus
         public bool Running { get; protected set; }
         public int Port { get; private set; }
 
+        public event OnCommandEventHandler OnCommand;
+
         public async Task Start()
         {
-            IPEndPoint ipPoint = new IPEndPoint(IPAddress.Any, Port);
-            using Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            IPEndPoint ipPoint = new(IPAddress.Any, Port);
+            using Socket socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Bind(ipPoint);
             socket.Listen(1000);
 
@@ -40,40 +43,43 @@ namespace Lururen.Networking.SimpleSocketBus
         {
             if (handler is not null)
             {
-                Clients.Add(handler);
-                IMessage? message = null;
+                Guid guid = Guid.NewGuid();
+                Clients.Add(guid, handler);
+                ICommand? command = null;
                 try
                 {
-                    while (message is not DisconnectMessage && !handler.Poll(1000, SelectMode.SelectRead))
+                    while (command is not DisconnectCommand && !handler.Poll(1000, SelectMode.SelectRead))
                     {
-                        message = await SocketHelper.Recieve<IMessage>(handler);
-                        var response = await OnMessage(message);
-                        await SocketHelper.Send(handler, response);
+                        command = await SocketHelper.Recieve<ICommand>(handler);
+                        OnCommand.Invoke(guid, command);
                     }
-                    Clients.Remove(handler);
+                    Clients.Remove(guid);
                     handler.Close();
                 }
                 catch (Exception ex)
                 {
                     // Add logging 
-                    Clients.Remove(handler);
+                    Clients.Remove(guid);
                     handler.Close();
                 }
             }
         }
-         
+
         public Task Stop()
         {
             Running = false;
-            Parallel.ForEach(Clients, x => x.Close());
+            Parallel.ForEach(Clients, x => x.Value.Close());
             Clients.Clear();
             return Task.CompletedTask;
         }
 
-        public abstract Task<IEnumerable<Entity>> OnMessage(IMessage command);
-
         public void Dispose()
         {
+        }
+
+        public async Task SendData(Guid clientGuid, object data)
+        {
+            await SocketHelper.Send(Clients[clientGuid] ,data);
         }
     }
 }

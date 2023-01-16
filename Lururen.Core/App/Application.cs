@@ -16,11 +16,11 @@ namespace Lururen.Core.App
     {
         public Application()
         {
-            CommandQueue = new CommandQueue();
+            CommandQueue = new CommandQueue(this);
             EventBus = new EventBus();
             Environments = new List<Environment>();
         }
-        public IDataBus DataBus { get; }
+        public IDataBus DataBus { get; protected set; }
         public bool IsRunning => CancellationTokenSource != null;
         public CommandQueue CommandQueue { get; set; }
         public List<Environment> Environments { get; set; }
@@ -62,6 +62,7 @@ namespace Lururen.Core.App
         {
             Init();
             CancellationTokenSource = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
+            DataBus.OnCommand += CommandQueue.Push;
             DataBus.Start();
         }
 
