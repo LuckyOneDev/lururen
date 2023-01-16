@@ -2,6 +2,7 @@
 using Lururen.Core.Common;
 using Lururen.Core.EnviromentSystem;
 using Lururen.Core.EventSystem;
+using Lururen.Networking.Common;
 using System;
 using System.Threading;
 using Environment = Lururen.Core.EnviromentSystem.Environment;
@@ -15,15 +16,16 @@ namespace Lururen.Core.App
     {
         public Application()
         {
-            CommandQueue = new CommandQueue();
+            CommandQueue = new CommandQueue(this);
             EventBus = new EventBus();
-            Environments = new List<EnviromentSystem.Environment>();
+            Environments = new List<Environment>();
         }
-
-        public bool IsRunning => CancellationToken! != null;
+        public IDataBus DataBus { get; protected set; }
+        public bool IsRunning => CancellationTokenSource != null;
         public CommandQueue CommandQueue { get; set; }
         public List<Environment> Environments { get; set; }
         public EventBus EventBus { get; set; }
+
         private CancellationTokenSource CancellationToken { get; set; }
         public System.Timers.Timer CancelTimer { get; private set; }
 
@@ -41,6 +43,7 @@ namespace Lururen.Core.App
         {
             return new Environment(this);
         }
+
         public void LoadEnviroment(Environment env)
         {
             Environments.Add(env);
@@ -59,10 +62,13 @@ namespace Lururen.Core.App
 
         public void Start(TimeSpan frameDelay)
         {
+            Init();
             CancelTimer = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
+            DataBus.OnCommand += CommandQueue.Push;
+            DataBus.Start();
         }
 
-        public void Start(int fps = 60)
+        public void Start(int tps = 60)
         {
             CancelTimer = ThreadHelper.PeriodicThread(ProcessAll, TimeSpan.FromMilliseconds(1000 / fps));
         }

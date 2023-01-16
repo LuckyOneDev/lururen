@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lururen.Core.App;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,6 @@ namespace Lururen.Core.CommandSystem
     /// </summary>
     public interface ICommand
     {
-        public void Run();
-        // response field is implemented on by-class basis
+        public void Run(Guid client, Application app);
     }
 }
