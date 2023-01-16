@@ -6,3 +6,4 @@ global using Lururen.Core.App;
 global using Lururen.Core.Common;
 global using Lururen.Core.EntitySystem;
 global using Lururen.Networking;
+global using Lururen.Networking.LocalBus;

@@ -1,4 +1,6 @@
 ﻿using Lururen.Core.EntitySystem;
+using Lururen.Networking.Common;
+using Lururen.Networking.LocalBus;
 
 namespace Lururen.Testing
 {
@@ -12,6 +14,7 @@ namespace Lururen.Testing
 
             public override void Init()
             {
+                DataBus = new LocalNetDataBus();
             }
         }
 

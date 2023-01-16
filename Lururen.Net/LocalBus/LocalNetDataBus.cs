@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Lururen.Networking.LocalBus
 {
-    internal abstract class LocalNetDataBus : INetBus, IDataBus
+    public class LocalNetDataBus : INetBus, IDataBus
     {
         public bool Running { get; protected set; }
 
