@@ -111,7 +111,7 @@ namespace Lururen.Testing
                     Assert.Equal("Test " + cmd.requestId, data);
                 };
 
-                await clients[i].SendCommand(cmd);
+                _ = clients[i].SendCommand(cmd);
             }
         }
 
