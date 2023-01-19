@@ -10,11 +10,11 @@ namespace Lururen.Networking.Common
 {
     public delegate void OnDataEventHandler(object data);
     public delegate void OnTransmissionEndEventHandler(ITransmission transmission);
-    public interface INetBus : IDisposable
+    public interface IClientMessageBridge : IDisposable
     {
         public event OnDataEventHandler OnData;
         public event OnTransmissionEndEventHandler OnTransmissionEnd;
-        public Task SendCommand(ICommand message);
+        public Task SendCommand(ICommand command);
         Task Start();
         Task Stop();
     }

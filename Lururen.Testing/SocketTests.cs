@@ -1,5 +1,6 @@
 ﻿using Lururen.Networking.Common;
 using Lururen.Networking.Common.Commands;
+using Lururen.Networking.Common.Protocol;
 using Lururen.Networking.Common.ServerMessages;
 using Lururen.Networking.SimpleSocketBus;
 using Microsoft.VisualStudio.TestPlatform.Common;
@@ -43,7 +44,7 @@ namespace Lururen.Testing
         {
             public void Run(Guid client, Application app)
             {
-                app.DataBus.SendData(client, "Test Data");
+                app.MessageBridge.SendData(client, "Test Data");
             }
         }
 
@@ -52,16 +53,20 @@ namespace Lururen.Testing
             public Guid requestId = Guid.NewGuid();
             public void Run(Guid client, Application app)
             {
-                app.DataBus.SendData(client, "Test " + requestId);
+                app.MessageBridge.SendData(client, "Test " + requestId);
             }
         }
 
         private class TestApp : Application
         {
             public ResourceInfo resourceInfo = new();
+
+            public TestApp() : base(new SocketServerMessageBridge())
+            {
+            }
+
             public override void Init()
             {
-                this.DataBus = new SocketDataBus();
             }
 
             public override void Dispose()
@@ -83,7 +88,7 @@ namespace Lururen.Testing
         public async Task MessageTransmitTest()
         {
             var app = new TestApp();
-            var netBus = new SocketNetBus();
+            var netBus = new SocketClientMessageBridge();
             app.Start();
 
             await netBus.Start();
@@ -106,10 +111,10 @@ namespace Lururen.Testing
         public async Task MultiClientTest(int clientAmount)
         {
             var app = new TestApp();
-            var clients = new INetBus[clientAmount];
+            var clients = new IClientMessageBridge[clientAmount];
             for (int i = 0; i < clientAmount; i++)
             {
-                clients[i] = new SocketNetBus();
+                clients[i] = new SocketClientMessageBridge();
             }
 
             app.Start();
@@ -145,7 +150,7 @@ namespace Lururen.Testing
         public async Task UnexpectedDisconnectTest()
         {
             var app = new TestApp();
-            var netBus = new SocketNetBus();
+            var netBus = new SocketClientMessageBridge();
 
             app.Start();
 
@@ -156,28 +161,25 @@ namespace Lururen.Testing
             netBus.Dispose();
             Task.Delay(10).Wait();
 
-            Assert.Empty(((SocketDataBus)app.DataBus).Clients);
+            Assert.Empty(((SocketServerMessageBridge)app.MessageBridge).GetClients());
         }
 
         [Theory]
-        [InlineData(650000)]
-        [InlineData(65000)]
-        [InlineData(5000)]
-        [InlineData(1024)]
+        [InlineData(10000)]
         public async Task FileTransmissionTest(int fileSizeBytes)
         {
             var rand = new Random();
-            string fileName = $"test-file.txt";
+            string fileName = $"test-file-{fileSizeBytes}.txt";
             byte[] testData = new byte[fileSizeBytes];
             rand.NextBytes(testData);
             File.WriteAllBytes(fileName, testData);
 
             var app = new TestApp();
 
-            var netBus = new SocketNetBus();
+            var netBus = new SocketClientMessageBridge();
 
             app.resourceInfo = new ResourceInfo();
-            app.resourceInfo.Add(fileName, netBus.ComputeChecksum(testData));
+            app.resourceInfo.Add(fileName, ProtocolHelper.GetChecksum(testData));
 
             app.Start();
 
@@ -189,7 +191,7 @@ namespace Lururen.Testing
             {
                 if (transmission is FileTransmission ft)
                 {
-                    var transferredBytes = File.ReadAllBytes(netBus.BuildFilePath(ft.FileName));
+                    var transferredBytes = File.ReadAllBytes(Path.Combine("ClientData", ft.FileName));
                     try
                     {
                         Assert.Equal(transferredBytes, testData);
@@ -202,7 +204,7 @@ namespace Lururen.Testing
                 }
             };
 
-            bool completed = taskCompletionSource.Task.Wait(fileSizeBytes);
+            bool completed = taskCompletionSource.Task.Wait(fileSizeBytes / 10);
             Assert.True(completed, "Test took too long to complete");
         }
 

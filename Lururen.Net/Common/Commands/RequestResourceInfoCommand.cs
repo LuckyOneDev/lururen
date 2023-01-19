@@ -13,7 +13,7 @@ namespace Lururen.Networking.Common.Commands
         public void Run(Guid client, Application app)
         {
             var resourceInfo = app.GetResourceInfo();
-            app.DataBus.SendData(client, resourceInfo);
+            app.MessageBridge.SendData(client, resourceInfo);
         }
     }
 }

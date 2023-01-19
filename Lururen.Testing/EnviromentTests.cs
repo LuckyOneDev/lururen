@@ -1,4 +1,6 @@
-﻿namespace Lururen.Testing
+﻿using Lururen.Networking.SimpleSocketBus;
+
+namespace Lururen.Testing
 {
     public class EnviromentTests
     {
@@ -25,6 +27,9 @@
 
         public class TestApp : Application
         {
+            public TestApp() : base(new SocketServerMessageBridge())
+            {
+            }
             public override void Dispose()
             {
             }

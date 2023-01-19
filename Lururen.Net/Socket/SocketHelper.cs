@@ -70,15 +70,16 @@ namespace Lururen.Networking.SimpleSocketBus
             return await handler.SendAsync(encoded);
         }
 
-        internal static async Task SendContiniousData(Socket handler, Stream resourceStream, int channelWidth = 4096)
+        internal static async Task SendContiniousData(Socket handler, Stream dataStream, int channelWidth = 4096)
         {
             byte[] buffer = new byte[channelWidth];
-            int bytesRead = resourceStream.Read(buffer, 0, channelWidth);
+            int bytesRead = dataStream.Read(buffer, 0, channelWidth);
             while (bytesRead > 0)
             {
                 await handler.SendAsync(new ArraySegment<byte>(buffer, 0, bytesRead), SocketFlags.None);
-                bytesRead = resourceStream.Read(buffer, 0, channelWidth);
+                bytesRead = dataStream.Read(buffer, 0, channelWidth);
             }
+            dataStream.Close();
         }
     }
 }

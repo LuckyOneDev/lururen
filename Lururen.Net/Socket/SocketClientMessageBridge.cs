@@ -1,19 +1,20 @@
 ﻿using Lururen.Core.CommandSystem;
-using Lururen.Networking.Common;
 using Lururen.Networking.Common.Commands;
+using Lururen.Networking.Common.Protocol;
 using System.Net.Sockets;
 
 namespace Lururen.Networking.SimpleSocketBus
 {
-    public class SocketNetBus : ProtocolNetBus
+    public class SocketClientMessageBridge : ProtocolMessageBridge
     {
-        public SocketNetBus(string host = "127.0.0.1", int port = 7777) : base("ClientData")
+        public SocketClientMessageBridge(string host = "127.0.0.1", int port = 7777) : base("ClientData")
         {
             this.Host = host;
             this.Port = port;
         }
 
         #region INetBus
+
         public override void Dispose()
         {
             this.Socket?.Dispose();
@@ -46,31 +47,36 @@ namespace Lururen.Networking.SimpleSocketBus
             await SocketHelper.Send(Socket, new DisconnectCommand());
             await Socket.DisconnectAsync(true);
         }
+
         #endregion INetBus
 
         public string Host { get; protected set; }
         public int Port { get; protected set; }
-        private CancellationTokenSource CancellationTokenSource { get; set; }
+        private CancellationTokenSource? CancellationTokenSource { get; set; }
         private Socket? Socket { get; set; }
+
         private async Task StartRecieveData()
         {
             while (!CancellationTokenSource.Token.IsCancellationRequested)
             {
-                if (ContiniousTransmissionHandler == null)
+                switch (protocolMessagingMode)
                 {
-                    await SocketHelper.Recieve<object>(Socket, CancellationTokenSource.Token).ContinueWith((task) =>
-                    {
-                        var data = task.Result;
-                        ProcessSystemRequest(data);
-                    }, CancellationTokenSource.Token);
-                } else
-                {
-                    await SocketHelper.RecieveBytes(Socket, CancellationTokenSource.Token).ContinueWith((task) =>
-                    {
-                        var data = task.Result;
-                        ProcessSystemRequest(data);
-                    }, CancellationTokenSource.Token);
-                }  
+                    case ProtocolMessagingMode.Default:
+                        await SocketHelper.Recieve<object>(Socket, CancellationTokenSource.Token).ContinueWith((task) =>
+                        {
+                            var data = task.Result;
+                            ProcessMessage(data);
+                        }, CancellationTokenSource.Token);
+                        break;
+
+                    case ProtocolMessagingMode.Stream:
+                        await SocketHelper.RecieveBytes(Socket, CancellationTokenSource.Token).ContinueWith((task) =>
+                        {
+                            var data = task.Result;
+                            ProcessMessage(data);
+                        }, CancellationTokenSource.Token);
+                        break;
+                }
             }
         }
     }

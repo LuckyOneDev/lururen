@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Networking.LocalBus
+namespace Lururen.Networking.Local
 {
-    public class LocalNetDataBus : INetBus, IDataBus
+    public class LocalBridge : IClientMessageBridge, IServerMessageBridge
     {
         public bool Running { get; protected set; }
 

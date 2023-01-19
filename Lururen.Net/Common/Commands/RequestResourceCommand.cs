@@ -1,5 +1,6 @@
 ﻿using Lururen.Core.App;
 using Lururen.Core.CommandSystem;
+using Lururen.Networking.Common.ServerMessages;
 
 namespace Lururen.Networking.Common.Commands
 {
@@ -13,8 +14,8 @@ namespace Lururen.Networking.Common.Commands
         public void Run(Guid client, Application app)
         {
             var resourceStream = app.GetResource(ResourceName);
-            app.DataBus.SendData(client, new FileTransmission(ResourceName, resourceStream.Length)).Wait();
-            app.DataBus.SendContiniousData(client, resourceStream);
+            app.MessageBridge.SendData(client, new FileTransmission(ResourceName, resourceStream.Length)).Wait();
+            app.MessageBridge.SendContiniousData(client, resourceStream);
         }
     }
 }

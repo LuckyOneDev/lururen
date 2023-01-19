@@ -1,6 +1,7 @@
 ﻿using Lururen.Core.EntitySystem;
 using Lururen.Networking.Common;
-using Lururen.Networking.LocalBus;
+using Lururen.Networking.Local;
+using Lururen.Networking.SimpleSocketBus;
 
 namespace Lururen.Testing
 {
@@ -8,6 +9,10 @@ namespace Lururen.Testing
     {
         public class TestApp : Application
         {
+            public TestApp() : base(new SocketServerMessageBridge())
+            {
+            }
+
             public override void Dispose()
             {
             }
@@ -24,7 +29,6 @@ namespace Lururen.Testing
 
             public override void Init()
             {
-                DataBus = new LocalNetDataBus();
             }
         }
 
