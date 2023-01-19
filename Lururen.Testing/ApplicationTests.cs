@@ -1,9 +1,4 @@
-﻿using Lururen.Core.EntitySystem;
-using Lururen.Networking.Common;
-using Lururen.Networking.Local;
-using Lururen.Networking.SimpleSocketBus;
-
-namespace Lururen.Testing
+﻿namespace Lururen.Testing
 {
     public class ApplicationTests
     {

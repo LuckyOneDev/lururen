@@ -1,15 +1,4 @@
-﻿using Lururen.Networking.Common;
-using Lururen.Networking.Common.Commands;
-using Lururen.Networking.Common.Protocol;
-using Lururen.Networking.Common.ServerMessages;
-using Lururen.Networking.SimpleSocketBus;
-using Microsoft.VisualStudio.TestPlatform.Common;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace Lururen.Testing
+﻿namespace Lururen.Testing
 {
     // Tests need to run seqeuntially because test server holds port 7777
     // Also could be rewritten to use different ports for each instance

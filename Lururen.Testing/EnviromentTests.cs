@@ -1,6 +1,4 @@
-﻿using Lururen.Networking.SimpleSocketBus;
-
-namespace Lururen.Testing
+﻿namespace Lururen.Testing
 {
     public class EnviromentTests
     {
