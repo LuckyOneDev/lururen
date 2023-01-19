@@ -1,5 +1,6 @@
 ﻿using Lururen.Networking.Common;
 using Lururen.Networking.Common.Commands;
+using Lururen.Networking.Common.ServerMessages;
 using Lururen.Networking.SimpleSocketBus;
 using Microsoft.VisualStudio.TestPlatform.Common;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
