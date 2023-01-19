@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Lururen.Core.CommandSystem;
+using Lururen.Networking.Common.Commands;
+using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Lururen.Networking.SimpleSocketBus
 {
@@ -19,22 +22,21 @@ namespace Lururen.Networking.SimpleSocketBus
         {
             this.Port = port;
         }
-        public bool Running { get; protected set; }
         public int Port { get; private set; }
 
         public event OnCommandEventHandler OnCommand;
-
+        CancellationTokenSource CancellationTokenSource { get; set; }
         public async Task Start()
         {
+            CancellationTokenSource = new();
             IPEndPoint ipPoint = new(IPAddress.Any, Port);
             using Socket socket = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Bind(ipPoint);
             socket.Listen(1000);
 
-            Running = true;
-            while (Running)
+            while (!CancellationTokenSource.IsCancellationRequested)
             {
-                var handler = await socket.AcceptAsync();
+                var handler = await socket.AcceptAsync(CancellationTokenSource.Token);
                 _ = StartSession(handler);
             }
         }
@@ -48,9 +50,9 @@ namespace Lururen.Networking.SimpleSocketBus
                 ICommand? command = null;
                 try
                 {
-                    while (command is not DisconnectCommand && !handler.Poll(1000, SelectMode.SelectRead))
+                    while (command is not DisconnectCommand)
                     {
-                        command = await SocketHelper.Recieve<ICommand>(handler);
+                        command = await SocketHelper.Recieve<ICommand>(handler, CancellationTokenSource.Token);
                         OnCommand.Invoke(guid, command);
                     }
                     Clients.Remove(guid);
@@ -65,12 +67,14 @@ namespace Lururen.Networking.SimpleSocketBus
             }
         }
 
-        public Task Stop()
+        public async Task Stop()
         {
-            Running = false;
+            foreach (var entry in Clients)
+            {
+                await SocketHelper.Send(entry.Value, new ServerStatus(ServerState.CLOSED));
+            }
             Parallel.ForEach(Clients, x => x.Value.Close());
             Clients.Clear();
-            return Task.CompletedTask;
         }
 
         public void Dispose()
@@ -80,6 +84,11 @@ namespace Lururen.Networking.SimpleSocketBus
         public async Task SendData(Guid clientGuid, object data)
         {
             await SocketHelper.Send(Clients[clientGuid] ,data);
+        }
+
+        public async Task SendContiniousData(Guid clientGuid, Stream resourceStream)
+        {
+            await SocketHelper.SendContiniousData(Clients[clientGuid], resourceStream);
         }
     }
 }

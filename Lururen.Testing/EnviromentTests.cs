@@ -29,6 +29,16 @@
             {
             }
 
+            public override Stream GetResource(string resourceName)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override ResourceInfo GetResourceInfo()
+            {
+                throw new NotImplementedException();
+            }
+
             public override void Init()
             {
             }

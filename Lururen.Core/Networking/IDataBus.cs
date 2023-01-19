@@ -8,8 +8,7 @@ namespace Lururen.Networking.Common
     {
         public event OnCommandEventHandler OnCommand;
 
-        bool Running { get; }
-
+        public Task SendContiniousData(Guid client, Stream resourceStream);
         public Task SendData(Guid clientGuid, object data);
 
         Task Start();

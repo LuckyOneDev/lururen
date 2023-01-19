@@ -1,6 +1,11 @@
 ﻿using Lururen.Networking.Common;
+using Lururen.Networking.Common.Commands;
 using Lururen.Networking.SimpleSocketBus;
+using Microsoft.VisualStudio.TestPlatform.Common;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Lururen.Testing
 {
@@ -52,6 +57,7 @@ namespace Lururen.Testing
 
         private class TestApp : Application
         {
+            public ResourceInfo resourceInfo = new();
             public override void Init()
             {
                 this.DataBus = new SocketDataBus();
@@ -59,6 +65,16 @@ namespace Lururen.Testing
 
             public override void Dispose()
             {
+            }
+
+            public override ResourceInfo GetResourceInfo()
+            {
+                return resourceInfo;
+            }
+
+            public override Stream GetResource(string resourceName)
+            {
+                return new FileStream(resourceName, FileMode.Open);
             }
         }
 
@@ -83,9 +99,9 @@ namespace Lururen.Testing
         }
 
         [Theory]
-        [InlineData(1)]
-        [InlineData(2)]
+        [InlineData(10)]
         [InlineData(5)]
+        [InlineData(2)]
         public async Task MultiClientTest(int clientAmount)
         {
             var app = new TestApp();
@@ -102,17 +118,26 @@ namespace Lururen.Testing
                 await clients[i].Start();
             }
 
+            Task[] tasks = new Task[clientAmount];
+
             for (int i = 0; i < clientAmount; i++)
             {
+                var taskCompletionSource = new TaskCompletionSource();
+                tasks[i] = taskCompletionSource.Task;
+
                 var cmd = new MultiClientTestCommand();
 
                 clients[i].OnData += (object data) =>
                 {
                     Assert.Equal("Test " + cmd.requestId, data);
+                    taskCompletionSource.SetResult();
                 };
 
                 _ = clients[i].SendCommand(cmd);
             }
+
+            bool completed = Task.WaitAll(tasks, clientAmount * 50);
+            Assert.True(completed, $"Test took too long to complete. Processed {tasks.Count(x => x.IsCompleted)} requests.");
         }
 
         [Fact]
@@ -132,5 +157,53 @@ namespace Lururen.Testing
 
             Assert.Empty(((SocketDataBus)app.DataBus).Clients);
         }
+
+        [Theory]
+        [InlineData(650000)]
+        [InlineData(65000)]
+        [InlineData(5000)]
+        [InlineData(1024)]
+        public async Task FileTransmissionTest(int fileSizeBytes)
+        {
+            var rand = new Random();
+            string fileName = $"test-file.txt";
+            byte[] testData = new byte[fileSizeBytes];
+            rand.NextBytes(testData);
+            File.WriteAllBytes(fileName, testData);
+
+            var app = new TestApp();
+
+            var netBus = new SocketNetBus();
+
+            app.resourceInfo = new ResourceInfo();
+            app.resourceInfo.Add(fileName, netBus.ComputeChecksum(testData));
+
+            app.Start();
+
+            await netBus.Start();
+            await netBus.SendCommand(new RequestResourceInfoCommand());
+
+            var taskCompletionSource = new TaskCompletionSource();
+            netBus.OnTransmissionEnd += (transmission) =>
+            {
+                if (transmission is FileTransmission ft)
+                {
+                    var transferredBytes = File.ReadAllBytes(netBus.BuildFilePath(ft.FileName));
+                    try
+                    {
+                        Assert.Equal(transferredBytes, testData);
+                        taskCompletionSource.SetResult();
+                    } catch (Exception ex)
+                    {
+                        taskCompletionSource.SetException(ex);
+                    }
+
+                }
+            };
+
+            bool completed = taskCompletionSource.Task.Wait(fileSizeBytes);
+            Assert.True(completed, "Test took too long to complete");
+        }
+
     }
 }

@@ -20,6 +20,7 @@ namespace Lururen.Core.App
             EventBus = new EventBus();
             Environments = new List<Environment>();
         }
+
         public IDataBus DataBus { get; protected set; }
         public bool IsRunning => CancellationTokenSource != null;
         public CommandQueue CommandQueue { get; set; }
@@ -38,6 +39,7 @@ namespace Lururen.Core.App
         }
 
         public abstract void Init();
+        public abstract ResourceInfo GetResourceInfo();
 
         public Environment CreateEnvironment()
         {
@@ -77,5 +79,7 @@ namespace Lururen.Core.App
         {
             CancelTimer.Stop();
         }
+
+        public abstract Stream GetResource(string resourceName);
     }
 }

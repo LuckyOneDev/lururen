@@ -23,6 +23,16 @@ public class CommandQueueTests
         public override void Dispose()
         {
         }
+
+        public override ResourceInfo GetResourceInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Stream GetResource(string resourceName)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     [Fact]

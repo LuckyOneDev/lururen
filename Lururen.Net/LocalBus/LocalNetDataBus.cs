@@ -15,6 +15,7 @@ namespace Lururen.Networking.LocalBus
 
         public event OnDataEventHandler OnData;
         public event OnCommandEventHandler OnCommand;
+        public event OnTransmissionEndEventHandler OnTransmissionEnd;
 
         public Task SendCommand(ICommand message)
         {
@@ -43,6 +44,11 @@ namespace Lururen.Networking.LocalBus
         public void Dispose()
         {
 
+        }
+
+        public Task SendContiniousData(Guid client, Stream resourceStream)
+        {
+            return SendData(client, resourceStream);
         }
     }
 }
