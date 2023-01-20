@@ -16,7 +16,7 @@ namespace Lururen.Core.Common
         /// <param name="action"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        public static CancellationTokenSource StartPeriodicThread(Action action, TimeSpan interval)
+        public static CancellationTokenSource StartPeriodicThread(Action action, TimeSpan interval, TextWriter? tw = null)
         {
             CancellationTokenSource ts = new();
             new Thread(() =>
