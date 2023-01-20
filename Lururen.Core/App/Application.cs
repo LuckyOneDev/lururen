@@ -2,7 +2,7 @@
 using Lururen.Core.Common;
 using Lururen.Core.EnviromentSystem;
 using Lururen.Core.EventSystem;
-using Lururen.Networking.Common;
+using Lururen.Core.Networking;
 using System;
 using System.Threading;
 using Environment = Lururen.Core.EnviromentSystem.Environment;

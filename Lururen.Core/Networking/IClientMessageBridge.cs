@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Networking.Common
+namespace Lururen.Core.Networking
 {
     public delegate void OnDataEventHandler(object data);
     public delegate void OnTransmissionEndEventHandler(ITransmission transmission);

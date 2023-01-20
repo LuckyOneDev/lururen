@@ -5,7 +5,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Lururen.Networking.SimpleSocketBus
+namespace Lururen.Networking.SocketNetworking
 {
     public static class SocketHelper
     {

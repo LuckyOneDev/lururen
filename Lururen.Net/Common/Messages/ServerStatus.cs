@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Networking.Common.ServerMessages
+namespace Lururen.Networking.Common.Messages
 {
     public enum ServerState
     {

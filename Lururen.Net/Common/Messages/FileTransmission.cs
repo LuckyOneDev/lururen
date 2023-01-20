@@ -1,4 +1,6 @@
-﻿namespace Lururen.Networking.Common.ServerMessages
+﻿using Lururen.Core.Networking;
+
+namespace Lururen.Networking.Common.Messages
 {
     public class FileTransmission : ITransmission
     {

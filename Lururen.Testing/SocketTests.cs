@@ -29,6 +29,7 @@
             {
             }
         }
+
         private class TestCommand : ICommand
         {
             public void Run(Guid client, Application app)
@@ -40,6 +41,7 @@
         private class MultiClientTestCommand : ICommand
         {
             public Guid requestId = Guid.NewGuid();
+
             public void Run(Guid client, Application app)
             {
                 app.MessageBridge.SendData(client, "Test " + requestId);
@@ -185,17 +187,16 @@
                     {
                         Assert.Equal(transferredBytes, testData);
                         taskCompletionSource.SetResult();
-                    } catch (Exception ex)
+                    }
+                    catch (Exception ex)
                     {
                         taskCompletionSource.SetException(ex);
                     }
-
                 }
             };
 
             bool completed = taskCompletionSource.Task.Wait(fileSizeBytes / 10);
             Assert.True(completed, "Test took too long to complete");
         }
-
     }
 }

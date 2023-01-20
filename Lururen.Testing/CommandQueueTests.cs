@@ -1,3 +1,5 @@
+using Lururen.Networking.SocketNetworking;
+
 namespace Lururen.Testing;
 
 public class CommandQueueTests

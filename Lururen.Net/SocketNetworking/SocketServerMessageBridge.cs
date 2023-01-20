@@ -1,11 +1,11 @@
 ﻿using Lururen.Core.CommandSystem;
-using Lururen.Networking.Common;
+using Lururen.Core.Networking;
 using Lururen.Networking.Common.Commands;
-using Lururen.Networking.Common.ServerMessages;
+using Lururen.Networking.Common.Messages;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Lururen.Networking.SimpleSocketBus
+namespace Lururen.Networking.SocketNetworking
 {
     public class SocketServerMessageBridge : IServerMessageBridge
     {
@@ -56,7 +56,7 @@ namespace Lururen.Networking.SimpleSocketBus
 
         public SocketServerMessageBridge(int port = 7777)
         {
-            this.Port = port;
+            Port = port;
         }
 
         public int Port { get; private set; }
@@ -69,7 +69,7 @@ namespace Lururen.Networking.SimpleSocketBus
         {
             return Clients.Keys.ToList();
         }
-            
+
         /// <summary>
         /// Starts connection with client and invokes all incoming commands.
         /// </summary>

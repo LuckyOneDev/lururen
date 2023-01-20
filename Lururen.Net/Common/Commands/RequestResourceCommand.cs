@@ -1,6 +1,6 @@
 ﻿using Lururen.Core.App;
 using Lururen.Core.CommandSystem;
-using Lururen.Networking.Common.ServerMessages;
+using Lururen.Networking.Common.Messages;
 
 namespace Lururen.Networking.Common.Commands
 {

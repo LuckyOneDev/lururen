@@ -3,28 +3,28 @@ using Lururen.Networking.Common.Commands;
 using Lururen.Networking.Common.Protocol;
 using System.Net.Sockets;
 
-namespace Lururen.Networking.SimpleSocketBus
+namespace Lururen.Networking.SocketNetworking
 {
     public class SocketClientMessageBridge : ProtocolMessageBridge
     {
         public SocketClientMessageBridge(string host = "127.0.0.1", int port = 7777) : base("ClientData")
         {
-            this.Host = host;
-            this.Port = port;
+            Host = host;
+            Port = port;
         }
 
         #region IClientMessageBridge
 
         public override void Dispose()
         {
-            this.Socket?.Dispose();
+            Socket?.Dispose();
         }
 
         public override async Task SendCommand(ICommand command)
         {
-            if (this.Socket is not null)
+            if (Socket is not null)
             {
-                await SocketHelper.Send(this.Socket, command);
+                await SocketHelper.Send(Socket, command);
             }
             else
             {
@@ -37,7 +37,7 @@ namespace Lururen.Networking.SimpleSocketBus
             CancellationTokenSource = new();
             var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             await socket.ConnectAsync(Host, Port);
-            this.Socket = socket;
+            Socket = socket;
             _ = StartRecieveData();
         }
 

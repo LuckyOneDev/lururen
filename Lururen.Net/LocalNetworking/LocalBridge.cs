@@ -1,13 +1,13 @@
 ﻿using Lururen.Core.CommandSystem;
 using Lururen.Core.EntitySystem;
-using Lururen.Networking.Common;
+using Lururen.Core.Networking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Networking.Local
+namespace Lururen.Networking.LocalNetworking
 {
     public class LocalBridge : IClientMessageBridge, IServerMessageBridge
     {
@@ -19,7 +19,7 @@ namespace Lururen.Networking.Local
 
         public Task SendCommand(ICommand message)
         {
-            OnCommand.Invoke(Guid.Empty, message); 
+            OnCommand.Invoke(Guid.Empty, message);
             return Task.CompletedTask;
         }
 

@@ -1,4 +1,6 @@
-﻿namespace Lururen.Testing
+﻿using Lururen.Networking.SocketNetworking;
+
+namespace Lururen.Testing
 {
     public class ApplicationTests
     {

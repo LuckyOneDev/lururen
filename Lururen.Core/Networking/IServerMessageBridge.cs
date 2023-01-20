@@ -1,6 +1,6 @@
 ﻿using Lururen.Core.CommandSystem;
 
-namespace Lururen.Networking.Common
+namespace Lururen.Core.Networking
 {
     public delegate void OnCommandEventHandler(Guid clientGuid, ICommand command);
 

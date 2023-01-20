@@ -1,7 +1,8 @@
 ﻿using Lururen.Core.App;
 using Lururen.Core.CommandSystem;
+using Lururen.Core.Networking;
 using Lururen.Networking.Common.Commands;
-using Lururen.Networking.Common.ServerMessages;
+using Lururen.Networking.Common.Messages;
 
 namespace Lururen.Networking.Common.Protocol
 {
