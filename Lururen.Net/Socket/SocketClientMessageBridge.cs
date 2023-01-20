@@ -13,7 +13,7 @@ namespace Lururen.Networking.SimpleSocketBus
             this.Port = port;
         }
 
-        #region INetBus
+        #region IClientMessageBridge
 
         public override void Dispose()
         {

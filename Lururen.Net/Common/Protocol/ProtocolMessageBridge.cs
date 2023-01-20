@@ -123,6 +123,6 @@ namespace Lururen.Networking.Common.Protocol
             }
         }
 
-        #endregion Request Handlers
+        #endregion
     }
 }
