@@ -6,6 +6,8 @@ global using Lururen.Core.App;
 global using Lururen.Core.Common;
 global using Lururen.Core.EntitySystem;
 global using Lururen.Core.Networking;
+global using Lururen.Core.ResourceLoader;
+global using Lururen.Core.ResourceLoader.DllResourceLoader;
 global using Lururen.Networking.Common.Commands;
 global using Lururen.Networking.Common.Protocol;
 global using Lururen.Networking.SocketNetworking;
