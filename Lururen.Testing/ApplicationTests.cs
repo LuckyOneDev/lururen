@@ -57,10 +57,18 @@ namespace Lururen.Testing
         // Represents heavy update operation
         public class TestHeavyEntity : TestEntity
         {
+            private readonly double load;
+
+            public TestHeavyEntity(double load)
+            {
+                this.load = load;
+            }
             public override void Update()
             {
                 base.Update();
-                Task.Delay(10).Wait();
+                for (double i = 0; i < 100_000_000.0f / load; i++)
+                {
+                }
             }
 
             public override void OnEvent(EventArgs args)
@@ -70,14 +78,21 @@ namespace Lururen.Testing
 
         public static IEnumerable<object[]> SomeEntitiesData()
         {
-            yield return new object[] { new TestEntity() };
-            yield return new object[] { new TestHeavyEntity() };
+            int[] frameCaps = { 30, 50, 60, 70, 80, 90, 100 };
+            foreach (int cap in frameCaps)
+            {
+                yield return new object[] { new TestHeavyEntity(cap), cap };
+            }
+            foreach (int cap in frameCaps)
+            {
+                yield return new object[] { new TestEntity(), cap };
+            }
         }
 
 
         [Theory]
         [MemberData(nameof(SomeEntitiesData))]
-        public void UpdatingEnviromentWithActiveEntityTest(TestEntity testEntity)
+        public void UpdatingEnviromentWithActiveEntityTest(TestEntity testEntity, int frameCap)
         {
             TestApp app = new TestApp();
             Environment env = app.CreateEnvironment();
@@ -94,9 +109,9 @@ namespace Lururen.Testing
             Assert.Equal(1, ent.initCount);
             Assert.Equal(0, ent.disposeCount);
 
-            app.Start(50);
+            app.Start(frameCap);
             Thread.Sleep(1000);
-            Assert.InRange(ent.updateCount, 50, 51);
+            Assert.InRange(ent.updateCount, frameCap * 0.95, frameCap * 1.05); // 5% jitter
             app.Stop();
 
             Assert.Equal(1, ent.initCount);

@@ -18,12 +18,13 @@ namespace Lururen.Core.Common
         /// <returns></returns>
         public static CancellationTokenSource StartPeriodicThread(Action action, TimeSpan interval)
         {
-            CancellationTokenSource ts = new CancellationTokenSource();
+            CancellationTokenSource ts = new();
             new Thread(() =>
             {
+                Stopwatch sw = new();
                 while (!ts.Token.IsCancellationRequested)
                 {
-                    var sw = Stopwatch.StartNew();
+                    sw.Restart();
                     action.Invoke();
                     while (sw.Elapsed < interval) { }
                 }
