@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lururen.Core.App;
+﻿using Lururen.Core.App;
 using Lururen.Core.Common;
 using Lururen.Core.EntitySystem;
 
@@ -64,7 +59,8 @@ namespace Lururen.Core.EnviromentSystem
             if (Active)
             {
                 ActiveEntities.AddOrCreateList(position, entity);
-            } else
+            }
+            else
             {
                 PassiveEntities.AddOrCreateList(position, entity);
             }
@@ -111,14 +107,14 @@ namespace Lururen.Core.EnviromentSystem
             if (active)
             {
                 return true;
-            } 
+            }
             else
             {
                 bool exists = PassiveEntities.Values.Any(entList => entList.Contains(entity));
                 if (exists)
                 {
                     return false;
-                } 
+                }
                 else
                 {
                     throw new Exception("Entity does not exist in this enviroment.");

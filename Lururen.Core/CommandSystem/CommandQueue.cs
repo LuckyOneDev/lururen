@@ -1,17 +1,11 @@
 ﻿using Lururen.Core.App;
-using System;
-using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lururen.Core.CommandSystem
 {
     public class CommandQueue
     {
-        public CommandQueue(Application application) 
+        public CommandQueue(Application application)
         {
             this.Application = application;
         }

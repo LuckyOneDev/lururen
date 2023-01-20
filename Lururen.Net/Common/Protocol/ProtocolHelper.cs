@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lururen.Networking.Common.Protocol
+﻿namespace Lururen.Networking.Common.Protocol
 {
     public static class ProtocolHelper
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Numerics;
-
-namespace Lururen.Core.Common
+﻿namespace Lururen.Core.Common
 {
     /// <summary>
     /// Scalar vector implementation
