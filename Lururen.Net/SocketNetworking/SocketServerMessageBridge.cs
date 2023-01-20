@@ -20,7 +20,7 @@ namespace Lururen.Networking.SocketNetworking
 
         public async Task SendData(Guid clientGuid, object data)
         {
-            await SocketHelper.Send(Clients[clientGuid], data);
+            _ = await SocketHelper.Send(Clients[clientGuid], data);
         }
 
         public async Task Start()
@@ -33,18 +33,18 @@ namespace Lururen.Networking.SocketNetworking
 
             while (!CancellationTokenSource.IsCancellationRequested)
             {
-                var handler = await socket.AcceptAsync(CancellationTokenSource.Token);
+                Socket handler = await socket.AcceptAsync(CancellationTokenSource.Token);
                 _ = StartSession(handler);
             }
         }
 
         public async Task Stop()
         {
-            foreach (var entry in Clients)
+            foreach (KeyValuePair<Guid, Socket> entry in Clients)
             {
-                await SocketHelper.Send(entry.Value, new ServerStatus(ServerState.CLOSED));
+                _ = await SocketHelper.Send(entry.Value, new ServerStatus(ServerState.CLOSED));
             }
-            Parallel.ForEach(Clients, x => x.Value.Close());
+            _ = Parallel.ForEach(Clients, x => x.Value.Close());
             Clients.Clear();
         }
 
@@ -77,6 +77,11 @@ namespace Lururen.Networking.SocketNetworking
         /// <returns></returns>
         private async Task StartSession(Socket socket)
         {
+            if (CancellationTokenSource is not CancellationTokenSource cts)
+            {
+                // Error, Bridge was not started
+                return;
+            }
             Guid guid = Guid.NewGuid();
             Clients.Add(guid, socket);
             ICommand? command = null;
@@ -84,16 +89,16 @@ namespace Lururen.Networking.SocketNetworking
             {
                 while (command is not DisconnectCommand)
                 {
-                    command = await SocketHelper.Recieve<ICommand>(socket, CancellationTokenSource.Token);
+                    command = await SocketHelper.Recieve<ICommand>(socket, cts.Token);
                     OnCommand?.Invoke(guid, command);
                 }
-                Clients.Remove(guid);
+                _ = Clients.Remove(guid);
                 socket.Close();
             }
-            catch (Exception ex)
+            catch
             {
                 // Add logging
-                Clients.Remove(guid);
+                _ = Clients.Remove(guid);
                 socket.Close();
             }
         }

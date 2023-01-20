@@ -15,13 +15,13 @@ namespace Lururen.Networking.SocketNetworking
 
         private static byte[] Encode(object Object)
         {
-            var jsonResponse = JsonConvert.SerializeObject(Object, JsonSettings);
+            string jsonResponse = JsonConvert.SerializeObject(Object, JsonSettings);
             return Encoding.GetBytes(jsonResponse);
         }
 
         private static T Decode<T>(ArraySegment<byte> binaryObject) where T : class
         {
-            var stringObject = Encoding.GetString(binaryObject);
+            string stringObject = Encoding.GetString(binaryObject);
             return JsonConvert.DeserializeObject<T>(stringObject, JsonSettings);
         }
 
@@ -30,7 +30,7 @@ namespace Lururen.Networking.SocketNetworking
                                                int channelWidth = 4096) where T : class
 
         {
-            var bytes = await RecieveBytes(handler, token, channelWidth);
+            ArraySegment<byte> bytes = await RecieveBytes(handler, token, channelWidth);
             return Decode<T>(bytes);
         }
 
@@ -52,28 +52,34 @@ namespace Lururen.Networking.SocketNetworking
                 data.Add(buffer);
             }
 
-            if (token.IsCancellationRequested) return default;
+            if (token.IsCancellationRequested)
+            {
+                return default;
+            }
 
-            var joinedData = data.SelectMany(i => i).ToArray();
+            byte[] joinedData = data.SelectMany(i => i).ToArray();
 
-            if (joinedData.Length == 0) throw new Exception("Null socket data");
+            if (joinedData.Any())
+            {
+                throw new InvalidDataException("Null socket data");
+            }
 
             return new ArraySegment<byte>(joinedData, 0, bytesRead);
         }
 
-        public static async Task<int> Send(Socket handler, object Object)
+        public static async Task<int> Send(this Socket handler, object Object)
         {
-            var encoded = Encode(Object);
+            byte[] encoded = Encode(Object);
             return await handler.SendAsync(encoded);
         }
 
-        internal static async Task SendContiniousData(Socket handler, Stream dataStream, int channelWidth = 4096)
+        internal static async Task SendContiniousData(this Socket handler, Stream dataStream, int channelWidth = 4096)
         {
             byte[] buffer = new byte[channelWidth];
             int bytesRead = dataStream.Read(buffer, 0, channelWidth);
             while (bytesRead > 0)
             {
-                await handler.SendAsync(new ArraySegment<byte>(buffer, 0, bytesRead), SocketFlags.None);
+                _ = await handler.SendAsync(new ArraySegment<byte>(buffer, 0, bytesRead), SocketFlags.None);
                 bytesRead = dataStream.Read(buffer, 0, channelWidth);
             }
             dataStream.Close();

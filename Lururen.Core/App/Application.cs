@@ -20,13 +20,12 @@ namespace Lururen.Core.App
         }
 
         public IServerMessageBridge MessageBridge { get; }
-        public bool IsRunning => CancellationTokenSource != null;
+        public bool IsRunning => CancelToken is not null;
         public CommandQueue CommandQueue { get; set; }
         public List<Environment> Environments { get; set; }
         public EventBus EventBus { get; set; }
 
-        private CancellationTokenSource CancellationTokenSource { get; set; }
-        public CancellationTokenSource CancelToken { get; private set; }
+        public CancellationTokenSource? CancelToken { get; private set; }
 
         public abstract void Dispose();
 
@@ -75,7 +74,7 @@ namespace Lururen.Core.App
 
         public void Stop()
         {
-            CancelToken.Cancel();
+            CancelToken?.Cancel();
         }
 
         public abstract Stream GetResource(string resourceName);

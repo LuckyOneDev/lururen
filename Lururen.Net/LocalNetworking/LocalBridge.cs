@@ -7,19 +7,19 @@ namespace Lururen.Networking.LocalNetworking
     {
         public bool Running { get; protected set; }
 
-        public event OnDataEventHandler OnData;
-        public event OnCommandEventHandler OnCommand;
-        public event OnTransmissionEndEventHandler OnTransmissionEnd;
+        public event OnDataEventHandler? OnData;
+        public event OnCommandEventHandler? OnCommand;
+        public event OnTransmissionEndEventHandler? OnTransmissionEnd;
 
         public Task SendCommand(ICommand message)
         {
-            OnCommand.Invoke(Guid.Empty, message);
+            OnCommand?.Invoke(Guid.Empty, message);
             return Task.CompletedTask;
         }
 
         public Task SendData(Guid clientGuid, object data)
         {
-            OnData.Invoke(data);
+            OnData?.Invoke(data);
             return Task.CompletedTask;
         }
 

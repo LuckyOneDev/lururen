@@ -88,7 +88,8 @@
         }
 
 
-        [Theory]
+        [Theory(Skip = "This is mostly a threading/stress test which should be run separately")]
+        [Trait("StressTest", "true")]
         [MemberData(nameof(SomeEntitiesData))]
         public void UpdatingEnviromentWithActiveEntityTest(TestEntity testEntity, int frameCap)
         {
