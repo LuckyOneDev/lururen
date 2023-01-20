@@ -1,20 +1,29 @@
-﻿using Lururen.Core.EntitySystem;
-using Lururen.Networking.Common;
-using Lururen.Networking.LocalBus;
-
-namespace Lururen.Testing
+﻿namespace Lururen.Testing
 {
     public class ApplicationTests
     {
         public class TestApp : Application
         {
+            public TestApp() : base(new SocketServerMessageBridge())
+            {
+            }
+
             public override void Dispose()
             {
             }
 
+            public override Stream GetResource(string resourceName)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override ResourceInfo GetResourceInfo()
+            {
+                throw new NotImplementedException();
+            }
+
             public override void Init()
             {
-                DataBus = new LocalNetDataBus();
             }
         }
 

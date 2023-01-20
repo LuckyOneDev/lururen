@@ -25,8 +25,21 @@
 
         public class TestApp : Application
         {
+            public TestApp() : base(new SocketServerMessageBridge())
+            {
+            }
             public override void Dispose()
             {
+            }
+
+            public override Stream GetResource(string resourceName)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override ResourceInfo GetResourceInfo()
+            {
+                throw new NotImplementedException();
             }
 
             public override void Init()

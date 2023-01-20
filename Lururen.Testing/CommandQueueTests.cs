@@ -1,5 +1,3 @@
-using Lururen.Networking.SimpleSocketBus;
-
 namespace Lururen.Testing;
 
 public class CommandQueueTests
@@ -15,13 +13,25 @@ public class CommandQueueTests
 
     private class TestApp : Application
     {
+        public TestApp() : base(new SocketServerMessageBridge())
+        {
+        }
         public override void Init()
         {
-            this.DataBus = new SocketDataBus();
         }
 
         public override void Dispose()
         {
+        }
+
+        public override ResourceInfo GetResourceInfo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Stream GetResource(string resourceName)
+        {
+            throw new NotImplementedException();
         }
     }
 

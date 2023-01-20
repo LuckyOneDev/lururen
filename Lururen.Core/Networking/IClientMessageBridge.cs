@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 namespace Lururen.Networking.Common
 {
     public delegate void OnDataEventHandler(object data);
-
-    public interface INetBus : IDisposable
+    public delegate void OnTransmissionEndEventHandler(ITransmission transmission);
+    public interface IClientMessageBridge : IDisposable
     {
         public event OnDataEventHandler OnData;
-        public Task SendCommand(ICommand message);
+        public event OnTransmissionEndEventHandler OnTransmissionEnd;
+        public Task SendCommand(ICommand command);
         Task Start();
         Task Stop();
     }

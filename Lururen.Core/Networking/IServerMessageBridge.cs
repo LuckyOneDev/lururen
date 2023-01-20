@@ -4,11 +4,11 @@ namespace Lururen.Networking.Common
 {
     public delegate void OnCommandEventHandler(Guid clientGuid, ICommand command);
 
-    public interface IDataBus : IDisposable
+    public interface IServerMessageBridge : IDisposable
     {
         public event OnCommandEventHandler OnCommand;
 
-        bool Running { get; }
+        public Task SendContiniousData(Guid client, Stream resourceStream);
 
         public Task SendData(Guid clientGuid, object data);
 

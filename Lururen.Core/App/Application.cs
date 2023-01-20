@@ -14,13 +14,15 @@ namespace Lururen.Core.App
     /// </summary>
     public abstract class Application
     {
-        public Application()
+        public Application(IServerMessageBridge messageBridge)
         {
             CommandQueue = new CommandQueue(this);
             EventBus = new EventBus();
             Environments = new List<Environment>();
+            MessageBridge = messageBridge;
         }
-        public IDataBus DataBus { get; protected set; }
+
+        public IServerMessageBridge MessageBridge { get; }
         public bool IsRunning => CancellationTokenSource != null;
         public CommandQueue CommandQueue { get; set; }
         public List<Environment> Environments { get; set; }
@@ -38,6 +40,7 @@ namespace Lururen.Core.App
         }
 
         public abstract void Init();
+        public abstract ResourceInfo GetResourceInfo();
 
         public Environment CreateEnvironment()
         {
@@ -64,8 +67,8 @@ namespace Lururen.Core.App
         {
             Init();
             CancelTimer = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
-            DataBus.OnCommand += CommandQueue.Push;
-            DataBus.Start();
+            MessageBridge.OnCommand += CommandQueue.Push;
+            MessageBridge.Start();
         }
 
         public void Start(int tps = 60)
@@ -77,5 +80,7 @@ namespace Lururen.Core.App
         {
             CancelTimer.Stop();
         }
+
+        public abstract Stream GetResource(string resourceName);
     }
 }
