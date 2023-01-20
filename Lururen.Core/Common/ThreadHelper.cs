@@ -16,15 +16,19 @@ namespace Lururen.Core.Common
         /// <param name="action"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        public static System.Timers.Timer PeriodicThread(Action action, TimeSpan interval)
+        public static CancellationTokenSource StartPeriodicThread(Action action, TimeSpan interval)
         {
-            // Create a timer with a two second interval.
-            var aTimer = new System.Timers.Timer(interval);
-            // Hook up the Elapsed event for the timer. 
-            aTimer.Elapsed += (object source, ElapsedEventArgs e) => { action(); };
-            aTimer.AutoReset = true;
-            aTimer.Enabled = true;
-            return aTimer;
+            CancellationTokenSource ts = new CancellationTokenSource();
+            new Thread(() =>
+            {
+                while (!ts.Token.IsCancellationRequested)
+                {
+                    var sw = Stopwatch.StartNew();
+                    action.Invoke();
+                    while (sw.Elapsed < interval) { }
+                }
+            }).Start();
+            return ts;
         }
     }
 }

@@ -94,7 +94,7 @@
 
             app.Start(50);
             Thread.Sleep(1000);
-            Assert.InRange(ent.updateCount, 48, 50);
+            Assert.InRange(ent.updateCount, 50, 51);
             app.Stop();
 
             Assert.Equal(1, ent.initCount);

@@ -29,7 +29,7 @@ namespace Lururen.Core.App
         public EventBus EventBus { get; set; }
 
         private CancellationTokenSource CancellationTokenSource { get; set; }
-        public System.Timers.Timer CancelTimer { get; private set; }
+        public CancellationTokenSource CancelToken { get; private set; }
 
         public abstract void Dispose();
 
@@ -66,19 +66,19 @@ namespace Lururen.Core.App
         public void Start(TimeSpan frameDelay)
         {
             Init();
-            CancelTimer = ThreadHelper.PeriodicThread(ProcessAll, frameDelay);
             MessageBridge.OnCommand += CommandQueue.Push;
+            CancelToken = ThreadHelper.StartPeriodicThread(ProcessAll, frameDelay);
             MessageBridge.Start();
         }
 
-        public void Start(int tps = 60)
+        public void Start(double tps = 60)
         {
-            Start(TimeSpan.FromMilliseconds(1000 / tps));
+            Start(TimeSpan.FromMilliseconds(1000d / tps));
         }
 
         public void Stop()
         {
-            CancelTimer.Stop();
+            CancelToken.Cancel();
         }
 
         public abstract Stream GetResource(string resourceName);
