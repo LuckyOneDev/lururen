@@ -6,12 +6,12 @@ namespace Lururen.Networking.SocketNetworking
 {
     public static class SocketHelper
     {
-        public static JsonSerializerSettings JsonSettings = new JsonSerializerSettings()
+        private static readonly JsonSerializerSettings JsonSettings = new()
         {
             TypeNameHandling = TypeNameHandling.All
         };
 
-        public static Encoding Encoding = Encoding.Unicode;
+        private static readonly Encoding Encoding = Encoding.Unicode;
 
         private static byte[] Encode(object Object)
         {

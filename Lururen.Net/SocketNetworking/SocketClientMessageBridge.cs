@@ -69,7 +69,7 @@ namespace Lururen.Networking.SocketNetworking
             CancellationToken token = CancellationTokenSource.Token;
             while (!token.IsCancellationRequested)
             {
-                switch (protocolMessagingMode)
+                switch (ProtocolMessagingMode)
                 {
                     case ProtocolMessagingMode.Default:
                         await Socket.Recieve<object>(token).ContinueWith((task) =>

@@ -61,9 +61,9 @@
         [Fact]
         public void EventBusTest()
         {
-            var eventbus = new EventBus();
-            var testEvent = new TestEvent();
-            var testSubscriber = new TestEventSubscriber();
+            EventBus eventbus = new();
+            TestEvent testEvent = new();
+            TestEventSubscriber testSubscriber = new();
 
             eventbus.Subscribe(typeof(TestEvent), testSubscriber);
             eventbus.PushEvent(testEvent);

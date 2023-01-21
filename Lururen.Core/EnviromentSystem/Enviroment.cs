@@ -31,22 +31,22 @@ namespace Lururen.Core.EnviromentSystem
 
         public List<Entity> SearchInRadius(SVector3 point, int radius)
         {
-            List<Entity> result = new List<Entity>();
+            List<Entity> result = new();
             for (int x = point.X - radius; x < point.X + radius; x++)
             {
                 for (int y = point.Y - radius; y < point.Y + radius; y++)
                 {
                     for (int z = point.Z - radius; z < point.Z + radius; z++)
                     {
-                        SVector3 current = new SVector3(x, y, z);
-                        if (ActiveEntities.ContainsKey(current))
+                        SVector3 current = new(x, y, z);
+                        if (ActiveEntities.TryGetValue(current, out List<Entity>? activeEnt))
                         {
-                            result.AddRange(ActiveEntities[current]);
+                            result.AddRange(activeEnt);
                         }
 
-                        if (PassiveEntities.ContainsKey(current))
+                        if (PassiveEntities.TryGetValue(current, out List<Entity>? passiveEnt))
                         {
-                            result.AddRange(PassiveEntities[current]);
+                            result.AddRange(passiveEnt);
                         }
                     }
                 }

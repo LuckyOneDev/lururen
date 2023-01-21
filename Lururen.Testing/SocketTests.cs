@@ -78,8 +78,8 @@
         [Fact]
         public async Task MessageTransmitTest()
         {
-            var app = new TestApp();
-            var netBus = new SocketClientMessageBridge();
+            Application app = new TestApp();
+            SocketClientMessageBridge netBus = new();
             app.Start();
 
             await netBus.Start();
@@ -101,8 +101,8 @@
         [InlineData(2)]
         public async Task MultiClientTest(int clientAmount)
         {
-            var app = new TestApp();
-            var clients = new IClientMessageBridge[clientAmount];
+            Application app = new TestApp();
+            IClientMessageBridge[] clients = new IClientMessageBridge[clientAmount];
             for (int i = 0; i < clientAmount; i++)
             {
                 clients[i] = new SocketClientMessageBridge();
@@ -119,10 +119,10 @@
 
             for (int i = 0; i < clientAmount; i++)
             {
-                var taskCompletionSource = new TaskCompletionSource();
+                TaskCompletionSource taskCompletionSource = new();
                 tasks[i] = taskCompletionSource.Task;
 
-                var cmd = new MultiClientTestCommand();
+                MultiClientTestCommand cmd = new();
 
                 clients[i].OnData += (object data) =>
                 {
@@ -140,8 +140,8 @@
         [Fact]
         public async Task UnexpectedDisconnectTest()
         {
-            var app = new TestApp();
-            var netBus = new SocketClientMessageBridge();
+            Application app = new TestApp();
+            SocketClientMessageBridge netBus = new();
 
             app.Start();
 
@@ -159,15 +159,15 @@
         [InlineData(10000)]
         public async Task FileTransmissionTest(int fileSizeBytes)
         {
-            var rand = new Random();
+            Random rand = new();
             string fileName = $"test-file-{fileSizeBytes}.txt";
             byte[] testData = new byte[fileSizeBytes];
             rand.NextBytes(testData);
             File.WriteAllBytes(fileName, testData);
 
-            var app = new TestApp();
+            TestApp app = new();
 
-            var netBus = new SocketClientMessageBridge();
+            SocketClientMessageBridge netBus = new();
 
             app.resourceInfo = new ResourceInfo();
             app.resourceInfo.Add(fileName, ProtocolHelper.GetChecksum(testData));
@@ -177,12 +177,12 @@
             await netBus.Start();
             await netBus.SendCommand(new RequestResourceInfoCommand());
 
-            var taskCompletionSource = new TaskCompletionSource();
+            TaskCompletionSource taskCompletionSource = new();
             netBus.OnTransmissionEnd += (transmission) =>
             {
                 if (transmission is FileTransmission ft)
                 {
-                    var transferredBytes = File.ReadAllBytes(Path.Combine("ClientData", ft.FileName));
+                    byte[] transferredBytes = File.ReadAllBytes(Path.Combine("ClientData", ft.FileName));
                     try
                     {
                         Assert.Equal(transferredBytes, testData);

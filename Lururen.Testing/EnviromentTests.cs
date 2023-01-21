@@ -53,7 +53,7 @@
             Application app = new TestApp();
             Environment env = app.CreateEnvironment();
             env.Init();
-            var testEnt = new TestEntity();
+            TestEntity testEnt = new();
             env.AddEntityActive(testEnt, SVector3.Zero);
             env.Update();
             Assert.True(testEnt.WasUpdated);
@@ -70,7 +70,7 @@
             Environment env = app.CreateEnvironment();
             env.Init();
             env.AddEntityActive(new TestEntity(), new SVector3(x, y, z));
-            var found = env.SearchInRadius(SVector3.Zero, r);
+            List<Entity> found = env.SearchInRadius(SVector3.Zero, r);
             Assert.Empty(found);
         }
 
@@ -84,9 +84,9 @@
             Application app = new TestApp();
             Environment env = app.CreateEnvironment();
             env.Init();
-            var testEnt = new TestEntity();
+            TestEntity testEnt = new();
             env.AddEntityActive(testEnt, new SVector3(x, y, z));
-            var found = env.SearchInRadius(SVector3.Zero, r);
+            List<Entity> found = env.SearchInRadius(SVector3.Zero, r);
             Assert.Contains(testEnt, found);
         }
 
@@ -96,7 +96,7 @@
             Application app = new TestApp();
             Environment env = app.CreateEnvironment();
             env.Init();
-            var testEnt = new TestEntity();
+            TestEntity testEnt = new();
             env.AddEntityPassive(testEnt, SVector3.Zero);
             Assert.False(env.IsEntityActive(testEnt));
             env.ActivateEntity(testEnt);

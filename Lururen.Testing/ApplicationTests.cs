@@ -93,7 +93,7 @@
         [MemberData(nameof(SomeEntitiesData))]
         public void UpdatingEnviromentWithActiveEntityTest(TestEntity testEntity, int frameCap)
         {
-            TestApp app = new TestApp();
+            TestApp app = new();
             Environment env = app.CreateEnvironment();
             TestEntity ent = testEntity;
             env.AddEntity(ent, Active: true);

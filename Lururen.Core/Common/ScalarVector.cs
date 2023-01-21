@@ -16,8 +16,8 @@
         public int Y { get; set; }
         public int Z { get; set; }
 
-        public static SVector3 Zero => new SVector3(0, 0, 0);
-        public static SVector3 One => new SVector3(1, 1, 1);
+        public static SVector3 Zero => new(0, 0, 0);
+        public static SVector3 One => new(1, 1, 1);
 
         /// <summary>
         /// Calculates geometrical distance (shortest path) between two scalar points defined by vectors a and b.

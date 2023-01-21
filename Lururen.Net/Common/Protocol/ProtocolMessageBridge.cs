@@ -30,7 +30,7 @@ namespace Lururen.Networking.Common.Protocol
 
         #endregion IClientMessageBridge
 
-        public ProtocolMessagingMode protocolMessagingMode { get; private set; } = ProtocolMessagingMode.Default;
+        public ProtocolMessagingMode ProtocolMessagingMode { get; private set; } = ProtocolMessagingMode.Default;
         public ProtocolMessageBridge(string cacheFolder)
         {
             CacheFolder = cacheFolder;
@@ -42,7 +42,7 @@ namespace Lururen.Networking.Common.Protocol
 
         protected void ProcessMessage(object data)
         {
-            switch (protocolMessagingMode)
+            switch (ProtocolMessagingMode)
             {
                 case ProtocolMessagingMode.Stream:
                     if (data is ArraySegment<byte> bytes)
@@ -66,20 +66,20 @@ namespace Lururen.Networking.Common.Protocol
         protected string BuildFilePath(string fileName) => Path.Combine(CacheFolder, fileName);
         protected void StartStreamMessaging(Action<ArraySegment<byte>> action)
         {
-            protocolMessagingMode = ProtocolMessagingMode.Stream;
+            ProtocolMessagingMode = ProtocolMessagingMode.Stream;
             ContiniousTransmissionHandler = action;
         }
 
         protected void StopStreamMessaging()
         {
-            protocolMessagingMode = ProtocolMessagingMode.Default;
+            ProtocolMessagingMode = ProtocolMessagingMode.Default;
             ContiniousTransmissionHandler = null;
         }
         #region Request Handlers
 
         protected void HandleFileTrasmission(FileTransmission transmission)
         {
-            FileStream stream = new FileStream(BuildFilePath(transmission.FileName), FileMode.OpenOrCreate);
+            FileStream stream = new(BuildFilePath(transmission.FileName), FileMode.OpenOrCreate);
             int bytesRecived = 0;
             StartStreamMessaging((bytes) =>
             {

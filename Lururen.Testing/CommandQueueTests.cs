@@ -39,8 +39,8 @@ public class CommandQueueTests
     public void ProcessCommandTest()
     {
         Application app = new TestApp();
-        CommandQueue queue = new CommandQueue(app);
-        TestCommand testCmd = new TestCommand();
+        CommandQueue queue = new(app);
+        TestCommand testCmd = new();
         queue.Push(Guid.Empty, testCmd);
         Assert.False(testCmd.Executed);
         queue.ProcessCommands();

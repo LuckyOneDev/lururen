@@ -10,7 +10,7 @@ namespace Lururen.Core.CommandSystem
             this.Application = application;
         }
 
-        Application Application;
+        private readonly Application Application;
         private ConcurrentQueue<Tuple<Guid, ICommand>> Commands { get; } = new();
         public void Push(Guid caller, ICommand command)
         {
