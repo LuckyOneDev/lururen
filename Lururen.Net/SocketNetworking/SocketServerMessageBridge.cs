@@ -15,12 +15,12 @@ namespace Lururen.Networking.SocketNetworking
 
         public async Task SendContiniousData(Guid clientGuid, Stream resourceStream)
         {
-            await SocketHelper.SendContiniousData(Clients[clientGuid], resourceStream);
+            await Clients[clientGuid].SendContiniousData(resourceStream);
         }
 
         public async Task SendData(Guid clientGuid, object data)
         {
-            _ = await SocketHelper.Send(Clients[clientGuid], data);
+            _ = await Clients[clientGuid].Send(data);
         }
 
         public async Task Start()
@@ -42,7 +42,7 @@ namespace Lururen.Networking.SocketNetworking
         {
             foreach (KeyValuePair<Guid, Socket> entry in Clients)
             {
-                _ = await SocketHelper.Send(entry.Value, new ServerStatus(ServerState.CLOSED));
+                _ = await entry.Value.Send(new ServerStatus(ServerState.CLOSED));
             }
             _ = Parallel.ForEach(Clients, x => x.Value.Close());
             Clients.Clear();
@@ -77,7 +77,7 @@ namespace Lururen.Networking.SocketNetworking
         /// <returns></returns>
         private async Task StartSession(Socket socket)
         {
-            if (CancellationTokenSource is not CancellationTokenSource cts)
+            if (CancellationTokenSource is null)
             {
                 // Error, Bridge was not started
                 return;
@@ -89,13 +89,13 @@ namespace Lururen.Networking.SocketNetworking
             {
                 while (command is not DisconnectCommand)
                 {
-                    command = await SocketHelper.Recieve<ICommand>(socket, cts.Token);
+                    command = await socket.Recieve<ICommand>(CancellationTokenSource.Token);
                     OnCommand?.Invoke(guid, command);
                 }
                 _ = Clients.Remove(guid);
                 socket.Close();
             }
-            catch
+            catch (Exception)
             {
                 // Add logging
                 _ = Clients.Remove(guid);

@@ -25,16 +25,16 @@ namespace Lururen.Networking.SocketNetworking
             return JsonConvert.DeserializeObject<T>(stringObject, JsonSettings);
         }
 
-        public static async Task<T> Recieve<T>(Socket handler,
+        public static async Task<T> Recieve<T>(this Socket handler,
                                                CancellationToken token = default,
                                                int channelWidth = 4096) where T : class
 
         {
-            ArraySegment<byte> bytes = await RecieveBytes(handler, token, channelWidth);
+            ArraySegment<byte> bytes = await handler.RecieveBytes(token, channelWidth);
             return Decode<T>(bytes);
         }
 
-        public static async Task<ArraySegment<byte>> RecieveBytes(Socket handler,
+        public static async Task<ArraySegment<byte>> RecieveBytes(this Socket handler,
                                                CancellationToken token = default,
                                                int channelWidth = 4096)
 
@@ -59,7 +59,7 @@ namespace Lururen.Networking.SocketNetworking
 
             byte[] joinedData = data.SelectMany(i => i).ToArray();
 
-            if (joinedData.Any())
+            if (!joinedData.Any())
             {
                 throw new InvalidDataException("Null socket data");
             }

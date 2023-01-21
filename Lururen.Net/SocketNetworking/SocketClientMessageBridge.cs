@@ -24,7 +24,7 @@ namespace Lururen.Networking.SocketNetworking
         {
             if (Socket is not null)
             {
-                await SocketHelper.Send(Socket, command);
+                _ = await Socket.Send(command);
             }
             else
             {
@@ -44,10 +44,10 @@ namespace Lururen.Networking.SocketNetworking
         public override async Task Stop()
         {
             CancellationTokenSource?.Cancel();
-            if (Socket is Socket s)
+            if (Socket is not null)
             {
-                _ = await s.Send(new DisconnectCommand());
-                await s.DisconnectAsync(true);
+                _ = await Socket.Send(new DisconnectCommand());
+                await Socket.DisconnectAsync(true);
             }
         }
 
@@ -60,30 +60,31 @@ namespace Lururen.Networking.SocketNetworking
 
         private async Task StartRecieveData()
         {
-            if (CancellationTokenSource is not CancellationTokenSource cts
-                || Socket is not Socket socket)
+            if (CancellationTokenSource is null
+                || Socket is null)
             {
                 // Error: Bridge was not started
                 return;
             }
-            while (!cts.Token.IsCancellationRequested)
+            CancellationToken token = CancellationTokenSource.Token;
+            while (!token.IsCancellationRequested)
             {
                 switch (protocolMessagingMode)
                 {
                     case ProtocolMessagingMode.Default:
-                        await SocketHelper.Recieve<object>(socket, CancellationTokenSource.Token).ContinueWith((task) =>
+                        await Socket.Recieve<object>(token).ContinueWith((task) =>
                         {
                             object data = task.Result;
                             ProcessMessage(data);
-                        }, CancellationTokenSource.Token);
+                        }, token);
                         break;
 
                     case ProtocolMessagingMode.Stream:
-                        await SocketHelper.RecieveBytes(socket, CancellationTokenSource.Token).ContinueWith((task) =>
+                        await Socket.RecieveBytes(token).ContinueWith((task) =>
                         {
                             ArraySegment<byte> data = task.Result;
                             ProcessMessage(data);
-                        }, CancellationTokenSource.Token);
+                        }, token);
                         break;
                     default:
                         break;
