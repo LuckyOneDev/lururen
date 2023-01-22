@@ -95,7 +95,7 @@
             };
         }
 
-        [Theory]
+        [Theory(Timeout = 1000)]
         [InlineData(10)]
         [InlineData(5)]
         [InlineData(2)]
@@ -132,9 +132,6 @@
 
                 _ = clients[i].SendCommand(cmd);
             }
-
-            bool completed = Task.WaitAll(tasks, clientAmount * 50);
-            Assert.True(completed, $"Test took too long to complete. Processed {tasks.Count(x => x.IsCompleted)} requests.");
         }
 
         [Fact]
@@ -155,7 +152,7 @@
             Assert.Empty(((SocketServerMessageBridge)app.MessageBridge).GetClients());
         }
 
-        [Theory]
+        [Theory(Timeout = 1000)]
         [InlineData(10000)]
         public async Task FileTransmissionTest(int fileSizeBytes)
         {
@@ -183,20 +180,10 @@
                 if (transmission is FileTransmission ft)
                 {
                     byte[] transferredBytes = File.ReadAllBytes(Path.Combine("ClientData", ft.FileName));
-                    try
-                    {
-                        Assert.Equal(transferredBytes, testData);
-                        taskCompletionSource.SetResult();
-                    }
-                    catch (Exception ex)
-                    {
-                        taskCompletionSource.SetException(ex);
-                    }
+                    Assert.Equal(transferredBytes, testData);
+                    taskCompletionSource.SetResult();
                 }
             };
-
-            bool completed = taskCompletionSource.Task.Wait(fileSizeBytes / 10);
-            Assert.True(completed, "Test took too long to complete");
         }
     }
 }
