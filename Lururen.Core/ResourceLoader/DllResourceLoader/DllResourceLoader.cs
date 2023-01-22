@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
-
 namespace Lururen.Core.ResourceLoader.DllResourceLoader
 {
     /// <summary>
@@ -52,7 +47,7 @@ namespace Lururen.Core.ResourceLoader.DllResourceLoader
             return resultingObject;
         }
 
-        T IResourceLoader.LoadMethod<T>(string methodName)
+        T IResourceLoader.LoadStaticMethod<T>(string methodName)
         {
             throw new NotImplementedException();
         }

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Lururen.Core.ResourceLoader
 {
     /// <summary>
@@ -26,6 +21,6 @@ namespace Lururen.Core.ResourceLoader
         /// <typeparam name="T">Method delegate type to load.</typeparam>
         /// <param name="methodName">A method name to load</param>
         /// <returns>Delegate to method</returns>
-        public T LoadMethod<T>(string methodName) where T : Delegate;
+        public T LoadStaticMethod<T>(string methodName) where T : Delegate;
     }
 }
