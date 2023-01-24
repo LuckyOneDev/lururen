@@ -2,9 +2,9 @@
 using System.Net.Sockets;
 using Lururen.Common.Networking.SocketNetworking;
 using Lururen.Common.Networking.Messages;
-using Lururen.Server.Commands;
 using Lururen.Server.Networking;
 using Lururen.Server.CommandSystem;
+using Lururen.Server.CommandSystem.Commands;
 
 namespace Lururen.Server.SocketNetworking
 {

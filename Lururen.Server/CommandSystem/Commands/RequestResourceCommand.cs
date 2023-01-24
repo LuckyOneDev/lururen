@@ -3,7 +3,7 @@ using Lururen.Common.Networking.Messages;
 using Lururen.Server.App;
 using Lururen.Server.CommandSystem;
 
-namespace Lururen.Server.Commands
+namespace Lururen.Server.CommandSystem.Commands
 {
     public class RequestResourceCommand : RequestResourceCommandDTO, IRunnableCommand
     {
