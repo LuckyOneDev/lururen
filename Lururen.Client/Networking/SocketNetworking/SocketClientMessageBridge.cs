@@ -1,9 +1,9 @@
-﻿using Lururen.Client.Protocol;
+﻿using Lururen.Client.Networking.Protocol;
 using Lururen.Common.CommandSystem;
 using Lururen.Common.Networking.SocketNetworking;
 using System.Net.Sockets;
 
-namespace Lururen.Client.SocketNetworking
+namespace Lururen.Client.Networking.SocketNetworking
 {
     public class SocketClientMessageBridge : ProtocolMessageBridge
     {

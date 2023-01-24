@@ -1,6 +1,3 @@
-global using Lururen.Client;
-global using Lururen.Client.Protocol;
-global using Lururen.Client.SocketNetworking;
 global using Lururen.Common.Networking.Messages;
 global using Lururen.Common.Types;
 global using Lururen.Server.App;
@@ -11,4 +8,7 @@ global using Lururen.Server.SocketNetworking;
 global using Lururen.Common.EventSystem;
 global using Lururen.Server.EventSystem;
 global using Xunit;
+global using Lururen.Client.Networking;
+global using Lururen.Client.Networking.Protocol;
+global using Lururen.Client.Networking.SocketNetworking;
 global using Environment = Lururen.Server.EnviromentSystem.Environment;

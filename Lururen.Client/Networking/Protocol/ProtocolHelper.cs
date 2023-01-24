@@ -1,4 +1,4 @@
-﻿namespace Lururen.Client.Protocol
+﻿namespace Lururen.Client.Networking.Protocol
 {
     public static class ProtocolHelper
     {

@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lururen.Client\Lururen.Client.csproj" />
-    <ProjectReference Include="..\Lururen.Core\Lururen.Server.csproj" />
+    <ProjectReference Include="..\Lururen.Server\Lururen.Server.csproj" />
   </ItemGroup>
 
 </Project>

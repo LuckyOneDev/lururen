@@ -2,7 +2,7 @@
 using Lururen.Common.Networking.Messages;
 using Lururen.Common.Types;
 
-namespace Lururen.Client.Protocol
+namespace Lururen.Client.Networking.Protocol
 {
     public enum ProtocolMessagingMode
     {
