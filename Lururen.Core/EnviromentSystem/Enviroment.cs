@@ -1,14 +1,15 @@
-﻿using Lururen.Core.App;
-using Lururen.Core.Common;
-using Lururen.Core.EntitySystem;
+﻿using Lururen.Common.Extensions;
+using Lururen.Common.Types;
+using Lururen.Server.Core.App;
+using Lururen.Server.Core.EntitySystem;
 
-namespace Lururen.Core.EnviromentSystem
+namespace Lururen.Server.Core.EnviromentSystem
 {
     public class Environment : IDisposable
     {
         public Application Application { get; private set; }
-        private Dictionary<SVector3, List<Entity>> PassiveEntities { get; set; } = new();
-        private Dictionary<SVector3, List<Entity>> ActiveEntities { get; set; } = new();
+        private Dictionary<SVector3, List<ServerEntity>> PassiveEntities { get; set; } = new();
+        private Dictionary<SVector3, List<ServerEntity>> ActiveEntities { get; set; } = new();
         public Environment(Application application)
         {
             Application = application;
@@ -29,9 +30,9 @@ namespace Lururen.Core.EnviromentSystem
             PassiveEntities.Clear();
         }
 
-        public List<Entity> SearchInRadius(SVector3 point, int radius)
+        public List<ServerEntity> SearchInRadius(SVector3 point, int radius)
         {
-            List<Entity> result = new();
+            List<ServerEntity> result = new();
             for (int x = point.X - radius; x < point.X + radius; x++)
             {
                 for (int y = point.Y - radius; y < point.Y + radius; y++)
@@ -39,12 +40,12 @@ namespace Lururen.Core.EnviromentSystem
                     for (int z = point.Z - radius; z < point.Z + radius; z++)
                     {
                         SVector3 current = new(x, y, z);
-                        if (ActiveEntities.TryGetValue(current, out List<Entity>? activeEnt))
+                        if (ActiveEntities.TryGetValue(current, out List<ServerEntity>? activeEnt))
                         {
                             result.AddRange(activeEnt);
                         }
 
-                        if (PassiveEntities.TryGetValue(current, out List<Entity>? passiveEnt))
+                        if (PassiveEntities.TryGetValue(current, out List<ServerEntity>? passiveEnt))
                         {
                             result.AddRange(passiveEnt);
                         }
@@ -54,7 +55,7 @@ namespace Lururen.Core.EnviromentSystem
             return result;
         }
 
-        public void AddEntity(Entity entity, SVector3 position = new SVector3(), bool Active = false)
+        public void AddEntity(ServerEntity entity, SVector3 position = new SVector3(), bool Active = false)
         {
             if (Active)
             {
@@ -66,42 +67,42 @@ namespace Lururen.Core.EnviromentSystem
             }
         }
 
-        public void AddEntityPassive(Entity entity, SVector3 position)
+        public void AddEntityPassive(ServerEntity entity, SVector3 position)
         {
             PassiveEntities.AddOrCreateList(position, entity);
         }
-        public void AddEntityActive(Entity entity, SVector3 position)
+        public void AddEntityActive(ServerEntity entity, SVector3 position)
         {
             ActiveEntities.AddOrCreateList(position, entity);
         }
 
 
-        private void RemoveEntityPassive(Entity entity)
+        private void RemoveEntityPassive(ServerEntity entity)
         {
             ActiveEntities.RemoveFromList(entity);
         }
 
-        private void RemoveEntityActive(Entity entity)
+        private void RemoveEntityActive(ServerEntity entity)
         {
             PassiveEntities.RemoveFromList(entity);
         }
-        public void RemoveEntity(Entity entity)
+        public void RemoveEntity(ServerEntity entity)
         {
             RemoveEntityActive(entity);
             RemoveEntityPassive(entity);
         }
 
-        public void ActivateEntity(Entity entity)
+        public void ActivateEntity(ServerEntity entity)
         {
             PassiveEntities.MoveValueToOther(ActiveEntities, entity);
         }
 
-        public void DeactivateEntity(Entity entity)
+        public void DeactivateEntity(ServerEntity entity)
         {
             ActiveEntities.MoveValueToOther(PassiveEntities, entity);
         }
 
-        public bool IsEntityActive(Entity entity)
+        public bool IsEntityActive(ServerEntity entity)
         {
             bool active = ActiveEntities.Values.Any(entList => entList.Contains(entity));
             if (active)

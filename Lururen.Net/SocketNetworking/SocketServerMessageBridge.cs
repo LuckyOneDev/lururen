@@ -1,11 +1,12 @@
-﻿using Lururen.Core.CommandSystem;
-using Lururen.Core.Networking;
-using Lururen.Networking.Common.Commands;
-using Lururen.Networking.Common.Messages;
-using System.Net;
+﻿using System.Net;
 using System.Net.Sockets;
+using Lururen.Server.Core.CommandSystem;
+using Lururen.Server.Core.Networking;
+using Lururen.Server.Networking.Commands;
+using Lururen.Common.Networking.SocketNetworking;
+using Lururen.Common.Networking.Messages;
 
-namespace Lururen.Networking.SocketNetworking
+namespace Lururen.Server.Networking.SocketNetworking
 {
     public class SocketServerMessageBridge : IServerMessageBridge
     {
@@ -42,7 +43,7 @@ namespace Lururen.Networking.SocketNetworking
         {
             foreach (KeyValuePair<Guid, Socket> entry in Clients)
             {
-                _ = await entry.Value.Send(new ServerStatus(ServerState.CLOSED));
+                _ = await entry.Value.Send(new ServerStatusMessage(ServerState.CLOSED));
             }
             _ = Parallel.ForEach(Clients, x => x.Value.Close());
             Clients.Clear();
@@ -84,12 +85,12 @@ namespace Lururen.Networking.SocketNetworking
             }
             Guid guid = Guid.NewGuid();
             Clients.Add(guid, socket);
-            ICommand? command = null;
+            IRunnableCommand? command = null;
             try
             {
                 while (command is not DisconnectCommand)
                 {
-                    command = await socket.Recieve<ICommand>(CancellationTokenSource.Token);
+                    command = await socket.Recieve<IRunnableCommand>(CancellationTokenSource.Token);
                     OnCommand?.Invoke(guid, command);
                 }
                 _ = Clients.Remove(guid);

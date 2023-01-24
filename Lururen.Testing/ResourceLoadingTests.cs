@@ -1,6 +1,10 @@
+using Lururen.Server.Core.EntitySystem;
+using Lururen.Server.Core.ResourceLoader;
+using Lururen.Server.Core.ResourceLoader.DllResourceLoader;
+
 namespace Lururen.Testing
 {
-    public class EntityToBeLoaded : Entity
+    public class EntityToBeLoaded : ServerEntity
     {
         public override void Dispose()
         {
@@ -26,7 +30,7 @@ namespace Lururen.Testing
         {
             DllResourceLoader loader = new();
             loader.LoadDll($"{System.Environment.CurrentDirectory}/Lururen.Testing.dll");
-            Entity e = loader.LoadChildOf<Entity>(typeof(EntityToBeLoaded).ToString());
+            ServerEntity e = loader.LoadChildOf<ServerEntity>(typeof(EntityToBeLoaded).ToString());
             e.Init();
             e.Update();
             e.Dispose();
@@ -39,7 +43,7 @@ namespace Lururen.Testing
             builder.AddDllToBeLoaded($"{System.Environment.CurrentDirectory}/Lururen.Testing.dll");
 
             IResourceLoader loader = builder.Build();
-            _ = loader.LoadChildOf<Entity>(typeof(EntityToBeLoaded).ToString());
+            _ = loader.LoadChildOf<ServerEntity>(typeof(EntityToBeLoaded).ToString());
         }
     }
 }

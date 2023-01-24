@@ -1,4 +1,7 @@
-﻿namespace Lururen.Testing
+﻿using Lururen.Common.EventSystem;
+using Lururen.Server.Core.EventSystem;
+
+namespace Lururen.Testing
 {
     public class EventBusTests
     {

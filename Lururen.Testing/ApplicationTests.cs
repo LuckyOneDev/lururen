@@ -27,7 +27,7 @@
             }
         }
 
-        public class TestEntity : Entity
+        public class TestEntity : ServerEntity
         {
             public int updateCount = 0;
             public int initCount = 0;

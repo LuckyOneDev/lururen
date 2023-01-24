@@ -4,7 +4,7 @@
     // Also could be rewritten to use different ports for each instance
     public class SocketTests
     {
-        private class TestEntity : Entity
+        private class TestEntity : ServerEntity
         {
             public TestEntity(string Data)
             {
@@ -30,7 +30,7 @@
             }
         }
 
-        private class TestCommand : ICommand
+        private class TestCommand : IRunnableCommand
         {
             public void Run(Guid client, Application app)
             {
@@ -38,7 +38,7 @@
             }
         }
 
-        private class MultiClientTestCommand : ICommand
+        private class MultiClientTestCommand : IRunnableCommand
         {
             public Guid requestId = Guid.NewGuid();
 
@@ -177,7 +177,7 @@
             TaskCompletionSource taskCompletionSource = new();
             netBus.OnTransmissionEnd += (transmission) =>
             {
-                if (transmission is FileTransmission ft)
+                if (transmission is FileTransmissionMessage ft)
                 {
                     byte[] transferredBytes = File.ReadAllBytes(Path.Combine("ClientData", ft.FileName));
                     Assert.Equal(transferredBytes, testData);

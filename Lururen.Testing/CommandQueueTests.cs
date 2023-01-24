@@ -1,8 +1,14 @@
+using Lururen.Common.CommandSystem;
+using Lururen.Common.Types;
+using Lururen.Server.Core.App;
+using Lururen.Server.Core.CommandSystem;
+using Lururen.Server.Networking.SocketNetworking;
+
 namespace Lururen.Testing;
 
 public class CommandQueueTests
 {
-    private class TestCommand : ICommand
+    private class TestCommand : IRunnableCommand
     {
         public bool Executed = false;
         public void Run(Guid client, Application app)

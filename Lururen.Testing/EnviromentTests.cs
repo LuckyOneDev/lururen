@@ -1,8 +1,13 @@
-﻿namespace Lururen.Testing
+﻿using Lururen.Common.Types;
+using Lururen.Server.Core.App;
+using Lururen.Server.Core.EntitySystem;
+using Lururen.Server.Networking.SocketNetworking;
+
+namespace Lururen.Testing
 {
     public class EnviromentTests
     {
-        public class TestEntity : Entity
+        public class TestEntity : ServerEntity
         {
             public bool WasUpdated = false;
             public override void Init()
@@ -70,7 +75,7 @@
             Environment env = app.CreateEnvironment();
             env.Init();
             env.AddEntityActive(new TestEntity(), new SVector3(x, y, z));
-            List<Entity> found = env.SearchInRadius(SVector3.Zero, r);
+            List<ServerEntity> found = env.SearchInRadius(SVector3.Zero, r);
             Assert.Empty(found);
         }
 
@@ -86,7 +91,7 @@
             env.Init();
             TestEntity testEnt = new();
             env.AddEntityActive(testEnt, new SVector3(x, y, z));
-            List<Entity> found = env.SearchInRadius(SVector3.Zero, r);
+            List<ServerEntity> found = env.SearchInRadius(SVector3.Zero, r);
             Assert.Contains(testEnt, found);
         }
 

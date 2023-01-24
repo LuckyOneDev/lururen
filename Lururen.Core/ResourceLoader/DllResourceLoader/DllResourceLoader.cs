@@ -1,5 +1,6 @@
+using Lururen.Server.Core.ResourceLoader;
 using System.Reflection;
-namespace Lururen.Core.ResourceLoader.DllResourceLoader
+namespace Lururen.Server.Core.ResourceLoader.DllResourceLoader
 {
     /// <summary>
     /// A simple loader from dll assembly file.

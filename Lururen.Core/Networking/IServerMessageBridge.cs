@@ -1,8 +1,8 @@
-﻿using Lururen.Core.CommandSystem;
+﻿using Lururen.Server.Core.CommandSystem;
 
-namespace Lururen.Core.Networking
+namespace Lururen.Server.Core.Networking
 {
-    public delegate void OnCommandEventHandler(Guid clientGuid, ICommand command);
+    public delegate void OnCommandEventHandler(Guid clientGuid, IRunnableCommand command);
 
     public interface IServerMessageBridge : IDisposable
     {
