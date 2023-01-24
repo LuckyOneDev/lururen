@@ -32,6 +32,7 @@
             public int updateCount = 0;
             public int initCount = 0;
             public int disposeCount = 0;
+
             public override void Init()
             {
                 initCount++;
@@ -61,6 +62,7 @@
             {
                 this.load = load;
             }
+
             public override void Update()
             {
                 base.Update();
@@ -86,7 +88,6 @@
                 yield return new object[] { new TestEntity(), cap };
             }
         }
-
 
         [Theory(Skip = "This is mostly a threading/stress test which should be run separately")]
         [Trait("StressTest", "true")]

@@ -1,15 +1,11 @@
-﻿using Lururen.Common.Types;
-using Lururen.Server.Core.App;
-using Lururen.Server.Core.EntitySystem;
-using Lururen.Server.Networking.SocketNetworking;
-
-namespace Lururen.Testing
+﻿namespace Lururen.Testing
 {
     public class EnviromentTests
     {
         public class TestEntity : ServerEntity
         {
             public bool WasUpdated = false;
+
             public override void Init()
             {
             }
@@ -33,6 +29,7 @@ namespace Lururen.Testing
             public TestApp() : base(new SocketServerMessageBridge())
             {
             }
+
             public override void Dispose()
             {
             }

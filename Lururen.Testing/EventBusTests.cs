@@ -5,7 +5,7 @@ namespace Lururen.Testing
 {
     public class EventBusTests
     {
-        class TestEvent : IEvent
+        private class TestEvent : IEvent
         {
             public EventArgs GetArgs()
             {
@@ -13,21 +13,22 @@ namespace Lururen.Testing
             }
         }
 
-        class TestEventSubscriber : IEventSubscriber
+        private class TestEventSubscriber : IEventSubscriber
         {
             public bool EventHappened = false;
+
             public void OnEvent(EventArgs args)
             {
                 EventHappened = true;
             }
         }
 
-        class ReccuringEventArgs : EventArgs
+        private class ReccuringEventArgs : EventArgs
         {
             public bool wasCalled;
         }
 
-        class TestReccuringEvent : IEvent
+        private class TestReccuringEvent : IEvent
         {
             public ReccuringEventArgs _args;
 
@@ -42,10 +43,11 @@ namespace Lururen.Testing
             }
         }
 
-        class TestReccuringEventSubscriber : IEventSubscriber
+        private class TestReccuringEventSubscriber : IEventSubscriber
         {
             public EventBus? eventBus;
             public bool RecursionHappened = false;
+
             public void OnEvent(EventArgs args)
             {
                 if (args is ReccuringEventArgs recArgs)
