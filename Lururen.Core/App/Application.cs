@@ -1,11 +1,11 @@
 ﻿using Lururen.Common.Threading;
 using Lururen.Common.Types;
-using Lururen.Server.Core.CommandSystem;
-using Lururen.Server.Core.EventSystem;
-using Lururen.Server.Core.Networking;
-using Environment = Lururen.Server.Core.EnviromentSystem.Environment;
+using Lururen.Server.CommandSystem;
+using Lururen.Server.EventSystem;
+using Lururen.Server.Networking;
+using Environment = Lururen.Server.EnviromentSystem.Environment;
 
-namespace Lururen.Server.Core.App
+namespace Lururen.Server.App
 {
     /// <summary>
     /// This class contains static methods for looking up information about and controlling the run-time data.

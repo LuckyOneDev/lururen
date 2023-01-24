@@ -1,7 +1,7 @@
 ﻿using Lururen.Common.CommandSystem;
 using Lururen.Common.Networking;
 
-namespace Lururen.Client.Core
+namespace Lururen.Client
 {
     public delegate void OnDataEventHandler(object data);
     public delegate void OnTransmissionEndEventHandler(ITransmission transmission);

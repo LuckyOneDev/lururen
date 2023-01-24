@@ -1,4 +1,4 @@
-namespace Lururen.Server.Core.ResourceLoader
+namespace Lururen.Server.ResourceLoader
 {
     /// <summary>
     /// Interface which provides methods to load

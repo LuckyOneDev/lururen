@@ -1,9 +1,8 @@
-﻿using Lururen.Client.Core;
-using Lururen.Common.CommandSystem;
+﻿using Lururen.Common.CommandSystem;
 using Lururen.Common.Networking.Messages;
 using Lururen.Common.Types;
 
-namespace Lururen.Client.Networking.Protocol
+namespace Lururen.Client.Protocol
 {
     public enum ProtocolMessagingMode
     {

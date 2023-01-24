@@ -1,6 +1,6 @@
-﻿using Lururen.Server.Core.CommandSystem;
+﻿using Lururen.Server.CommandSystem;
 
-namespace Lururen.Server.Core.Networking
+namespace Lururen.Server.Networking
 {
     public delegate void OnCommandEventHandler(Guid clientGuid, IRunnableCommand command);
 

@@ -22,9 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Lururen.Client.Networking\Lururen.Client.Networking.csproj" />
-    <ProjectReference Include="..\Lururen.Core\Lururen.Server.Core.csproj" />
-    <ProjectReference Include="..\Lururen.Net\Lururen.Server.Networking.csproj" />
+    <ProjectReference Include="..\Lururen.Client\Lururen.Client.csproj" />
+    <ProjectReference Include="..\Lururen.Core\Lururen.Server.csproj" />
   </ItemGroup>
 
 </Project>

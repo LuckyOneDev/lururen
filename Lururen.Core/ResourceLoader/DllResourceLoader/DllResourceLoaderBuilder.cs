@@ -1,4 +1,4 @@
-namespace Lururen.Server.Core.ResourceLoader.DllResourceLoader
+namespace Lururen.Server.ResourceLoader.DllResourceLoader
 {
     /// <summary>
     /// Class to create loader. Can be used if there will ever be a need of more complex steps

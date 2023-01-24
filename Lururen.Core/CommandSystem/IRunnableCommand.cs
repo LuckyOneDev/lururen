@@ -1,7 +1,7 @@
 ﻿using Lururen.Common.CommandSystem;
-using Lururen.Server.Core.App;
+using Lururen.Server.App;
 
-namespace Lururen.Server.Core.CommandSystem
+namespace Lururen.Server.CommandSystem
 {
     /// <summary>
     /// Command is requested action that is performed inside engine.

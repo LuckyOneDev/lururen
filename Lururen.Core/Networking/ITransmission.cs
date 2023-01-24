@@ -1,4 +1,4 @@
-﻿namespace Lururen.Server.Core.Networking
+﻿namespace Lururen.Server.Networking
 {
     public interface ITransmission
     {

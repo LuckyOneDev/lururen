@@ -1,7 +1,7 @@
-﻿using Lururen.Server.Core.App;
+﻿using Lururen.Server.App;
 using System.Collections.Concurrent;
 
-namespace Lururen.Server.Core.CommandSystem
+namespace Lururen.Server.CommandSystem
 {
     public class CommandQueue
     {

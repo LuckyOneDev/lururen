@@ -1,7 +1,7 @@
 ﻿using Lururen.Common.EventSystem;
 using Lururen.Common.Extensions;
 
-namespace Lururen.Server.Core.EventSystem
+namespace Lururen.Server.EventSystem
 {
     public class EventBus
     {

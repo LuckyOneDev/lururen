@@ -1,9 +1,9 @@
 ﻿using Lururen.Common.Extensions;
 using Lururen.Common.Types;
-using Lururen.Server.Core.App;
-using Lururen.Server.Core.EntitySystem;
+using Lururen.Server.App;
+using Lururen.Server.EntitySystem;
 
-namespace Lururen.Server.Core.EnviromentSystem
+namespace Lururen.Server.EnviromentSystem
 {
     public class Environment : IDisposable
     {

@@ -1,3 +1,6 @@
+using Lururen.Server.ResourceLoader;
+using Lururen.Server.ResourceLoader.DllResourceLoader;
+
 namespace Lururen.Testing
 {
     public class EntityToBeLoaded : ServerEntity
