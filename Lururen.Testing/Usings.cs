@@ -1,7 +1,7 @@
 global using Lururen.Common.Networking.Messages;
 global using Lururen.Common.Types;
 global using Lururen.Server.App;
-global using Lururen.Server.Commands;
+global using Lururen.Server.CommandSystem.Commands;
 global using Lururen.Server.CommandSystem;
 global using Lururen.Server.EntitySystem;
 global using Lururen.Server.SocketNetworking;
