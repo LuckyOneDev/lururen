@@ -20,9 +20,9 @@ namespace Lururen.Server.EnviromentSystem
             PassiveEntities.Values.SelectMany(x => x).AsParallel().ForAll(entity => entity.SysInit(Application));
             ActiveEntities.Values.SelectMany(x => x).AsParallel().ForAll(entity => entity.SysInit(Application));
         }
-        public virtual void Update()
+        public virtual void Update(double deltaTime)
         {
-            ActiveEntities.Values.SelectMany(x => x).AsParallel().ForAll(x => x.Update());
+            ActiveEntities.Values.SelectMany(x => x).AsParallel().ForAll(x => x.Update(deltaTime));
         }
         public virtual void Dispose()
         {

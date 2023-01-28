@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.Graphics
+namespace Lururen.Client
 {
     public class EntityManager
     {

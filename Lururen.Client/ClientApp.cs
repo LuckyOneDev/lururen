@@ -1,25 +1,23 @@
 ﻿using Lururen.Client.Graphics;
+using Lururen.Client.Graphics.OpenGL;
 using Lururen.Client.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lururen.Client
 {
     public class ClientApp
     {
-        public Window? Window = null;
+        public OpenGLWindow? Window = null;
 
         public InputManager KeyboardInputManager { get; private set; }
         public EntityManager EntityManager { get; private set; }
-        public void Start()
+        public IContext RenderingContext { get; private set; }
+
+        public void Start(IContext RenderingContext)
         {
-            Window = new Window(Update);
+            Window = new OpenGLWindow(Update, Render, Resize, Init);
+            this.RenderingContext = RenderingContext;
             this.KeyboardInputManager = new InputManager(Window);
             this.EntityManager = new EntityManager();
-            Init();
             Window.Run();
         }
 
@@ -30,12 +28,20 @@ namespace Lururen.Client
 
         public virtual void Init()
         {
-
         }
 
         public virtual void Update(double deltaTime)
         {
-            this.EntityManager.Update();
+            this.EntityManager.Update(deltaTime);
+        }
+
+        public virtual void Render(double deltaTime)
+        {
+            this.RenderingContext.DrawElements(deltaTime);
+        }
+
+        public virtual void Resize(int width, int height)
+        {
         }
     }
 }

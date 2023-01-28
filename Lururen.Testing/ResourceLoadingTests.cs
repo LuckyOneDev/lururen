@@ -17,7 +17,7 @@ namespace Lururen.Testing
         {
         }
 
-        public override void Update()
+        public override void Update(double deltaTime)
         {
         }
     }
@@ -31,7 +31,7 @@ namespace Lururen.Testing
             loader.LoadDll($"{System.Environment.CurrentDirectory}/Lururen.Testing.dll");
             ServerEntity e = loader.LoadChildOf<ServerEntity>(typeof(EntityToBeLoaded).ToString());
             e.Init();
-            e.Update();
+            e.Update(1);
             e.Dispose();
         }
 

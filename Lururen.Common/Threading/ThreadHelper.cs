@@ -10,7 +10,7 @@ namespace Lururen.Common.Threading
         /// <param name="action"></param>
         /// <param name="interval"></param>
         /// <returns></returns>
-        public static CancellationTokenSource StartPeriodicThread(Action action, TimeSpan interval)
+        public static CancellationTokenSource StartPeriodicThread(Action<double> action, TimeSpan interval)
         {
             CancellationTokenSource ts = new();
             new Thread(() =>
@@ -19,7 +19,7 @@ namespace Lururen.Common.Threading
                 while (!ts.Token.IsCancellationRequested)
                 {
                     sw.Restart();
-                    action.Invoke();
+                    action.Invoke(sw.ElapsedTicks); // Questionable line. Probably doesn't work as intended
                     while (sw.Elapsed < interval) { }
                 }
             }).Start();
