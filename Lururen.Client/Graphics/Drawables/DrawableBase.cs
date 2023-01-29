@@ -1,4 +1,5 @@
-﻿using Lururen.Client.Graphics.Shaders;
+﻿using Lururen.Client.ECS;
+using Lururen.Client.Graphics.Shaders;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,13 @@ namespace Lururen.Client.Graphics.Drawables
         /// <summary>
         /// Raw float data
         /// </summary>
-        protected int VertexBufferObject { get; private set; }
+        protected int VertexBufferObject { get; private set; } = -1;
 
         /// <summary>
         /// Stores all of the state needed to supply vertex data
         /// </summary>
-        protected int VertexArrayObject { get; private set; }
+        protected int VertexArrayObject { get; private set; } = -1;
+        public Entity Entity { get; set; }
 
         public DrawableBase(float[] vertices, BufferUsageHint bufferUsageHint = BufferUsageHint.StaticDraw)
         {
@@ -70,8 +72,7 @@ namespace Lururen.Client.Graphics.Drawables
         {
             InitBuffers();
         }
-
-        public virtual void Draw()
+        public virtual void Update(double deltaTime)
         {
             Shader.Use();
             GL.BindVertexArray(VertexArrayObject);

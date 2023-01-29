@@ -9,6 +9,9 @@ namespace Lururen.Client
         Embeded = 1,
     }
 
+    /// <summary>
+    /// Ensures file is loaded into memory only once
+    /// </summary>
     public class ResourceHandle
     {
         private static Dictionary<string, ResourceHandle> resourceHandles = new();
@@ -23,7 +26,7 @@ namespace Lururen.Client
             Bitmap = GetBytes();
         }
 
-        public byte[] GetBytes()
+        public void EnsureLoaded()
         {
             if (Bitmap is null)
             {
@@ -37,8 +40,18 @@ namespace Lururen.Client
                         break;
                 }
             }
+        }
 
+        public byte[] GetBytes()
+        {
+            EnsureLoaded();
             return Bitmap;
+        }
+
+        public Stream GetStream()
+        {
+            EnsureLoaded();
+            return new MemoryStream(Bitmap);
         }
 
         public static ResourceHandle Get(string filePath, ResourceLocation resourceLocation = ResourceLocation.FileSystem)

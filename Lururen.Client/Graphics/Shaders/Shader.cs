@@ -101,6 +101,7 @@ namespace Lururen.Client.Graphics.Shaders
         public void Use()
         {
             GL.UseProgram(Handle);
+            ErrorCode code = GL.GetError();
         }
 
         // The shader sources provided with this project use hardcoded layout(location)-s. If you want to do it dynamically,

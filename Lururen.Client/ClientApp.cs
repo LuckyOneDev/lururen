@@ -1,4 +1,6 @@
-﻿using Lururen.Client.Graphics;
+﻿using Lururen.Client.ECS;
+using Lururen.Client.Graphics;
+using Lururen.Client.Graphics.Drawables;
 using Lururen.Client.Input;
 
 namespace Lururen.Client
@@ -9,9 +11,9 @@ namespace Lururen.Client
 
         public InputManager KeyboardInputManager { get; private set; }
         public EntityManager EntityManager { get; private set; }
-        public IContext RenderingContext { get; private set; }
+        public BaseSystem<IDrawable> RenderingContext { get; private set; }
 
-        public void Start(IContext RenderingContext)
+        public void Start(BaseSystem<IDrawable> RenderingContext)
         {
             Window = new Game(Update, Render, Resize, Init);
             this.RenderingContext = RenderingContext;
@@ -31,12 +33,11 @@ namespace Lururen.Client
 
         public virtual void Update(double deltaTime)
         {
-            this.EntityManager.Update(deltaTime);
         }
 
         public virtual void Render(double deltaTime)
         {
-            this.RenderingContext.DrawElements(deltaTime);
+            this.RenderingContext.Update(deltaTime);
         }
 
         public virtual void Resize(int width, int height)

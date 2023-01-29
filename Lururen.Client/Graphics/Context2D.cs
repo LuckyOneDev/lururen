@@ -3,23 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Lururen.Client.ECS;
 using Lururen.Client.Graphics.Drawables;
 
 namespace Lururen.Client.Graphics
 {
-    public class Context2D : IContext
+    public class Context2D : BaseSystem<IDrawable>
     {
-        public List<IDrawable> Drawables { get; set; } = new();
 
-        public void AddElement(IDrawable drawable)
-        {
-            drawable.Init();
-            Drawables.Add(drawable);
-        }
-
-        public void DrawElements(double deltaTime)
-        {
-            Drawables.ForEach(drawable => drawable.Draw());
-        }
     }
 }

@@ -13,10 +13,13 @@ namespace Lururen.Client.Graphics.Drawables
         };
 
         protected ResourceHandle Texture { get; }
-        protected int ElementBufferObject { get; set; }
-        protected int TextureHandle { get; set; }
+        protected int ElementBufferObject { get; set; } = -1;
+        protected int TextureHandle { get; set; } = -1;
 
-        public Texture2D(ResourceHandle texture, Vector2 topRightCorner, Vector2 bottomLeftCorner) :
+        public Texture2D(ResourceHandle texture,
+                         Vector2 topRightCorner,
+                         Vector2 bottomLeftCorner,
+                         BufferUsageHint bufferUsageHint = BufferUsageHint.StaticDraw) :
             base(new float[]
             {
                  // positions[0..2]                                 // texture coords[3..4]
@@ -24,7 +27,7 @@ namespace Lururen.Client.Graphics.Drawables
                  topRightCorner.X,   bottomLeftCorner.Y, 0.0f,      1.0f, 0.0f,  // bottom right
                  bottomLeftCorner.X, bottomLeftCorner.Y, 0.0f,      0.0f, 0.0f,  // bottom left
                  bottomLeftCorner.X, topRightCorner.Y,   0.0f,      0.0f, 1.0f   // top left
-            }, BufferUsageHint.DynamicDraw)
+            }, bufferUsageHint)
         {
             this.Texture = texture;
 
@@ -47,6 +50,7 @@ namespace Lururen.Client.Graphics.Drawables
             StbImage.stbi_set_flip_vertically_on_load(1);
             ImageResult image = ImageResult.FromMemory(texture.GetBytes(), ColorComponents.RedGreenBlueAlpha);
 
+            GL.PixelStore(PixelStoreParameter.UnpackAlignment, 1);
             GL.TexImage2D(TextureTarget.Texture2D,
                           0,
                           PixelInternalFormat.Rgba,
@@ -70,6 +74,17 @@ namespace Lururen.Client.Graphics.Drawables
             TextureUnit.Texture3 => 3,
             TextureUnit.Texture4 => 4,
             TextureUnit.Texture5 => 5,
+            TextureUnit.Texture6 => 6,
+            TextureUnit.Texture7 => 7,
+            TextureUnit.Texture8 => 8,
+            TextureUnit.Texture9 => 9,
+            TextureUnit.Texture10 => 10,
+            TextureUnit.Texture11 => 11,
+            TextureUnit.Texture12 => 12,
+            TextureUnit.Texture13 => 13,
+            TextureUnit.Texture14 => 14,
+            TextureUnit.Texture15 => 15,
+            TextureUnit.Texture16 => 16
         };
 
         protected int UseTexture(ResourceHandle texture, string uniformName, TextureUnit textureUnit)
@@ -87,15 +102,15 @@ namespace Lururen.Client.Graphics.Drawables
             ElementBufferObject = InitBuffer(Indices, BufferTarget.ElementArrayBuffer);
 
             Shader.Use();
-            TextureHandle = UseTexture(Texture, "texture0", TextureUnit.Texture0);
+            TextureHandle = UseTexture(Texture, "texture0", TextureUnit.Texture16);
 
             SetVertexAttribPointer(0, 3, 5);    // vec3 aPosition
             SetVertexAttribPointer(1, 2, 5, 3); // vec2 aTexCoord
         }
 
-        public override void Draw()
+        public override void Update(double deltaTime)
         {
-            base.Draw();
+            base.Update(deltaTime);
             GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
         }
 

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Lururen.Client.ECS;
 
 namespace Lururen.Client.Graphics.Drawables
 {
-    public interface IDrawable
+    public interface IDrawable : IComponent
     {
-        public void Draw();
-        public void Init();
+
     }
 }

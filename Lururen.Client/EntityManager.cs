@@ -1,4 +1,5 @@
-﻿using Lururen.Common.EntitySystem;
+﻿using Lururen.Client.ECS;
+using Lururen.Common.EntitySystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,12 @@ namespace Lururen.Client
 {
     public class EntityManager
     {
-        public List<IEntity> Entities { get; set; } = new();
+        protected List<Entity> Entities { get; set; } = new();
         public EntityManager() { }
-        public virtual void Init()
+
+        public void AddEntity(Entity ent)
         {
-            Parallel.ForEach(Entities, (entity) => entity.Init());
-        }
-        public virtual void Update(double deltaTime)
-        {
-            Parallel.ForEach(Entities, (entity) => entity.Update(deltaTime));
+            Entities.Add(ent);
         }
     }
 }
