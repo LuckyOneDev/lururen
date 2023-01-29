@@ -19,7 +19,7 @@ namespace Lururen.Client.Graphics.Drawables
         public Texture2D(ResourceHandle texture,
                          Vector2 topRightCorner,
                          Vector2 bottomLeftCorner,
-                         BufferUsageHint bufferUsageHint = BufferUsageHint.StaticDraw) :
+                         BufferUsageHint bufferUsageHint = BufferUsageHint.DynamicDraw) :
             base(new float[]
             {
                  // positions[0..2]                                 // texture coords[3..4]
@@ -108,9 +108,9 @@ namespace Lururen.Client.Graphics.Drawables
             SetVertexAttribPointer(1, 2, 5, 3); // vec2 aTexCoord
         }
 
-        public override void Update(double deltaTime)
+        public override void Draw(double deltaTime)
         {
-            base.Update(deltaTime);
+            base.Draw(deltaTime);
             GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
         }
 

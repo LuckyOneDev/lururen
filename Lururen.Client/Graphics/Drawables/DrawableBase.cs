@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Lururen.Client.Graphics.Drawables
 {
-    public abstract class DrawableBase : IDrawable, IDisposable
+    public abstract class DrawableBase : IDisposable
     {
         protected static Shader? Shader { get; set; } = null;
         protected float[] Vertices { get; }
@@ -24,7 +24,6 @@ namespace Lururen.Client.Graphics.Drawables
         /// Stores all of the state needed to supply vertex data
         /// </summary>
         protected int VertexArrayObject { get; private set; } = -1;
-        public Entity Entity { get; set; }
 
         public DrawableBase(float[] vertices, BufferUsageHint bufferUsageHint = BufferUsageHint.StaticDraw)
         {
@@ -72,7 +71,7 @@ namespace Lururen.Client.Graphics.Drawables
         {
             InitBuffers();
         }
-        public virtual void Update(double deltaTime)
+        public virtual void Draw(double deltaTime)
         {
             Shader.Use();
             GL.BindVertexArray(VertexArrayObject);

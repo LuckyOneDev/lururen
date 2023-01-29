@@ -8,7 +8,7 @@ using Lururen.Client.Graphics.Drawables;
 
 namespace Lururen.Client.Graphics
 {
-    public class Context2D : BaseSystem<IDrawable>
+    public class Context2D : BaseSystem<Component>
     {
 
     }

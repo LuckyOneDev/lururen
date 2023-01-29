@@ -3,6 +3,7 @@ using Lururen.Client.ECS;
 using Lururen.Client.ECS.Drawing2D;
 using Lururen.Client.Graphics.Drawables;
 using Lururen.Common;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -37,10 +38,10 @@ namespace GraphicsTestApp
                         new Vector2(-0.5f, -0.5f)
             );
 
-            ent.AddComponent(new Sprite(texture));
+            
             EntityManager.AddEntity(ent);
 
-            
+            ent.AddComponent(new Sprite(texture));
         }
     }
 }

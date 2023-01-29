@@ -11,9 +11,9 @@ namespace Lururen.Client
 
         public InputManager KeyboardInputManager { get; private set; }
         public EntityManager EntityManager { get; private set; }
-        public BaseSystem<IDrawable> RenderingContext { get; private set; }
+        public BaseSystem<Component> RenderingContext { get; private set; }
 
-        public void Start(BaseSystem<IDrawable> RenderingContext)
+        public void Start(BaseSystem<Component> RenderingContext)
         {
             Window = new Game(Update, Render, Resize, Init);
             this.RenderingContext = RenderingContext;

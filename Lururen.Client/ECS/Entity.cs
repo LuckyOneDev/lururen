@@ -4,23 +4,24 @@
     {
         public Guid Id { get; set; }
 
-        List<IComponent> Components = new List<IComponent>();
+        List<Component> Components = new List<Component>();
 
-        public IComponent AddComponent(IComponent component)
+        public Component AddComponent(Component component)
         {
             component.Entity = this;
+            component.Init();
             Components.Add(component);
             return component;
         }
 
-        public T GetComponent<T>() where T : IComponent
+        public T? GetComponent<T>() where T : Component
         {
-            return (T)Components.Find(component => component.GetType().Equals(typeof(T)));
+            return (T?)Components.Find(component => component.GetType().Equals(typeof(T)));
         }
 
-        public List<IComponent> GetComponents<T>() where T : IComponent
+        public List<T> GetComponents<T>() where T : Component
         {
-            return Components.FindAll(component => component.GetType().Equals(typeof(T)));
+            return Components.FindAll(component => component.GetType().Equals(typeof(T))).Select(x => (T)x).ToList();
         }
     }
 }

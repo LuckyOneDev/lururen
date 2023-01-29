@@ -39,9 +39,9 @@ namespace Lururen.Client.Graphics.Drawables
             Shader.SetVector4("ourColor", ((Vector4)Color));
         }
 
-        public override void Update(double deltaTime)
+        public override void Draw(double deltaTime)
         {
-            base.Update(deltaTime);
+            base.Draw(deltaTime);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 3);
         }
     }

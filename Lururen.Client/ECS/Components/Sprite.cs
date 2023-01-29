@@ -1,5 +1,7 @@
-﻿using Lururen.Client.Graphics;
+﻿using Lururen.Client.ECS.Components;
+using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Drawables;
+using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,25 +10,25 @@ using System.Threading.Tasks;
 
 namespace Lururen.Client.ECS.Drawing2D
 {
-    public class Sprite : IDrawable
+    public class Sprite : Component
     {
-        public Entity Entity { get; set; }
         public Texture2D Texture { get; }
 
-        public Sprite(Texture2D texture) 
+        public Sprite(Texture2D texture)
         {
             this.Texture = texture;
             Context2D.Register(this);
         }
 
-        public void Init()
+        public override void Init()
         {
             Texture.Init();
+            var transform = Entity.GetComponent<Transform2D>();
         }
 
-        public void Update(double deltaTime)
+        public override void Update(double deltaTime)
         {
-            Texture.Update(deltaTime);
+            Texture.Draw(deltaTime);
         }
     }
 }
