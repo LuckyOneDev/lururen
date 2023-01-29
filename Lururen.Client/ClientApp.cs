@@ -1,12 +1,11 @@
 ﻿using Lururen.Client.Graphics;
-using Lururen.Client.Graphics.OpenGL;
 using Lururen.Client.Input;
 
 namespace Lururen.Client
 {
     public class ClientApp
     {
-        public OpenGLWindow? Window = null;
+        public Game? Window = null;
 
         public InputManager KeyboardInputManager { get; private set; }
         public EntityManager EntityManager { get; private set; }
@@ -14,7 +13,7 @@ namespace Lururen.Client
 
         public void Start(IContext RenderingContext)
         {
-            Window = new OpenGLWindow(Update, Render, Resize, Init);
+            Window = new Game(Update, Render, Resize, Init);
             this.RenderingContext = RenderingContext;
             this.KeyboardInputManager = new InputManager(Window);
             this.EntityManager = new EntityManager();

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Lururen.Client.Graphics.OpenGL.Drawables;
+using Lururen.Client.Graphics.Drawables;
 
-namespace Lururen.Client.Graphics.OpenGL
+namespace Lururen.Client.Graphics
 {
     public class Context2D : IContext
     {

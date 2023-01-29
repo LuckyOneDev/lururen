@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.Graphics.OpenGL.Drawables
+namespace Lururen.Client.Graphics.Drawables
 {
     public interface IDrawable
     {

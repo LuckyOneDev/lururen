@@ -1,10 +1,5 @@
 ﻿using GraphicsTestApp;
-using Lururen.Client;
-using Lururen.Client.Graphics.OpenGL;
-using OpenTK;
-using OpenTK.Graphics.OpenGL4;
-using System.Collections.Generic;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Lururen.Client.Graphics;
 
 var client = new TestClient();
 var ctx = new Context2D();

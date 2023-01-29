@@ -9,21 +9,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.Graphics.OpenGL
+namespace Lururen.Client.Graphics
 {
     public delegate void FrameUpdateEvent(double deltaTime);
     public delegate void ResizeEvent(int width, int height);
-    public class OpenGLWindow : GameWindow
+    public class Game : GameWindow
     {
         private FrameUpdateEvent OnUpdate { get; set; }
         private FrameUpdateEvent OnRender { get; set; }
         private ResizeEvent OnResizeWindow { get; set; }
         private Action OnLoadEvent { get; set; }
 
-        public OpenGLWindow(FrameUpdateEvent onUpdateFrame, FrameUpdateEvent onRender, ResizeEvent onResize, Action onLoad) : base(GameWindowSettings.Default, NativeWindowSettings.Default)
+        public Game(FrameUpdateEvent onUpdateFrame, FrameUpdateEvent onRender, ResizeEvent onResize, Action onLoad) : base(GameWindowSettings.Default, NativeWindowSettings.Default)
         {
             OnUpdate = onUpdateFrame;
-            OnRender = onRender;    
+            OnRender = onRender;
             OnResizeWindow = onResize;
             OnLoadEvent = onLoad;
         }

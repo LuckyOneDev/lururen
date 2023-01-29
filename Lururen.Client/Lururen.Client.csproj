@@ -8,23 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Graphics\OpenGL\Shaders\shader.frag" />
-    <None Remove="Graphics\OpenGL\Shaders\shader.vert" />
-    <None Remove="Graphics\OpenGL\Shaders\Texture2D\shader.frag" />
-    <None Remove="Graphics\OpenGL\Shaders\Texture2D\shader.vert" />
+    <None Remove="Graphics\Shaders\shader.frag" />
+    <None Remove="Graphics\Shaders\shader.vert" />
+    <None Remove="Graphics\Shaders\Texture2D\shader.frag" />
+    <None Remove="Graphics\Shaders\Texture2D\shader.vert" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Graphics\OpenGL\Shaders\MonoColor\shader.frag">
+    <EmbeddedResource Include="Graphics\Shaders\MonoColor\shader.frag">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Graphics\OpenGL\Shaders\MonoColor\shader.vert">
+    <EmbeddedResource Include="Graphics\Shaders\MonoColor\shader.vert">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Graphics\OpenGL\Shaders\Texture2D\shader.frag">
+    <EmbeddedResource Include="Graphics\Shaders\Texture2D\shader.frag">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Graphics\OpenGL\Shaders\Texture2D\shader.vert">
+    <EmbeddedResource Include="Graphics\Shaders\Texture2D\shader.vert">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -37,6 +37,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lururen.Common\Lururen.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Graphics\Contexts\" />
   </ItemGroup>
 
 </Project>

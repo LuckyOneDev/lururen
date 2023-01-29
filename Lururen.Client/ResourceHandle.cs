@@ -1,4 +1,4 @@
-﻿namespace Lururen.Client.Graphics
+﻿namespace Lururen.Client
 {
     public class ResourceHandle
     {

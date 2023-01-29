@@ -1,4 +1,4 @@
-﻿using Lururen.Client.Graphics.OpenGL.Drawables;
+﻿using Lururen.Client.Graphics.Drawables;
 
 namespace Lururen.Client.Graphics
 {

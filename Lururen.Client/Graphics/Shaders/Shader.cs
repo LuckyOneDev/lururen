@@ -7,7 +7,7 @@ using OpenTK.Mathematics;
 using System.Reflection;
 using Lururen.Common;
 
-namespace Lururen.Client.Graphics.OpenGL.Shaders
+namespace Lururen.Client.Graphics.Shaders
 {
     // A simple class meant to help create shaders.
     public class Shader
@@ -22,7 +22,7 @@ namespace Lururen.Client.Graphics.OpenGL.Shaders
                 ResourceHelper.ReadEmbededResource(Assembly.GetExecutingAssembly(), @namespace + ".shader.vert"),
                 ResourceHelper.ReadEmbededResource(Assembly.GetExecutingAssembly(), @namespace + ".shader.frag")
             );
-        } 
+        }
 
         // This is how you create a simple shader.
         // Shaders are written in GLSL, which is a language very similar to C in its semantics.
@@ -166,6 +166,17 @@ namespace Lururen.Client.Graphics.OpenGL.Shaders
         {
             GL.UseProgram(Handle);
             GL.Uniform3(_uniformLocations[name], data);
+        }
+
+        /// <summary>
+        /// Set a uniform Vector3 on this shader.
+        /// </summary>
+        /// <param name="name">The name of the uniform</param>
+        /// <param name="data">The data to set</param>
+        public void SetVector4(string name, Vector4 data)
+        {
+            GL.UseProgram(Handle);
+            GL.Uniform4(_uniformLocations[name], data);
         }
     }
 }

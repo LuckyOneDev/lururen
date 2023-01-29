@@ -1,4 +1,4 @@
-﻿using Lururen.Client.Graphics.OpenGL;
+﻿using Lururen.Client.Graphics;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -8,8 +8,8 @@ namespace Lururen.Client.Input
     public delegate void KeyPressEvent(Keys key);
     public class InputManager
     {
-        OpenGLWindow Window { get; set; }
-        public InputManager(OpenGLWindow Window) 
+        Game Window { get; set; }
+        public InputManager(Game Window) 
         { 
             this.Window = Window;
         }

@@ -1,6 +1,5 @@
 ﻿using Lururen.Client;
-using Lururen.Client.Graphics.OpenGL.Drawables;
-using Lururen.Client.Graphics.OpenGL.Drawables.Shapes;
+using Lururen.Client.Graphics.Drawables;
 using Lururen.Common;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -23,10 +22,15 @@ namespace GraphicsTestApp
         public override void Init()
         {
             base.Init();
+            //RenderingContext.AddElement(new Triangle(new Vector2(-0.5f, -0.5f),
+            //                                         new Vector2(0.5f, -0.5f),
+            //                                         new Vector2(0.0f, 0.5f),
+            //                                         Color4.Red));
 
-            this.RenderingContext.AddElement(new Texture2D(
-                ResourceHelper.GetEmbededResourceStream(Assembly.GetExecutingAssembly(), "GraphicsTestApp.wall.jpg"), 
-                new Vector2(0.0f, 0.0f), 1.0f
+            RenderingContext.AddElement(new Texture2D(
+                    ResourceHelper.GetEmbededResourceStream(Assembly.GetExecutingAssembly(), "GraphicsTestApp.wall.jpg"),
+                    new Vector2(0.0f, 0.5f),
+                    new Vector2(-0.5f, -0.5f)
             ));
         }
     }
