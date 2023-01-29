@@ -1,27 +1,47 @@
-﻿namespace Lururen.Client
+﻿using Lururen.Common;
+using System.Reflection;
+
+namespace Lururen.Client
 {
+    public enum ResourceLocation
+    {
+        FileSystem = 0,
+        Embeded = 1,
+    }
+
     public class ResourceHandle
     {
         private static Dictionary<string, ResourceHandle> resourceHandles = new();
         public string FilePath { get; private set; }
         private byte[] Bitmap { get; set; }
-        private ResourceHandle(string filePath)
+        public ResourceLocation ResourceLocation { get; }
+        private ResourceHandle(string filePath, ResourceLocation resourceLocation)
         {
             FilePath = filePath;
             resourceHandles.Add(filePath, this);
+            ResourceLocation = resourceLocation;
+            Bitmap = GetBytes();
         }
 
         public byte[] GetBytes()
         {
             if (Bitmap is null)
             {
-                Bitmap = File.ReadAllBytes(FilePath);
+                switch (ResourceLocation)
+                {
+                    case ResourceLocation.FileSystem:
+                        Bitmap = File.ReadAllBytes(FilePath);
+                        break;
+                    case ResourceLocation.Embeded:
+                        Bitmap = EmbededResourceHelper.ReadBytes(Assembly.GetEntryAssembly(), FilePath);
+                        break;
+                }
             }
 
             return Bitmap;
         }
 
-        public static ResourceHandle Get(string filePath)
+        public static ResourceHandle Get(string filePath, ResourceLocation resourceLocation = ResourceLocation.FileSystem)
         {
             if (resourceHandles.ContainsKey(filePath))
             {
@@ -29,7 +49,7 @@
             }
             else
             {
-                return new ResourceHandle(filePath);
+                return new ResourceHandle(filePath, resourceLocation);
             }
         }
 
@@ -42,5 +62,7 @@
         {
             resourceHandles.Remove(filePath);
         }
+
+
     }
 }

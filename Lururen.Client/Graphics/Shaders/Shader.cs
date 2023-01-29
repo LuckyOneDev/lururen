@@ -19,8 +19,8 @@ namespace Lururen.Client.Graphics.Shaders
         public static Shader FromResource(string @namespace)
         {
             return new Shader(
-                ResourceHelper.ReadEmbededResource(Assembly.GetExecutingAssembly(), @namespace + ".shader.vert"),
-                ResourceHelper.ReadEmbededResource(Assembly.GetExecutingAssembly(), @namespace + ".shader.frag")
+                EmbededResourceHelper.ReadString(Assembly.GetExecutingAssembly(), @namespace + ".shader.vert"),
+                EmbededResourceHelper.ReadString(Assembly.GetExecutingAssembly(), @namespace + ".shader.frag")
             );
         }
 

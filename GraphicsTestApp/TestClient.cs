@@ -5,6 +5,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using System.Reflection;
+using ResourceLocation = Lururen.Client.ResourceLocation;
 
 namespace GraphicsTestApp
 {
@@ -27,11 +28,15 @@ namespace GraphicsTestApp
             //                                         new Vector2(0.0f, 0.5f),
             //                                         Color4.Red));
 
-            RenderingContext.AddElement(new Texture2D(
-                    ResourceHelper.GetEmbededResourceStream(Assembly.GetExecutingAssembly(), "GraphicsTestApp.wall.jpg"),
-                    new Vector2(0.0f, 0.5f),
-                    new Vector2(-0.5f, -0.5f)
-            ));
+            var rand = new Random();
+            for (int i = 0; i < 100; i++)
+            {
+                RenderingContext.AddElement(new Texture2D(
+                        ResourceHandle.Get("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded),
+                        new Vector2(0.0f, 0.5f),
+                        new Vector2(-0.5f, -0.5f)
+                ));
+            }
         }
     }
 }
