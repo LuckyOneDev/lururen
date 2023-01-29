@@ -28,15 +28,11 @@ namespace GraphicsTestApp
             //                                         new Vector2(0.0f, 0.5f),
             //                                         Color4.Red));
 
-            var rand = new Random();
-            for (int i = 0; i < 100; i++)
-            {
-                RenderingContext.AddElement(new Texture2D(
+            RenderingContext.AddElement(new Texture2D(
                         ResourceHandle.Get("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded),
-                        new Vector2(0.0f, 0.5f),
+                        new Vector2(0.0f, 0.0f),
                         new Vector2(-0.5f, -0.5f)
-                ));
-            }
+            ));
         }
     }
 }

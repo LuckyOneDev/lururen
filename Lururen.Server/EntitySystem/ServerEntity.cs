@@ -1,6 +1,5 @@
 ﻿using Lururen.Common.EntitySystem;
 using Lururen.Common.EventSystem;
-using Lururen.Common.Models;
 using Lururen.Server.App;
 
 namespace Lururen.Server.EntitySystem

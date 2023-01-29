@@ -1,12 +1,11 @@
-﻿using Lururen.Common.EntitySystem;
-using Lururen.Common.EventSystem;
+﻿using Lururen.Common.EventSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Common.Models
+namespace Lururen.Common.EntitySystem
 {
     public interface IEntity : IDisposable, IEventSubscriber
     {
