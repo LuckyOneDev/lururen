@@ -13,6 +13,7 @@ namespace Lururen.Client.ECS.Drawing2D
     public class Sprite : Component
     {
         public Texture2D Texture { get; }
+        public Transform2D? Transform { get; private set; }
 
         public Sprite(Texture2D texture)
         {
@@ -23,12 +24,13 @@ namespace Lururen.Client.ECS.Drawing2D
         public override void Init()
         {
             Texture.Init();
-            var transform = Entity.GetComponent<Transform2D>();
+            Transform = Entity.GetComponent<Transform2D>();
         }
 
         public override void Update(double deltaTime)
         {
-            Texture.Draw(deltaTime);
+            Texture.SetVertices(Transform.Position, Transform.Position - 0.5f * (Vector2.UnitX + Vector2.UnitY));
+            Texture.Use();
         }
     }
 }

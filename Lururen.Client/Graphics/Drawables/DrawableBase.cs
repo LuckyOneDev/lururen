@@ -12,7 +12,7 @@ namespace Lururen.Client.Graphics.Drawables
     public abstract class DrawableBase : IDisposable
     {
         protected static Shader? Shader { get; set; } = null;
-        protected float[] Vertices { get; }
+        protected float[] Vertices { get; set; }
         protected BufferUsageHint BufferUsageHint { get; }
         
         /// <summary>

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.Graphics
+namespace Lururen.Client.Graphics.Components
 {
     public class Sprite : Entity
     {
