@@ -1,5 +1,6 @@
 ﻿using Lururen.Client.Graphics;
 using OpenTK.Mathematics;
+using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Lururen.Client.Input
@@ -18,6 +19,7 @@ namespace Lururen.Client.Input
         public bool IsKeyReleased(Keys key) => Window.KeyboardState.IsKeyReleased(key);
         public bool IsKeyPressed(Keys key) => Window.KeyboardState.IsKeyPressed(key);
         public Vector2 GetMousePos() => Window.MousePosition;
+        //public Action<KeyboardKeyEventArgs> KeyDown => Window.KeyDown;
         public void Update()
         {
 

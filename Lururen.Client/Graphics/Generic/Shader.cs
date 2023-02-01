@@ -7,7 +7,7 @@ using OpenTK.Mathematics;
 using System.Reflection;
 using Lururen.Common;
 
-namespace Lururen.Client.Graphics.Shaders
+namespace Lururen.Client.Graphics.Generic
 {
     // A simple class meant to help create shaders.
     public class Shader
@@ -19,8 +19,8 @@ namespace Lururen.Client.Graphics.Shaders
         public static Shader FromResource(string @namespace)
         {
             return new Shader(
-                EmbededResourceHelper.ReadString(Assembly.GetExecutingAssembly(), @namespace + ".shader.vert"),
-                EmbededResourceHelper.ReadString(Assembly.GetExecutingAssembly(), @namespace + ".shader.frag")
+                Assembly.GetExecutingAssembly().ReadString(@namespace + ".shader.vert"),
+                Assembly.GetExecutingAssembly().ReadString(@namespace + ".shader.frag")
             );
         }
 
@@ -101,7 +101,6 @@ namespace Lururen.Client.Graphics.Shaders
         public void Use()
         {
             GL.UseProgram(Handle);
-            ErrorCode code = GL.GetError();
         }
 
         // The shader sources provided with this project use hardcoded layout(location)-s. If you want to do it dynamically,

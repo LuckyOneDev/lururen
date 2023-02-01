@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="megumin.png" />
     <None Remove="wall.jpg" />
   </ItemGroup>
 
@@ -17,6 +18,10 @@
 
   <ItemGroup>
     <EmbeddedResource Include="wall.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="megumin.png" />
   </ItemGroup>
 
 </Project>

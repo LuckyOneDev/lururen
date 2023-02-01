@@ -39,4 +39,8 @@
     <ProjectReference Include="..\Lururen.Common\Lururen.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Graphics\Texturing\" />
+  </ItemGroup>
+
 </Project>

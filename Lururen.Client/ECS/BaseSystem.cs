@@ -1,4 +1,4 @@
-﻿using Lururen.Client.Graphics.Drawables;
+﻿using Lururen.Client.Graphics;
 
 namespace Lururen.Client.ECS
 {

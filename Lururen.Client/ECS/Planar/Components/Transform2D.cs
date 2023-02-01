@@ -1,20 +1,25 @@
-﻿using OpenTK.Mathematics;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.ECS.Components
+namespace Lururen.Client.ECS.Planar.Components
 {
     public class Transform2D : Component
     {
+        
         public Transform2D(float x = 0, float y = 0)
         {
-            Position= new Vector2(x, y);
+            X = x;
+            Y = y;
         }
 
-        public Vector2 Position { get; set; }
+        public float X { get; set;}
+        public float Y { get; set; }
+
         public float Rotation { get; set; } = 0;
     }
 }

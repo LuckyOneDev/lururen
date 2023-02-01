@@ -1,6 +1,6 @@
 ﻿using Lururen.Client.ECS;
+using Lururen.Client.ECS.Planar.Systems;
 using Lururen.Client.Graphics;
-using Lururen.Client.Graphics.Drawables;
 using Lururen.Client.Input;
 
 namespace Lururen.Client
@@ -8,16 +8,16 @@ namespace Lururen.Client
     public class ClientApp
     {
         public Game? Window = null;
-
-        public InputManager KeyboardInputManager { get; private set; }
+        public InputManager Keyboard { get; private set; }
         public EntityManager EntityManager { get; private set; }
-        public BaseSystem<Component> RenderingContext { get; private set; }
+        public Context2D RenderingContext { get; private set; }
 
-        public void Start(BaseSystem<Component> RenderingContext)
+        public void Start(Context2D RenderingContext)
         {
             Window = new Game(Update, Render, Resize, Init);
             this.RenderingContext = RenderingContext;
-            this.KeyboardInputManager = new InputManager(Window);
+            RenderingContext.Init(Window);
+            this.Keyboard = new InputManager(Window);
             this.EntityManager = new EntityManager();
             Window.Run();
         }

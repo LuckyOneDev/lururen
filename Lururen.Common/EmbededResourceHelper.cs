@@ -9,7 +9,7 @@ namespace Lururen.Common
 {
     public static class EmbededResourceHelper
     {
-        public static byte[] ReadAllBytes(this BinaryReader reader)
+        private static byte[] ReadAllBytes(this BinaryReader reader)
         {
             const int bufferSize = 4096;
             using (var ms = new MemoryStream())
@@ -20,24 +20,23 @@ namespace Lururen.Common
                     ms.Write(buffer, 0, count);
                 return ms.ToArray();
             }
-
         }
 
-        public static byte[] ReadBytes(Assembly asm, string path)
+        public static byte[] ReadBytes(this Assembly asm, string path)
         {
             var stream = GetStream(asm, path);
             BinaryReader binaryReader = new BinaryReader(stream);
             return binaryReader.ReadAllBytes();
         }
 
-        public static string ReadString(Assembly asm, string path)
+        public static string ReadString(this Assembly asm, string path)
         {
             var stream = GetStream(asm, path);
             StreamReader reader = new StreamReader(stream);
             return reader.ReadToEnd();
         }
 
-        public static Stream GetStream(Assembly asm, string path)
+        public static Stream GetStream(this Assembly asm, string path)
         {
             var stream = asm.GetManifestResourceStream(path);
             if (stream == null)

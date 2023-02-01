@@ -36,7 +36,7 @@ namespace Lururen.Client
                         Bitmap = File.ReadAllBytes(FilePath);
                         break;
                     case ResourceLocation.Embeded:
-                        Bitmap = EmbededResourceHelper.ReadBytes(Assembly.GetEntryAssembly(), FilePath);
+                        Bitmap = Assembly.GetEntryAssembly().ReadBytes(FilePath);
                         break;
                 }
             }
