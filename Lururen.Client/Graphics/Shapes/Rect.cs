@@ -28,13 +28,17 @@ namespace Lururen.Client.Graphics.Shapes
             OpenGLHelper.SetVertexAttribPointer(1, 2, 5, 3); // vec2 aTexCoord
         }
 
-        public static uint[] indices { get; } = new uint[] {
+        public readonly uint[] indices = new uint[] {
                 0, 1, 3,   // first triangle
                 1, 2, 3    // second triangle
         };
 
         protected float[] Vertices { get; set; }
 
+        public void SetSize(float size)
+        {
+            SetVertices(new Vector2(size, size), Vector2.Zero);
+        }
 
         public void SetVertices(Vector2 topRightCorner, Vector2 bottomLeftCorner)
         {

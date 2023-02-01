@@ -24,10 +24,6 @@ namespace Lururen.Client.Graphics.Generic
             );
         }
 
-        // This is how you create a simple shader.
-        // Shaders are written in GLSL, which is a language very similar to C in its semantics.
-        // The GLSL source is compiled *at runtime*, so it can optimize itself for the graphics card it's currently being used on.
-        // A commented example of GLSL can be found in shader.vert.
         public Shader(string vertShaderText, string fragShaderText)
         {
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
@@ -70,7 +66,6 @@ namespace Lururen.Client.Graphics.Generic
 
         private static void CompileShader(int shader)
         {
-            // Try to compile the shader
             GL.CompileShader(shader);
 
             // Check for compilation errors
@@ -92,7 +87,7 @@ namespace Lururen.Client.Graphics.Generic
             GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
             if (code != (int)All.True)
             {
-                // We can use `GL.GetProgramInfoLog(program)` to get information about the error.
+                // `GL.GetProgramInfoLog(program)` to get information about the error.
                 throw new Exception($"Error occurred whilst linking Program({program})");
             }
         }
@@ -109,15 +104,6 @@ namespace Lururen.Client.Graphics.Generic
         {
             return GL.GetAttribLocation(Handle, attribName);
         }
-
-        // Uniform setters
-        // Uniforms are variables that can be set by user code, instead of reading them from the VBO.
-        // You use VBOs for vertex-related data, and uniforms for almost everything else.
-
-        // Setting a uniform is almost always the exact same, so I'll explain it here once, instead of in every method:
-        //     1. Bind the program you want to set the uniform on
-        //     2. Get a handle to the location of the uniform with GL.GetUniformLocation.
-        //     3. Use the appropriate GL.Uniform* function to set the uniform.
 
         /// <summary>
         /// Set a uniform int on this shader.

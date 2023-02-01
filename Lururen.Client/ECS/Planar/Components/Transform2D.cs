@@ -13,13 +13,14 @@ namespace Lururen.Client.ECS.Planar.Components
         
         public Transform2D(float x = 0, float y = 0)
         {
-            X = x;
-            Y = y;
+            Position= new Vector2(x, y);
         }
 
-        public float X { get; set;}
-        public float Y { get; set; }
-
-        public float Rotation { get; set; } = 0;
+        public Vector2 Position;
+        public float Scale = 1.0f;
+        /// <summary>
+        /// Rotation in radians
+        /// </summary>
+        public float Rotation = 0;
     }
 }

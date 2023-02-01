@@ -10,9 +10,9 @@ namespace Lururen.Client
         public Game? Window = null;
         public InputManager Keyboard { get; private set; }
         public EntityManager EntityManager { get; private set; }
-        public Context2D RenderingContext { get; private set; }
+        public SpriteRenderer RenderingContext { get; private set; }
 
-        public void Start(Context2D RenderingContext)
+        public void Start(SpriteRenderer RenderingContext)
         {
             Window = new Game(Update, Render, Resize, Init);
             this.RenderingContext = RenderingContext;

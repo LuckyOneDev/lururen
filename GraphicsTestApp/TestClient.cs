@@ -21,6 +21,7 @@ namespace GraphicsTestApp
     {
         public BaseCamera()
         {
+            AddComponent(new Transform2D());
             AddComponent(new Camera());
         }
     }
