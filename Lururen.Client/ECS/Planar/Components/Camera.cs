@@ -1,6 +1,7 @@
 ﻿using Lururen.Client.ECS;
 using Lururen.Client.ECS.Planar.Systems;
 using Lururen.Client.Graphics.Generic;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace Lururen.Client.ECS.Planar.Components
@@ -9,7 +10,7 @@ namespace Lururen.Client.ECS.Planar.Components
     {
         public Camera() 
         {
-            SpriteRenderer.Register(this);
+            CameraSystem.GetInstance().Register(this);
         }
 
         public Transform2D Transform { get; private set; }
@@ -22,18 +23,24 @@ namespace Lururen.Client.ECS.Planar.Components
 
         public void ReetViewportSize()
         {
-            ViewportSize = SpriteRenderer.WindowSize;
+            ViewportSize = Renderer2D.WindowSize;
         }
 
         public override void Init()
         {
             Transform = Entity.GetComponent<Transform2D>();
-            ViewportSize = SpriteRenderer.WindowSize;
+            ViewportSize = Renderer2D.WindowSize;
         }
 
         public override void Update(double deltaTime)
         {
+            GL.Viewport(0, 0, ViewportSize.X, ViewportSize.Y);
+        }
 
+        public static Camera? GetActiveCamera()
+        {
+            // Check for active instead
+            return CameraSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera));
         }
     }
 }

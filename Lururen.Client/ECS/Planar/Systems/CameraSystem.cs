@@ -9,9 +9,28 @@ namespace Lururen.Client.ECS.Planar.Systems
 {
     public class CameraSystem : BaseSystem<Camera>
     {
-        internal static Camera? GetActiveCamera()
+        #region Singleton
+        private static CameraSystem instance;
+
+        private CameraSystem() { }
+
+        public static CameraSystem GetInstance()
         {
-            return Components.Find(x => x.GetType() == typeof(Camera));
+            if (instance == null)
+                instance = new CameraSystem();
+            return instance;
+        }
+        #endregion
+
+        public List<Camera> Cameras = new();
+        public void Register(Camera component)
+        {
+            Cameras.Add(component);
+        }
+
+        public void Update(double deltaTime)
+        {
+            Cameras.ForEach(camera => camera.Update(deltaTime));
         }
     }
 }

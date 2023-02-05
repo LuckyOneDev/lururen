@@ -10,21 +10,21 @@ using Lururen.Common;
 namespace Lururen.Client.Graphics.Generic
 {
     // A simple class meant to help create shaders.
-    public class Shader
+    public class GLShader
     {
         public readonly int Handle;
 
         private readonly Dictionary<string, int> _uniformLocations;
 
-        public static Shader FromResource(string @namespace)
+        public static GLShader FromResource(string @namespace)
         {
-            return new Shader(
+            return new GLShader(
                 Assembly.GetExecutingAssembly().ReadString(@namespace + ".shader.vert"),
                 Assembly.GetExecutingAssembly().ReadString(@namespace + ".shader.frag")
             );
         }
 
-        public Shader(string vertShaderText, string fragShaderText)
+        public GLShader(string vertShaderText, string fragShaderText)
         {
             var vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader, vertShaderText);

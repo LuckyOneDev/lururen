@@ -40,15 +40,11 @@ namespace Lururen.Client.Graphics
             return VertexArrayObject;
         }
 
-        public static int LoadTexture(ResourceHandle texture, TextureParameters textureParameters)
+        public static int LoadTexture(ImageResult image, TextureParameters textureParameters)
         {
             int textureHandle = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, textureHandle);
-
             SetTexParameters(textureParameters);
-
-            StbImage.stbi_set_flip_vertically_on_load(1);
-            ImageResult image = ImageResult.FromMemory(texture.GetBytes(), ColorComponents.RedGreenBlueAlpha);
             
             GL.TexImage2D(TextureTarget.Texture2D,
                           0,

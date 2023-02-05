@@ -3,13 +3,13 @@ using OpenTK.Mathematics;
 
 namespace Lururen.Client.Graphics.Shapes
 {
-    public class Rect
+    public class GLRect
     {
-        public static Rect FromSize(float size)
+        public static GLRect FromSizes(float width, float height)
         {
-            return new Rect(new Vector2(size, size), Vector2.Zero);
+            return new GLRect(new Vector2(width, height), Vector2.Zero);
         }
-        public Rect(Vector2 topRightCorner, Vector2 bottomLeftCorner)
+        public GLRect(Vector2 topRightCorner, Vector2 bottomLeftCorner)
         {
             Vertices = new float[]
             {
@@ -35,9 +35,9 @@ namespace Lururen.Client.Graphics.Shapes
 
         protected float[] Vertices { get; set; }
 
-        public void SetSize(float size)
+        public void SetSizes(float width, float height)
         {
-            SetVertices(new Vector2(size, size), Vector2.Zero);
+            SetVertices(new Vector2(width, height), Vector2.Zero);
         }
 
         public void SetVertices(Vector2 topRightCorner, Vector2 bottomLeftCorner)

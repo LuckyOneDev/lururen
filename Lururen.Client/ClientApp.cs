@@ -10,13 +10,13 @@ namespace Lururen.Client
         public Game? Window = null;
         public InputManager Keyboard { get; private set; }
         public EntityManager EntityManager { get; private set; }
-        public SpriteRenderer RenderingContext { get; private set; }
-
-        public void Start(SpriteRenderer RenderingContext)
+        public Renderer2D SpriteRenderer { get; private set; }
+        public CameraSystem CameraSystem { get; private set; }
+        public void Start()
         {
             Window = new Game(Update, Render, Resize, Init);
-            this.RenderingContext = RenderingContext;
-            RenderingContext.Init(Window);
+            this.SpriteRenderer = Renderer2D.GetInstance();
+            this.CameraSystem = CameraSystem.GetInstance();
             this.Keyboard = new InputManager(Window);
             this.EntityManager = new EntityManager();
             Window.Run();
@@ -29,6 +29,7 @@ namespace Lururen.Client
 
         public virtual void Init()
         {
+            SpriteRenderer.Init(Window);
         }
 
         public virtual void Update(double deltaTime)
@@ -37,7 +38,8 @@ namespace Lururen.Client
 
         public virtual void Render(double deltaTime)
         {
-            this.RenderingContext.Update(deltaTime);
+            this.CameraSystem.Update(deltaTime);
+            this.SpriteRenderer.Update(deltaTime);
         }
 
         public virtual void Resize(int width, int height)
