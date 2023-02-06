@@ -17,8 +17,8 @@ namespace Lururen.Client.ECS.Planar.Components
             };
 
             var texture = FileHandle<GLTexture>.GetInstance().Get(Accessor);
-            Width = texture.Image.Width;
-            Height = texture.Image.Height;
+            Width = texture.Width;
+            Height = texture.Height;
         }
 
         public void SetPixel(int x, int y, Color color)

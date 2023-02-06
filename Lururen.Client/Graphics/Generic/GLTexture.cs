@@ -8,19 +8,24 @@ namespace Lururen.Client.Graphics.Generic
         public GLTexture(byte[] texture)
         {
             TextureParameters = new TextureParameters();
-            Image = ImageResult.FromMemory(texture, ColorComponents.RedGreenBlueAlpha);
+            ImageResult Image = ImageResult.FromMemory(texture, ColorComponents.RedGreenBlueAlpha);
+            Width = Image.Width;
+            Height = Image.Height;
             Handle = OpenGLHelper.LoadTexture(Image, TextureParameters);
         }
 
         public GLTexture(byte[] texture, TextureParameters textureParameters)
         {
             TextureParameters = textureParameters;
-            Image = ImageResult.FromMemory(texture, ColorComponents.RedGreenBlueAlpha);
+            ImageResult Image = ImageResult.FromMemory(texture, ColorComponents.RedGreenBlueAlpha);
+            Width = Image.Width;
+            Height = Image.Height;
             Handle = OpenGLHelper.LoadTexture(Image, TextureParameters);
         }
 
         public int Handle { get; set; }
-        public ImageResult Image { get; private set; }
+        public int Width { get; }
+        public int Height { get; }
         public TextureParameters TextureParameters { get; }
 
         public void Use(TextureUnit unit = TextureUnit.Texture0)

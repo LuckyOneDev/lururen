@@ -46,7 +46,7 @@ namespace Lururen.Client.ECS.Planar.Components
         {
             ComputeShaderValues(camera);
             Rect.Use();
-            GL.DrawElements(PrimitiveType.Triangles, Rect.indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, GLRect.indices.Length, DrawElementsType.UnsignedInt, 0);
         }
 
         public override void Update(double deltaTime)

@@ -1,27 +1,24 @@
 ﻿using Lururen.Client;
 using Lururen.Client.ECS;
+using Lururen.Client.ECS.Planar;
 using Lururen.Client.ECS.Planar.Components;
-using Lururen.Client.Graphics.Generic;
-using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using ResourceLocation = Lururen.Client.ResourceLocation;
 
 namespace GraphicsTestApp
 {
-    public class ImageEntity : Entity
+    public class ImageEntity : Entity2D
     {
         public ImageEntity(Texture2D texture)
         {
-            AddComponent(new Transform2D());
             AddComponent(new SpriteRenderer(texture));
         }
     }
 
-    public class BaseCamera : Entity
+    public class BaseCamera : Entity2D
     {
         public BaseCamera()
         {
-            AddComponent(new Transform2D());
             AddComponent(new Camera());
         }
     }
@@ -69,9 +66,24 @@ namespace GraphicsTestApp
         {
             base.Init();
 
-            var texture = new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded);
+            var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
             EntityManager.AddEntity(new BaseCamera());
-            EntityManager.AddEntity(new ImageEntity(texture));
+
+            for (int j = 0; j < 200; j++)
+            {
+                for (int i = 0; i < 200; i++)
+                {
+                    var ent1 = new ImageEntity(texture);
+                    ent1.Transform.Position.X = i * texture.Width;
+                    ent1.Transform.Position.Y = j * texture.Height;
+                }
+            }
+
+            //var ent1 = new ImageEntity(texture);
+            //ent1.GetComponent<Transform2D>().Position.Y = 800;
+            //ent1.GetComponent<Transform2D>().Position.X = 500;
+            //EntityManager.AddEntity(ent1);
+            //EntityManager.AddEntity(new ImageEntity(texture));
         }
     }
 }

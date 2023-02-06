@@ -33,10 +33,11 @@ namespace Lururen.Client.Graphics
             GL.BufferData(bufferTarget, data.Length * sizeof(float), data, bufferUsageHint);
         }
 
-        public static int InitVertexArrayObject()
+        public static int InitVertexArrayObject(Action<int>? callback = default)
         {
             int VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
+            if (callback != null) callback(VertexArrayObject);
             return VertexArrayObject;
         }
 

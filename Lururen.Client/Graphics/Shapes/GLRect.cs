@@ -3,15 +3,16 @@ using OpenTK.Mathematics;
 
 namespace Lururen.Client.Graphics.Shapes
 {
-    public class GLRect
+    public class GLRect : IDisposable
     {
         public static GLRect FromSizes(float width, float height)
         {
             return new GLRect(new Vector2(width, height), Vector2.Zero);
         }
-        public GLRect(Vector2 topRightCorner, Vector2 bottomLeftCorner)
+
+        protected static float[] BuildVertexArray(Vector2 topRightCorner, Vector2 bottomLeftCorner)
         {
-            Vertices = new float[]
+            return new float[]
             {
                  // positions[0..2]                                 // texture coords[3..4]
                  topRightCorner.X,   topRightCorner.Y,   0.0f,      1.0f, 1.0f,  // top right
@@ -19,21 +20,17 @@ namespace Lururen.Client.Graphics.Shapes
                  bottomLeftCorner.X, bottomLeftCorner.Y, 0.0f,      0.0f, 0.0f,  // bottom left
                  bottomLeftCorner.X, topRightCorner.Y,   0.0f,      0.0f, 1.0f   // top left
             };
-
-            VAO = OpenGLHelper.InitVertexArrayObject();
-            VBO = OpenGLHelper.InitBuffer(Vertices, BufferTarget.ArrayBuffer);
-            EBO = OpenGLHelper.InitBuffer(indices, BufferTarget.ElementArrayBuffer);
-
-            OpenGLHelper.SetVertexAttribPointer(0, 3, 5);    // vec3 aPosition
-            OpenGLHelper.SetVertexAttribPointer(1, 2, 5, 3); // vec2 aTexCoord
         }
 
-        public readonly uint[] indices = new uint[] {
+        public GLRect(Vector2 topRightCorner, Vector2 bottomLeftCorner)
+        {
+            VBO = OpenGLHelper.InitBuffer(BuildVertexArray(topRightCorner, bottomLeftCorner), BufferTarget.ArrayBuffer);
+        }
+
+        public static readonly uint[] indices = new uint[] {
                 0, 1, 3,   // first triangle
                 1, 2, 3    // second triangle
         };
-
-        protected float[] Vertices { get; set; }
 
         public void SetSizes(float width, float height)
         {
@@ -42,27 +39,39 @@ namespace Lururen.Client.Graphics.Shapes
 
         public void SetVertices(Vector2 topRightCorner, Vector2 bottomLeftCorner)
         {
-            Vertices = new float[]
-            {
-                 // positions[0..2]                                 // texture coords[3..4]
-                 topRightCorner.X,   topRightCorner.Y,   0.0f,      1.0f, 1.0f,  // top right
-                 topRightCorner.X,   bottomLeftCorner.Y, 0.0f,      1.0f, 0.0f,  // bottom right
-                 bottomLeftCorner.X, bottomLeftCorner.Y, 0.0f,      0.0f, 0.0f,  // bottom left
-                 bottomLeftCorner.X, topRightCorner.Y,   0.0f,      0.0f, 1.0f   // top left
-            };
-
-            OpenGLHelper.SetBuffer(Vertices, BufferTarget.ArrayBuffer);
+            OpenGLHelper.SetBuffer(BuildVertexArray(topRightCorner, bottomLeftCorner), BufferTarget.ArrayBuffer);
         }
 
         #region OpenGL handles
 
-        protected int EBO { get; set; }
-        protected int VAO { get; set; }
+        static GLRect()
+        {
+            VAO = OpenGLHelper.InitVertexArrayObject();
+            EBO = OpenGLHelper.InitBuffer(indices, BufferTarget.ElementArrayBuffer);
+        }
+
+        protected static int EBO { get; }
+        
+        protected static int VAO { get; }
+
         protected int VBO { get; set; }
+
         #endregion OpenGL handles
+
+        public static void Prepare()
+        {
+            OpenGLHelper.SetVertexAttribPointer(0, 3, 5);    // vec3 aPosition
+            OpenGLHelper.SetVertexAttribPointer(1, 2, 5, 3); // vec2 aTexCoord
+        }
+
         public void Use()
         {
             GL.BindVertexArray(VAO);
+        }
+
+        public void Dispose()
+        {
+            GL.DeleteBuffer(VBO);
         }
     }
 }

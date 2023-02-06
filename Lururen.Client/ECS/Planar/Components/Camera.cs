@@ -21,7 +21,7 @@ namespace Lururen.Client.ECS.Planar.Components
             ViewportSize = new Vector2i(width, height);
         }
 
-        public void ReetViewportSize()
+        public void ResetViewportSize()
         {
             ViewportSize = Renderer2D.WindowSize;
         }
@@ -34,6 +34,7 @@ namespace Lururen.Client.ECS.Planar.Components
 
         public override void Update(double deltaTime)
         {
+            ViewportSize = Renderer2D.WindowSize;
             GL.Viewport(0, 0, ViewportSize.X, ViewportSize.Y);
         }
 
