@@ -45,7 +45,7 @@ namespace Lururen.Client.ECS.Planar.Components
         public void Render(Camera camera)
         {
             ComputeShaderValues(camera);
-            Rect.Use();
+            GLRect.Use();
             GL.DrawElements(PrimitiveType.Triangles, GLRect.indices.Length, DrawElementsType.UnsignedInt, 0);
         }
 
@@ -54,7 +54,7 @@ namespace Lururen.Client.ECS.Planar.Components
             if (Transform != null)
             {
                 // Size correction 
-                Rect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
+                GLRect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
             }
         }
     }

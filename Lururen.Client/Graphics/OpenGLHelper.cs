@@ -79,7 +79,7 @@ namespace Lururen.Client.Graphics
         /// <param name="pointer">Offset of the first component of the first generic vertex attribute in the array</param>
         public static void SetVertexAttribPointer(int location, int vertexSize, int stride, nint pointer = 0)
         {
-            if (vertexSize < 1 || vertexSize > 4) throw new ArgumentException(nameof(vertexSize));
+            if (vertexSize < 1 || vertexSize > 4) throw new ArgumentException("Vertex size should be between 1 and 4");
             GL.VertexAttribPointer(location, vertexSize, VertexAttribPointerType.Float, false, stride * sizeof(float), pointer * sizeof(float));
             GL.EnableVertexAttribArray(location);
         }

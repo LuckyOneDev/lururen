@@ -14,11 +14,11 @@ namespace Lururen.Client.Graphics.Shapes
         {
             return new float[]
             {
-                 // positions[0..2]                                 // texture coords[3..4]
-                 topRightCorner.X,   topRightCorner.Y,   0.0f,      1.0f, 1.0f,  // top right
-                 topRightCorner.X,   bottomLeftCorner.Y, 0.0f,      1.0f, 0.0f,  // bottom right
-                 bottomLeftCorner.X, bottomLeftCorner.Y, 0.0f,      0.0f, 0.0f,  // bottom left
-                 bottomLeftCorner.X, topRightCorner.Y,   0.0f,      0.0f, 1.0f   // top left
+                 // positions[0..2]                            // texture coords[3..4]
+                 topRightCorner.X,   topRightCorner.Y,         1.0f, 1.0f,  // top right
+                 topRightCorner.X,   bottomLeftCorner.Y,       1.0f, 0.0f,  // bottom right
+                 bottomLeftCorner.X, bottomLeftCorner.Y,       0.0f, 0.0f,  // bottom left
+                 bottomLeftCorner.X, topRightCorner.Y,         0.0f, 1.0f   // top left
             };
         }
 
@@ -32,12 +32,12 @@ namespace Lururen.Client.Graphics.Shapes
                 1, 2, 3    // second triangle
         };
 
-        public void SetSizes(float width, float height)
+        public static void SetSizes(float width, float height)
         {
             SetVertices(new Vector2(width, height), Vector2.Zero);
         }
 
-        public void SetVertices(Vector2 topRightCorner, Vector2 bottomLeftCorner)
+        public static void SetVertices(Vector2 topRightCorner, Vector2 bottomLeftCorner)
         {
             OpenGLHelper.SetBuffer(BuildVertexArray(topRightCorner, bottomLeftCorner), BufferTarget.ArrayBuffer);
         }
@@ -60,11 +60,11 @@ namespace Lururen.Client.Graphics.Shapes
 
         public static void Prepare()
         {
-            OpenGLHelper.SetVertexAttribPointer(0, 3, 5);    // vec3 aPosition
-            OpenGLHelper.SetVertexAttribPointer(1, 2, 5, 3); // vec2 aTexCoord
+            OpenGLHelper.SetVertexAttribPointer(0, 2, 4);    // vec2 aPosition
+            OpenGLHelper.SetVertexAttribPointer(1, 2, 4, 2); // vec2 aTexCoord
         }
 
-        public void Use()
+        public static void Use()
         {
             GL.BindVertexArray(VAO);
         }

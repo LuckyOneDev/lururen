@@ -18,13 +18,12 @@ namespace Lururen.Client.ECS.Planar.Systems
 
         public static Renderer2D GetInstance()
         {
-            if (instance == null)
-                instance = new Renderer2D();
+            instance ??= new Renderer2D();
             return instance;
         }
         #endregion
 
-        private Dictionary<FileAccessor, List<SpriteRenderer>> Components = new();
+        private readonly Dictionary<FileAccessor, List<SpriteRenderer>> Components = new();
         protected static Game Window { get; set; }
 
         public void Init(Game window)
@@ -38,16 +37,16 @@ namespace Lururen.Client.ECS.Planar.Systems
             Components.AddOrCreateList(component.Texture.Accessor, component);
         }
 
-        protected bool IsVisible(SpriteRenderer spriteRenderer, Camera camera)
+        protected static bool IsVisible(SpriteRenderer spriteRenderer, Camera camera)
         {
-            RectangleF spriteRect = new RectangleF(
+            RectangleF spriteRect = new(
                 spriteRenderer.Transform.Position.X,
                 spriteRenderer.Transform.Position.Y,
                 spriteRenderer.Texture.Width * spriteRenderer.Transform.Scale,
                 spriteRenderer.Texture.Height * spriteRenderer.Transform.Scale
             );
 
-            RectangleF viewRect = new RectangleF(
+            RectangleF viewRect = new(
                 camera.Transform.Position.X,
                 camera.Transform.Position.Y,
                 camera.ViewportSize.X,
@@ -57,7 +56,7 @@ namespace Lururen.Client.ECS.Planar.Systems
             return viewRect.IntersectsWith(spriteRect);
         }
 
-        protected List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera camera)
+        protected static List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera camera)
         {
             return sprites.Where(x => IsVisible(x, camera)).ToList();
         }
