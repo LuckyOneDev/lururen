@@ -9,8 +9,10 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform int layer = 0;
+
 void main(void)
 {
     texCoord = aTexCoord;
-    gl_Position =  vec4(aPosition, 0.0, 1.0) * model * view * projection;
+    gl_Position =  vec4(aPosition, layer, 1.0) * model * view * projection;
 }   

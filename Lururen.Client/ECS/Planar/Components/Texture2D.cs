@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.Graphics.Generic;
+using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 
 namespace Lururen.Client.ECS.Planar.Components
@@ -7,8 +8,7 @@ namespace Lururen.Client.ECS.Planar.Components
     {
         public int Width, Height;
         internal FileAccessor Accessor;
-
-        public Texture2D(string path, ResourceLocation location)
+        public Texture2D(string path, ResourceLocation location = ResourceLocation.FileSystem)
         {
             Accessor = new FileAccessor() 
             {

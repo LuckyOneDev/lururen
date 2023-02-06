@@ -13,6 +13,8 @@ namespace Lururen.Client
         protected List<Entity> Entities { get; set; } = new();
         public EntityManager() { }
 
+        public T GetEntityByType<T>() where T : Entity => (T)Entities.Find(x => x.GetType() == typeof(T));
+
         public void AddEntity(Entity ent)
         {
             Entities.Add(ent);

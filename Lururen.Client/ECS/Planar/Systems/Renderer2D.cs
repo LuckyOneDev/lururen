@@ -3,6 +3,7 @@ using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
 using Lururen.Client.Graphics.Shapes;
 using Lururen.Common.Extensions;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 using StbImageSharp;
@@ -28,6 +29,7 @@ namespace Lururen.Client.ECS.Planar.Systems
 
         public void Init(Game window)
         {
+            GL.Enable(EnableCap.DepthTest);
             StbImage.stbi_set_flip_vertically_on_load(1);
             Window = window;
         }
@@ -47,8 +49,8 @@ namespace Lururen.Client.ECS.Planar.Systems
             );
 
             RectangleF viewRect = new(
-                camera.Transform.Position.X,
-                camera.Transform.Position.Y,
+                -camera.GetPositionCorrector().X,
+                -camera.GetPositionCorrector().Y,
                 camera.ViewportSize.X,
                 camera.ViewportSize.Y
             );
@@ -73,12 +75,11 @@ namespace Lururen.Client.ECS.Planar.Systems
             GLRect.Prepare();
             if (camera != null)
             {
-                foreach (var entry in Components) 
+                foreach (var entry in Components)
                 {
                     var accessor = entry.Key;
                     var texture = FileHandle<GLTexture>.GetInstance().Get(accessor);
                     texture.Use();
-
                     var visibleSprites = FilterSprites(entry.Value, camera);
                     visibleSprites.ForEach(sprite =>
                     {

@@ -2,6 +2,7 @@
 using Lururen.Client.ECS;
 using Lururen.Client.ECS.Planar;
 using Lururen.Client.ECS.Planar.Components;
+using Lururen.Client.Graphics.Generic;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using ResourceLocation = Lururen.Client.ResourceLocation;
 
@@ -15,48 +16,53 @@ namespace GraphicsTestApp
         }
     }
 
-    public class BaseCamera : Entity2D
+    public class PlayerEntity : Entity2D
     {
-        public BaseCamera()
+        public PlayerEntity()
         {
+            var texture = new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded);
+            var spriteRenderer = new SpriteRenderer(texture);
+            AddComponent(spriteRenderer);
             AddComponent(new Camera());
+            spriteRenderer.Pivot = new OpenTK.Mathematics.Vector2(0.5f, 0.5f);
         }
     }
 
     public class TestClient : ClientApp
     {
-        const float camSpeed = 100f;
+        const float camSpeed = 1000f;
         public override void Update(double deltaTime)
         {
             base.Update(deltaTime);
 
-            Camera cam = Camera.GetActiveCamera();
 
             if (Keyboard.IsKeyDown(Keys.Escape))
             {
                 this.Window.Close();
             }
 
-            if (cam is not null)
+            var player = EntityManager.GetEntityByType<PlayerEntity>();
+
+            if (player is not null)
             {
                 if (Keyboard.IsKeyDown(Keys.Left))
                 {
-                    cam.Transform.Position.X -= (float)deltaTime * camSpeed;
+                    player.Transform.Position.X -= (float)deltaTime * camSpeed;
                 }
 
                 if (Keyboard.IsKeyDown(Keys.Right))
                 {
-                    cam.Transform.Position.X += (float)deltaTime * camSpeed;
+                    player.Transform.Position.X += (float)deltaTime * camSpeed;
                 }
 
                 if (Keyboard.IsKeyDown(Keys.Up))
                 {
-                    cam.Transform.Position.Y += (float)deltaTime * camSpeed;
+                    player.Transform.Position.Y += (float)deltaTime * camSpeed;
                 }
 
                 if (Keyboard.IsKeyDown(Keys.Down))
                 {
-                    cam.Transform.Position.Y -= (float)deltaTime * camSpeed;
+                    player.Transform.Position.Y -= (float)deltaTime * camSpeed;
                 }
             }
 
@@ -67,7 +73,7 @@ namespace GraphicsTestApp
             base.Init();
 
             var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
-            EntityManager.AddEntity(new BaseCamera());
+            EntityManager.AddEntity(new PlayerEntity());
 
             for (int j = 0; j < 200; j++)
             {

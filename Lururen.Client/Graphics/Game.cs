@@ -37,7 +37,7 @@ namespace Lururen.Client.Graphics
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             OnRender.Invoke(e.Time);
             SwapBuffers();
         }

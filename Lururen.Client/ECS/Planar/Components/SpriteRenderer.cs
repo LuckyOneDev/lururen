@@ -8,8 +8,9 @@ namespace Lururen.Client.ECS.Planar.Components
 {
     public class SpriteRenderer : Component
     {
-        public Transform2D? Transform { get; private set; }
+        public Transform2D Transform { get; private set; }
         public Texture2D Texture { get; set; }
+        public Vector2 Pivot { get; set; } = Vector2.Zero;
 
         internal static GLShader Shader = GLShader.FromResource("Lururen.Client.Graphics.Shaders.Texture2D");
         
@@ -30,8 +31,8 @@ namespace Lururen.Client.ECS.Planar.Components
 
         private void ComputeShaderValues(Camera camera) 
         {
-            var correctedPosition = Transform.Position - camera.Transform.Position;
-            var correctedRotation = Transform.Rotation - camera.Transform.Rotation;
+            var correctedPosition = Transform.Position + camera.GetPositionCorrector() + new Vector2(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height);
+            var correctedRotation = Transform.Rotation + camera.GetRotationCorrector();
 
             Matrix4 model = Matrix4.CreateRotationZ(correctedRotation);
             Matrix4 view = Matrix4.CreateTranslation(correctedPosition.X, correctedPosition.Y, 0.0f);

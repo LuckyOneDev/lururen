@@ -43,5 +43,15 @@ namespace Lururen.Client.ECS.Planar.Components
             // Check for active instead
             return CameraSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera));
         }
+
+        internal Vector2 GetPositionCorrector()
+        {
+            return -Transform.Position + ViewportSize / 2;
+        }
+
+        internal float GetRotationCorrector()
+        {
+            return -Transform.Rotation;
+        }
     }
 }
