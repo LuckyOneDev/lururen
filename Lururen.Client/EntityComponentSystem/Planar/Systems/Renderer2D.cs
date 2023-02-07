@@ -7,6 +7,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 using StbImageSharp;
+using System.Diagnostics;
 
 namespace Lururen.Client.ECS.Planar.Systems
 {

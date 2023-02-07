@@ -26,7 +26,7 @@ namespace Lururen.Client.Graphics.Generic
         public int Handle { get; set; }
         public int Width { get; }
         public int Height { get; }
-        public TextureParameters TextureParameters { get; }
+        public TextureParameters TextureParameters { get; set; }
 
         public void Use(TextureUnit unit = TextureUnit.Texture0)
         {

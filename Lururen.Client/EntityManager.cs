@@ -1,5 +1,7 @@
 ﻿using Lururen.Client.ECS;
+using Lururen.Client.Graphics.Shapes;
 using Lururen.Common.EntitySystem;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,12 @@ namespace Lururen.Client
         public void AddEntity(Entity ent)
         {
             Entities.Add(ent);
+        }
+
+        public void Reserve(int v)
+        {
+            // Code to determine drawing mode...
+            GLRect.Reserve(v);
         }
     }
 }

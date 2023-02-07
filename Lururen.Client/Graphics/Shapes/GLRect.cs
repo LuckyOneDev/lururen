@@ -1,13 +1,13 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Newtonsoft.Json.Linq;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-using System.Linq;
 
 namespace Lururen.Client.Graphics.Shapes
 {
     public class GLRect : IDisposable
     {
-        private static uint dictCounter = 0;
-        public static Dictionary<uint, float[]> Instances { get; } = new();
+        private static PrecalculationCollection<float> Instances { get; set; } = new(16);
+
         public static GLRect FromSizes(float width, float height)
         {
             return new GLRect(new Vector2(width, height), Vector2.Zero);
@@ -32,26 +32,20 @@ namespace Lururen.Client.Graphics.Shapes
         {
             TopRightCorner = topRightCorner;
             BottomLeftCorner = bottomLeftCorner;
-            Instances.Add(dictCounter, BuildVertexArray(TopRightCorner, BottomLeftCorner));
-            this.Index = dictCounter;
-            dictCounter++;
+            Index = Instances.Add(BuildVertexArray(TopRightCorner, BottomLeftCorner));
         }
 
         public void SetSizes(float width, float height)
         {
             TopRightCorner = new Vector2(width, height);
             BottomLeftCorner = Vector2.Zero;
-            Instances[Index] = BuildVertexArray(TopRightCorner, BottomLeftCorner);
+            Instances.Set(Index, BuildVertexArray(TopRightCorner, BottomLeftCorner));
         }
 
         public static uint[] GenIndices(uint offset = 0)
         {
             offset = offset * (uint)indices.Length;
-            return new uint[]
-            {
-                0 + offset, 1 + offset, 3 + offset,
-                1 + offset, 2 + offset, 3 + offset
-            };
+            return indices.Select(x => x + offset).ToArray();
         }
 
         public static readonly uint[] indices = new uint[] {
@@ -69,7 +63,7 @@ namespace Lururen.Client.Graphics.Shapes
         #region OpenGL handles
 
         protected static int EBO { get; }
-        
+
         protected static int VAO { get; }
 
         protected static int VBO { get; set; }
@@ -83,8 +77,7 @@ namespace Lururen.Client.Graphics.Shapes
             GL.BindVertexArray(VAO);
             OpenGLHelper.SetVertexAttribPointer(0, 2, 4);    // vec2 aPosition
             OpenGLHelper.SetVertexAttribPointer(1, 2, 4, 2); // vec2 aTexCoord
-            VertexArray = Instances.SelectMany(x => x.Value).ToArray();
-            OpenGLHelper.SetBuffer(VertexArray, BufferTarget.ArrayBuffer);
+            OpenGLHelper.SetBuffer(Instances.GetJoined(), BufferTarget.ArrayBuffer);
         }
 
         public void Use()
@@ -97,5 +90,9 @@ namespace Lururen.Client.Graphics.Shapes
             Instances.Remove(Index);
         }
 
+        internal static void Reserve(int v)
+        {
+            Instances.Reserve(v);
+        }
     }
 }

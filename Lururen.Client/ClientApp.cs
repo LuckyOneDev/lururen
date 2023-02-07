@@ -2,6 +2,7 @@
 using Lururen.Client.ECS.Planar.Systems;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
+using System.Diagnostics;
 
 namespace Lururen.Client
 {
@@ -38,6 +39,7 @@ namespace Lururen.Client
 
         public virtual void Render(double deltaTime)
         {
+            Debug.WriteLine(1 / deltaTime); // fps
             this.CameraSystem.Update(deltaTime);
             this.SpriteRenderer.Update(deltaTime);
         }

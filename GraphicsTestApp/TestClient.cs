@@ -74,10 +74,11 @@ namespace GraphicsTestApp
 
             var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
             EntityManager.AddEntity(new PlayerEntity());
+            EntityManager.Reserve(1000000);
 
-            for (int j = 0; j < 100; j++)
+            for (int j = 0; j < 1000; j++)
             {
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < 1000; i++)
                 {
                     var ent1 = new ImageEntity(texture);
                     ent1.Transform.Position.X = i * texture.Width;
