@@ -8,8 +8,7 @@
 
         public Component AddComponent(Component component)
         {
-            component.Entity = this;
-            component.Init();
+            component.Init(this);
             Components.Add(component);
             return component;
         }

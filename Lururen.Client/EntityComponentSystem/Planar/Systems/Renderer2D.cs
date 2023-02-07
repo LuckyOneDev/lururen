@@ -10,7 +10,7 @@ using StbImageSharp;
 
 namespace Lururen.Client.ECS.Planar.Systems
 {
-    public class Renderer2D : BaseSystem<SpriteRenderer>
+    public class Renderer2D : ISystem<SpriteRenderer>
     {
         #region Singleton
         private static Renderer2D instance;

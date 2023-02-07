@@ -12,7 +12,7 @@ namespace Lururen.Client.ECS.Planar.Components
     {
         public Transform2D(float x = 0, float y = 0)
         {
-            Position= new Vector2(x, y);
+            Position = new Vector2(x, y);
         }
 
         public Vector2 Position;

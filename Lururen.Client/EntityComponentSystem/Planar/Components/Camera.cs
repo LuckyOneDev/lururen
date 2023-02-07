@@ -26,8 +26,9 @@ namespace Lururen.Client.ECS.Planar.Components
             ViewportSize = Renderer2D.WindowSize;
         }
 
-        public override void Init()
+        public override void Init(Entity ent)
         {
+            base.Init(ent);
             Transform = Entity.GetComponent<Transform2D>();
             ViewportSize = Renderer2D.WindowSize;
         }

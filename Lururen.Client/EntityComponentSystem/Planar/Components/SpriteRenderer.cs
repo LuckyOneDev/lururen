@@ -22,9 +22,9 @@ namespace Lururen.Client.ECS.Planar.Components
             Renderer2D.GetInstance().Register(this);
         }
 
-        public override void Init()
+        public override void Init(Entity ent)
         {
-            //Texture.Init();
+            base.Init(ent);
             Transform = Entity.GetComponent<Transform2D>();
             Rect = GLRect.FromSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
         }
@@ -46,8 +46,12 @@ namespace Lururen.Client.ECS.Planar.Components
         public void Render(Camera camera)
         {
             ComputeShaderValues(camera);
-            GLRect.Use();
-            GL.DrawElements(PrimitiveType.Triangles, GLRect.indices.Length, DrawElementsType.UnsignedInt, 0);
+            Rect.Use();
+            GL.DrawElements(
+                PrimitiveType.Triangles, 
+                GLRect.indices.Length, 
+                DrawElementsType.UnsignedInt, 
+                0);
         }
 
         public override void Update(double deltaTime)
@@ -55,7 +59,7 @@ namespace Lururen.Client.ECS.Planar.Components
             if (Transform != null)
             {
                 // Size correction 
-                GLRect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
+                Rect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
             }
         }
     }

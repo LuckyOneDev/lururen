@@ -1,10 +1,13 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using System.Linq;
 
 namespace Lururen.Client.Graphics.Shapes
 {
     public class GLRect : IDisposable
     {
+        private static uint dictCounter = 0;
+        public static Dictionary<uint, float[]> Instances { get; } = new();
         public static GLRect FromSizes(float width, float height)
         {
             return new GLRect(new Vector2(width, height), Vector2.Zero);
@@ -22,9 +25,33 @@ namespace Lururen.Client.Graphics.Shapes
             };
         }
 
+        public Vector2 TopRightCorner { get; set; }
+        public Vector2 BottomLeftCorner { get; set; }
+
         public GLRect(Vector2 topRightCorner, Vector2 bottomLeftCorner)
         {
-            VBO = OpenGLHelper.InitBuffer(BuildVertexArray(topRightCorner, bottomLeftCorner), BufferTarget.ArrayBuffer);
+            TopRightCorner = topRightCorner;
+            BottomLeftCorner = bottomLeftCorner;
+            Instances.Add(dictCounter, BuildVertexArray(TopRightCorner, BottomLeftCorner));
+            this.Index = dictCounter;
+            dictCounter++;
+        }
+
+        public void SetSizes(float width, float height)
+        {
+            TopRightCorner = new Vector2(width, height);
+            BottomLeftCorner = Vector2.Zero;
+            Instances[Index] = BuildVertexArray(TopRightCorner, BottomLeftCorner);
+        }
+
+        public static uint[] GenIndices(uint offset = 0)
+        {
+            offset = offset * (uint)indices.Length;
+            return new uint[]
+            {
+                0 + offset, 1 + offset, 3 + offset,
+                1 + offset, 2 + offset, 3 + offset
+            };
         }
 
         public static readonly uint[] indices = new uint[] {
@@ -32,46 +59,43 @@ namespace Lururen.Client.Graphics.Shapes
                 1, 2, 3    // second triangle
         };
 
-        public static void SetSizes(float width, float height)
-        {
-            SetVertices(new Vector2(width, height), Vector2.Zero);
-        }
-
-        public static void SetVertices(Vector2 topRightCorner, Vector2 bottomLeftCorner)
-        {
-            OpenGLHelper.SetBuffer(BuildVertexArray(topRightCorner, bottomLeftCorner), BufferTarget.ArrayBuffer);
-        }
-
-        #region OpenGL handles
-
         static GLRect()
         {
+            VBO = OpenGLHelper.InitBuffer(BufferTarget.ArrayBuffer);
             VAO = OpenGLHelper.InitVertexArrayObject();
             EBO = OpenGLHelper.InitBuffer(indices, BufferTarget.ElementArrayBuffer);
         }
+
+        #region OpenGL handles
 
         protected static int EBO { get; }
         
         protected static int VAO { get; }
 
-        protected int VBO { get; set; }
+        protected static int VBO { get; set; }
+        public static float[] VertexArray { get; private set; }
+        public uint Index { get; }
 
         #endregion OpenGL handles
 
         public static void Prepare()
         {
+            GL.BindVertexArray(VAO);
             OpenGLHelper.SetVertexAttribPointer(0, 2, 4);    // vec2 aPosition
             OpenGLHelper.SetVertexAttribPointer(1, 2, 4, 2); // vec2 aTexCoord
+            VertexArray = Instances.SelectMany(x => x.Value).ToArray();
+            OpenGLHelper.SetBuffer(VertexArray, BufferTarget.ArrayBuffer);
         }
 
-        public static void Use()
+        public void Use()
         {
-            GL.BindVertexArray(VAO);
+            OpenGLHelper.SetBuffer(GenIndices(Index), BufferTarget.ElementArrayBuffer);
         }
 
         public void Dispose()
         {
-            GL.DeleteBuffer(VBO);
+            Instances.Remove(Index);
         }
+
     }
 }

@@ -26,6 +26,15 @@ namespace Lururen.Client.Graphics
             return buffer;
         }
 
+        public static int InitBuffer(
+                                BufferTarget bufferTarget,
+                                BufferUsageHint bufferUsageHint = BufferUsageHint.DynamicDraw)
+        {
+            int buffer = GL.GenBuffer();
+            GL.BindBuffer(bufferTarget, buffer);
+            return buffer;
+        }
+
         public static void SetBuffer<T>(T[] data,
                                          BufferTarget bufferTarget,
                                          BufferUsageHint bufferUsageHint = BufferUsageHint.DynamicDraw) where T : struct
