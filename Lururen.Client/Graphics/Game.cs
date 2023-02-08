@@ -31,28 +31,28 @@ namespace Lururen.Client.Graphics
         protected override void OnUpdateFrame(FrameEventArgs args)
         {
             base.OnUpdateFrame(args);
-            OnUpdate.Invoke(args.Time);
+            OnUpdate?.Invoke(args.Time);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            OnRender.Invoke(e.Time);
+            OnRender?.Invoke(e.Time);
             SwapBuffers();
         }
 
         protected override void OnResize(ResizeEventArgs e)
         {
             base.OnResize(e);
-            OnResizeWindow.Invoke(e.Width, e.Height);
+            OnResizeWindow?.Invoke(e.Width, e.Height);
             GL.Viewport(0, 0, e.Width, e.Height);
         }
 
         protected override void OnLoad()
         {
             base.OnLoad();
-            OnLoadEvent.Invoke();
+            OnLoadEvent?.Invoke();
         }
     }
 }
