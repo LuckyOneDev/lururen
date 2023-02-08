@@ -74,7 +74,6 @@ namespace GraphicsTestApp
 
             var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
             EntityManager.AddEntity(new PlayerEntity());
-            EntityManager.Reserve(1000000);
 
             for (int j = 0; j < 1000; j++)
             {

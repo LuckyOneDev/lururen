@@ -21,11 +21,5 @@ namespace Lururen.Client
         {
             Entities.Add(ent);
         }
-
-        public void Reserve(int v)
-        {
-            // Code to determine drawing mode...
-            GLRect.Reserve(v);
-        }
     }
 }

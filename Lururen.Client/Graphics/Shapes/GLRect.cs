@@ -6,7 +6,12 @@ namespace Lururen.Client.Graphics.Shapes
 {
     public class GLRect : IDisposable
     {
-        private static PrecalculationCollection<float> Instances { get; set; } = new(16);
+        public static readonly uint[] indices = new uint[] {
+                0, 1, 3,   // first triangle
+                1, 2, 3    // second triangle
+        };
+
+        private static GLBufferHelper<float> BufferHelper { get; set; } = new(indices);
 
         public static GLRect FromSizes(float width, float height)
         {
@@ -32,26 +37,15 @@ namespace Lururen.Client.Graphics.Shapes
         {
             TopRightCorner = topRightCorner;
             BottomLeftCorner = bottomLeftCorner;
-            Index = Instances.Add(BuildVertexArray(TopRightCorner, BottomLeftCorner));
+            Index = BufferHelper.Add(BuildVertexArray(TopRightCorner, BottomLeftCorner));
         }
 
         public void SetSizes(float width, float height)
         {
             TopRightCorner = new Vector2(width, height);
             BottomLeftCorner = Vector2.Zero;
-            Instances.Set(Index, BuildVertexArray(TopRightCorner, BottomLeftCorner));
+            Index = BufferHelper.Set(Index, BuildVertexArray(TopRightCorner, BottomLeftCorner));
         }
-
-        public static uint[] GenIndices(uint offset = 0)
-        {
-            offset = offset * (uint)indices.Length;
-            return indices.Select(x => x + offset).ToArray();
-        }
-
-        public static readonly uint[] indices = new uint[] {
-                0, 1, 3,   // first triangle
-                1, 2, 3    // second triangle
-        };
 
         static GLRect()
         {
@@ -68,31 +62,21 @@ namespace Lururen.Client.Graphics.Shapes
 
         protected static int VBO { get; set; }
         public static float[] VertexArray { get; private set; }
-        public uint Index { get; }
+        public int Index { get; private set; }
 
         #endregion OpenGL handles
 
-        public static void Prepare()
+        public static void Use()
         {
             GL.BindVertexArray(VAO);
             OpenGLHelper.SetVertexAttribPointer(0, 2, 4);    // vec2 aPosition
             OpenGLHelper.SetVertexAttribPointer(1, 2, 4, 2); // vec2 aTexCoord
-            OpenGLHelper.SetBuffer(Instances.GetJoined(), BufferTarget.ArrayBuffer);
-        }
-
-        public void Use()
-        {
-            OpenGLHelper.SetBuffer(GenIndices(Index), BufferTarget.ElementArrayBuffer);
+            BufferHelper.SetBuffers();
         }
 
         public void Dispose()
         {
-            Instances.Remove(Index);
-        }
-
-        internal static void Reserve(int v)
-        {
-            Instances.Reserve(v);
+            BufferHelper.Remove(Index);
         }
     }
 }

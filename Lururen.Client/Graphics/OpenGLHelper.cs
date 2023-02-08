@@ -42,6 +42,12 @@ namespace Lururen.Client.Graphics
             GL.BufferData(bufferTarget, data.Length * sizeof(float), data, bufferUsageHint);
         }
 
+        public static void SetBuffer<T>(T[] data,
+                                 BufferTarget bufferTarget, int offset) where T : struct
+        {
+            GL.BufferSubData(bufferTarget, offset, data.Length * sizeof(float), data);
+        }
+
         public static int InitVertexArrayObject(Action<int>? callback = default)
         {
             int VertexArrayObject = GL.GenVertexArray();

@@ -71,11 +71,12 @@ namespace Lururen.Client.ECS.Planar.Systems
         public void Update(double deltaTime)
         {
             var camera = Camera.GetActiveCamera();
-            SpriteRenderer.Shader.Use();
 
-            GLRect.Prepare();
             if (camera != null)
             {
+                SpriteRenderer.Shader.Use();
+                GLRect.Use();
+
                 foreach (var entry in Components)
                 {
                     var accessor = entry.Key;

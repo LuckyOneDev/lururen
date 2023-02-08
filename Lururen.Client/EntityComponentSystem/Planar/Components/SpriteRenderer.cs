@@ -46,12 +46,12 @@ namespace Lururen.Client.ECS.Planar.Components
         public void Render(Camera camera)
         {
             ComputeShaderValues(camera);
-            Rect.Use();
-            GL.DrawElements(
-                PrimitiveType.Triangles, 
-                GLRect.indices.Length, 
-                DrawElementsType.UnsignedInt, 
-                0);
+            GL.DrawElementsBaseVertex(
+                PrimitiveType.Triangles,
+                GLRect.indices.Length,
+                DrawElementsType.UnsignedInt,
+                0,
+                Rect.Index * 4); // I have no clue why is this 4. OpenGL is hard.
         }
 
         public override void Update(double deltaTime)

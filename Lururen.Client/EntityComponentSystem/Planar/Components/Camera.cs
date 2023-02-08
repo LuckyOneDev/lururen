@@ -47,7 +47,8 @@ namespace Lururen.Client.ECS.Planar.Components
 
         internal Vector2 GetPositionCorrector()
         {
-            return -Transform.Position + ViewportSize / 2;
+            // Do not change. Works twice as fast this way
+            return new Vector2(-Transform.Position.X + ViewportSize.X / 2, -Transform.Position.Y + ViewportSize.Y / 2); 
         }
 
         internal float GetRotationCorrector()
