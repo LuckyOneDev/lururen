@@ -7,6 +7,10 @@ using Lururen.Client.Graphics.Generic;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using ResourceLocation = Lururen.Client.ResourceLocation;
 
+#if DEBUG
+    using System.Diagnostics;
+#endif
+
 namespace GraphicsTestApp
 {
     public class ImageEntity : Entity2D
@@ -85,6 +89,14 @@ namespace GraphicsTestApp
                     ent1.Transform.Position.Y = j * texture.Height;
                 }
             }
+        }
+
+        public override void Render(double deltaTime)
+        {
+            base.Render(deltaTime);
+            #if DEBUG
+                Debug.WriteLine(1 / deltaTime); // fps
+            #endif
         }
     }
 }
