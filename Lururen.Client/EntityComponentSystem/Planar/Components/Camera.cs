@@ -6,14 +6,13 @@ using OpenTK.Mathematics;
 
 namespace Lururen.Client.ECS.Planar.Components
 {
-    public class Camera : Component
+    public class Camera : Component2D
     {
         public Camera() 
         {
             CameraSystem.GetInstance().Register(this);
         }
 
-        public Transform2D Transform { get; private set; }
         public Vector2i ViewportSize { get; private set; }
 
         public void SetViewportSize(int width, int height)
@@ -29,7 +28,6 @@ namespace Lururen.Client.ECS.Planar.Components
         public override void Init(Entity ent)
         {
             base.Init(ent);
-            Transform = Entity.GetComponent<Transform2D>();
             ViewportSize = Renderer2D.WindowSize;
         }
 

@@ -2,7 +2,7 @@
 using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 
-namespace Lururen.Client.ECS.Planar.Components
+namespace Lururen.Client.Graphics
 {
     public class Texture2D
     {
@@ -10,7 +10,7 @@ namespace Lururen.Client.ECS.Planar.Components
         internal FileAccessor Accessor;
         public Texture2D(string path, ResourceLocation location = ResourceLocation.FileSystem)
         {
-            Accessor = new FileAccessor() 
+            Accessor = new FileAccessor()
             {
                 Path = path,
                 ResourceLocation = location
@@ -23,7 +23,7 @@ namespace Lururen.Client.ECS.Planar.Components
 
         public void SetPixel(int x, int y, Color color)
         {
-            
+
         }
     }
 }

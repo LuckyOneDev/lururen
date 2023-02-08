@@ -2,6 +2,7 @@
 using Lururen.Client.ECS;
 using Lururen.Client.ECS.Planar;
 using Lururen.Client.ECS.Planar.Components;
+using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using ResourceLocation = Lururen.Client.ResourceLocation;
@@ -18,7 +19,7 @@ namespace GraphicsTestApp
 
     public class PlayerEntity : Entity2D
     {
-        public PlayerEntity()
+        public PlayerEntity() : base()
         {
             var texture = new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded);
             var spriteRenderer = new SpriteRenderer(texture);
@@ -75,21 +76,15 @@ namespace GraphicsTestApp
             var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
             EntityManager.AddEntity(new PlayerEntity());
 
-            for (int j = 0; j < 1000; j++)
+            for (int j = 0; j < 100; j++)
             {
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < 100; i++)
                 {
                     var ent1 = new ImageEntity(texture);
                     ent1.Transform.Position.X = i * texture.Width;
                     ent1.Transform.Position.Y = j * texture.Height;
                 }
             }
-
-            //var ent1 = new ImageEntity(texture);
-            //ent1.GetComponent<Transform2D>().Position.Y = 800;
-            //ent1.GetComponent<Transform2D>().Position.X = 500;
-            //EntityManager.AddEntity(ent1);
-            //EntityManager.AddEntity(new ImageEntity(texture));
         }
     }
 }

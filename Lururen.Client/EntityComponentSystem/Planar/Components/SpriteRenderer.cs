@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.ECS.Planar.Systems;
+using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
 using Lururen.Client.Graphics.Shapes;
 using OpenTK.Graphics.OpenGL4;
@@ -6,9 +7,8 @@ using OpenTK.Mathematics;
 
 namespace Lururen.Client.ECS.Planar.Components
 {
-    public class SpriteRenderer : Component
+    public class SpriteRenderer : Component2D
     {
-        public Transform2D Transform { get; private set; }
         public Texture2D Texture { get; set; }
         public Vector2 Pivot { get; set; } = Vector2.Zero;
 
@@ -25,7 +25,6 @@ namespace Lururen.Client.ECS.Planar.Components
         public override void Init(Entity ent)
         {
             base.Init(ent);
-            Transform = Entity.GetComponent<Transform2D>();
             Rect = GLRect.FromSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
         }
 
