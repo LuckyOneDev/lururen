@@ -61,7 +61,7 @@ namespace Lururen.Client.ECS.Planar.Systems
 
         protected static List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera camera)
         {
-            return sprites.Where(x => IsVisible(x, camera)).ToList();
+            return sprites.AsParallel().Where(x => IsVisible(x, camera)).ToList();
         }
 
         /// <summary>
