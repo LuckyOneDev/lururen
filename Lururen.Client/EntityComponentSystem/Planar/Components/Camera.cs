@@ -1,5 +1,4 @@
 ﻿using Lururen.Client.EntityComponentSystem.Planar.Systems;
-using Lururen.Common.EntitySystem;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
