@@ -1,6 +1,4 @@
-﻿using Lururen.Common.Models;
-
-namespace Lururen.Common.EntitySystem
+﻿namespace Lururen.Common.EntitySystem
 {
     public interface IEntityController
     {

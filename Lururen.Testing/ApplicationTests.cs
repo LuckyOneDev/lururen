@@ -38,7 +38,7 @@
                 initCount++;
             }
 
-            public override void Update()
+            public override void Update(double deltaTime)
             {
                 updateCount++;
             }
@@ -63,9 +63,9 @@
                 this.load = load;
             }
 
-            public override void Update()
+            public override void Update(double deltaTime)
             {
-                base.Update();
+                base.Update(deltaTime);
                 for (double i = 0; i < 100_000_000.0f / load; i++)
                 {
                 }

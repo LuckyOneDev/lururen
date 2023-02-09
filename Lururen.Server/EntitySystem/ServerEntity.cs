@@ -1,6 +1,5 @@
 ﻿using Lururen.Common.EntitySystem;
 using Lururen.Common.EventSystem;
-using Lururen.Common.Models;
 using Lururen.Server.App;
 
 namespace Lururen.Server.EntitySystem
@@ -34,7 +33,7 @@ namespace Lururen.Server.EntitySystem
             IsInitialized = true;
         }
         public abstract void Init();
-        public abstract void Update();
+        public abstract void Update(double deltaTime);
         public abstract void Dispose();
         public abstract void OnEvent(EventArgs args);
         public List<IEvent> SubscribedEvents { get; set; } = new();

@@ -53,11 +53,11 @@ namespace Lururen.Server.App
         /// <summary>
         /// Immidiatly processes everything and goes to next frame
         /// </summary>
-        public void ProcessAll()
+        public void ProcessAll(double deltaTime)
         {
             EventBus.ProcessEvents();
             CommandQueue.ProcessCommands();
-            Environments.ForEach(env => env.Update());
+            Environments.ForEach(env => env.Update(deltaTime));
         }
 
         public void Start(TimeSpan frameDelay)

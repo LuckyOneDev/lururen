@@ -10,7 +10,7 @@
             {
             }
 
-            public override void Update()
+            public override void Update(double deltaTime)
             {
                 WasUpdated = true;
             }
@@ -57,7 +57,7 @@
             env.Init();
             TestEntity testEnt = new();
             env.AddEntityActive(testEnt, SVector3.Zero);
-            env.Update();
+            env.Update(1);
             Assert.True(testEnt.WasUpdated);
         }
 
