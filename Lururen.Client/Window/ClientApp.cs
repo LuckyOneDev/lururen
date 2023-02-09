@@ -3,7 +3,6 @@ using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
-using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 namespace Lururen.Client.Window

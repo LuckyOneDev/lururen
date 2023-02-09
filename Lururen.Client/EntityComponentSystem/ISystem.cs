@@ -1,7 +1,4 @@
-﻿using Lururen.Client.ECS.Planar.Systems;
-using Lururen.Client.Graphics;
-
-namespace Lururen.Client.EntityComponentSystem
+﻿namespace Lururen.Client.EntityComponentSystem
 {
     public interface ISystem<T> where T : IComponent
     {

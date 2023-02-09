@@ -1,6 +1,5 @@
 ﻿using Lururen.Client.Graphics.Generic;
 using Lururen.Client.ResourceManagement;
-using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 
 namespace Lururen.Client.Graphics.Texturing

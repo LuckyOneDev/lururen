@@ -1,6 +1,5 @@
 ﻿using Lururen.Client.Graphics;
 using OpenTK.Mathematics;
-using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 namespace Lururen.Client.Input
@@ -10,8 +9,8 @@ namespace Lururen.Client.Input
     public class InputManager
     {
         Game Window { get; set; }
-        public InputManager(Game Window) 
-        { 
+        public InputManager(Game Window)
+        {
             this.Window = Window;
         }
 

@@ -1,10 +1,4 @@
-﻿using Lururen.Client.EntityComponentSystem;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Lururen.Client.EntityComponentSystem.Planar.Components;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {

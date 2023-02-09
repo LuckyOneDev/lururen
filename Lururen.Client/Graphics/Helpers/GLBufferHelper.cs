@@ -1,11 +1,5 @@
-﻿using Lururen.Client.Graphics.Shapes;
-using Lururen.Client.ResourceManagement;
-using Newtonsoft.Json.Linq;
+﻿using Lururen.Client.ResourceManagement;
 using OpenTK.Graphics.OpenGL4;
-using System;
-using System.Diagnostics.Metrics;
-using System.Dynamic;
-using System.Reflection;
 
 namespace Lururen.Client.Graphics.Helpers
 {

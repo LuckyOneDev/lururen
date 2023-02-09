@@ -1,14 +1,4 @@
-﻿using Lururen.Client.ECS.Planar.Systems;
-using Lururen.Client.Graphics.Shapes;
-using Lururen.Common.EntitySystem;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lururen.Client.EntityComponentSystem
+﻿namespace Lururen.Client.EntityComponentSystem
 {
     public class EntityManager
     {

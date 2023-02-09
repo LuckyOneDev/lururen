@@ -1,5 +1,4 @@
-﻿using Lururen.Client.EntityComponentSystem;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
+﻿using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
 using Lururen.Client.Graphics.Shapes;
@@ -9,7 +8,6 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 using StbImageSharp;
-using System.Diagnostics;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {

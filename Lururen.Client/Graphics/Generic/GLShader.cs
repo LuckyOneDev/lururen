@@ -1,11 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
+﻿using Lururen.Common;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Reflection;
-using Lururen.Common;
 
 namespace Lururen.Client.Graphics.Generic
 {

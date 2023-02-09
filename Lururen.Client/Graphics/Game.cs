@@ -1,13 +1,6 @@
-﻿using Lururen.Client.Input;
-using OpenTK.Graphics.OpenGL4;
+﻿using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
-using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lururen.Client.Graphics
 {
@@ -25,7 +18,7 @@ namespace Lururen.Client.Graphics
                     ResizeEvent onResize,
                     Action onLoad,
                     GameWindowSettings gameWindowSettings,
-                    NativeWindowSettings nativeWindowSettings) 
+                    NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
             OnUpdate = onUpdateFrame;
