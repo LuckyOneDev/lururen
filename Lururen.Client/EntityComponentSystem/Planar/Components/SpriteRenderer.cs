@@ -16,7 +16,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
 
         protected GLRect Rect { get; set; }
 
-        public SpriteRenderer(Texture2D texture)
+        public SpriteRenderer(Entity entity, Texture2D texture) : base(entity)
         {
             Texture = texture;
             Renderer2D.GetInstance().Register(this);

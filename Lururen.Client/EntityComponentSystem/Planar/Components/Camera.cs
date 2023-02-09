@@ -1,13 +1,17 @@
 ﻿using Lururen.Client.EntityComponentSystem.Planar.Systems;
+using Lururen.Common.EntitySystem;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Components
 {
+    /// <summary>
+    /// Component whitch
+    /// </summary>
     public class Camera : Component2D
     {
-        public Camera()
+        public Camera(Entity entity) : base(entity)
         {
             Camera2DSystem.GetInstance().Register(this);
         }

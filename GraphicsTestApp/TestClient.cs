@@ -1,14 +1,14 @@
-﻿using Lururen.Client.ECS;
-using Lururen.Client.ECS.Planar.Components;
-using Lururen.Client.Graphics.Generic;
-using OpenTK.Windowing.GraphicsLibraryFramework;
+﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using ResourceLocation = Lururen.Client.ResourceManagement.ResourceLocation;
 using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;
+using Lururen.Client.EntityComponentSystem.Planar.Components;
 
 #if DEBUG
+
 using System.Diagnostics;
+
 #endif
 
 namespace GraphicsTestApp
@@ -17,7 +17,7 @@ namespace GraphicsTestApp
     {
         public ImageEntity(Texture2D texture)
         {
-            AddComponent(new SpriteRenderer(texture));
+            AddComponent(new SpriteRenderer(this, texture));
         }
     }
 
@@ -26,20 +26,20 @@ namespace GraphicsTestApp
         public PlayerEntity() : base()
         {
             var texture = new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded);
-            var spriteRenderer = new SpriteRenderer(texture);
+            var spriteRenderer = new SpriteRenderer(this, texture);
             AddComponent(spriteRenderer);
-            AddComponent(new Camera());
+            AddComponent(new Camera(this));
             spriteRenderer.Pivot = new OpenTK.Mathematics.Vector2(0.5f, 0.5f);
         }
     }
 
     public class TestClient : ClientApp
     {
-        const float camSpeed = 1000f;
+        private const float camSpeed = 1000f;
+
         public override void Update(double deltaTime)
         {
             base.Update(deltaTime);
-
 
             if (InputManager.IsKeyDown(Keys.Escape))
             {
@@ -77,7 +77,7 @@ namespace GraphicsTestApp
                     {
                         ents.ForEach(x => x.Dispose());
                         ents.Clear();
-                    } 
+                    }
                     else
                     {
                         var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
@@ -92,14 +92,13 @@ namespace GraphicsTestApp
                             }
                         }
                     }
-                    
                 }
             }
-
         }
 
-        List<ImageEntity> ents = new();
-        PlayerEntity player;
+        private List<ImageEntity> ents = new();
+        private PlayerEntity player;
+
         public override void Init()
         {
             base.Init();
@@ -109,9 +108,9 @@ namespace GraphicsTestApp
         public override void Render(double deltaTime)
         {
             base.Render(deltaTime);
-            #if DEBUG
-                Debug.WriteLine(1 / deltaTime); // fps
-            #endif
+#if DEBUG
+            Debug.WriteLine(1 / deltaTime); // fps
+#endif
         }
     }
 }

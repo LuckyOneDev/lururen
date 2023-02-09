@@ -6,7 +6,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar
     {
         public Entity2D()
         {
-            Transform = new Transform2D();
+            Transform = new Transform2D(this);
             AddComponent(Transform);
         }
 
