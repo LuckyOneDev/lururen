@@ -3,7 +3,7 @@ using Lururen.Client.Graphics;
 
 namespace Lururen.Client.ECS
 {
-    public interface ISystem<T> where T : Component
+    public interface ISystem<T> where T : IComponent
     {
         public void Register(T component);
         public void Unregister(T component);

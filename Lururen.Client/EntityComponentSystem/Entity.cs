@@ -2,6 +2,11 @@
 {
     public class Entity : IDisposable
     {
+        public Entity() 
+        {
+            EntityManager.GetInstance().AddEntity(this);
+        }
+
         public Guid Id { get; set; } = Guid.NewGuid();
 
         List<Component> Components = new List<Component>();
@@ -26,6 +31,7 @@
         public virtual void Dispose()
         {
             Components.ForEach(x => x.Dispose());
+            EntityManager.GetInstance().RemoveEntity(this);
         }
     }
 }

@@ -20,7 +20,13 @@ namespace Lururen.Client.Graphics
         private ResizeEvent OnResizeWindow { get; set; }
         private Action OnLoadEvent { get; set; }
 
-        public Game(FrameUpdateEvent onUpdateFrame, FrameUpdateEvent onRender, ResizeEvent onResize, Action onLoad) : base(GameWindowSettings.Default, NativeWindowSettings.Default)
+        public Game(FrameUpdateEvent onUpdateFrame,
+                    FrameUpdateEvent onRender,
+                    ResizeEvent onResize,
+                    Action onLoad,
+                    GameWindowSettings gameWindowSettings,
+                    NativeWindowSettings nativeWindowSettings) 
+            : base(gameWindowSettings, nativeWindowSettings)
         {
             OnUpdate = onUpdateFrame;
             OnRender = onRender;

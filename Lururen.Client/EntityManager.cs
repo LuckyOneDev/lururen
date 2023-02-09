@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.ECS;
+using Lururen.Client.ECS.Planar.Systems;
 using Lururen.Client.Graphics.Shapes;
 using Lururen.Common.EntitySystem;
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -12,19 +13,30 @@ namespace Lururen.Client
 {
     public class EntityManager
     {
-        protected List<Entity> Entities { get; set; } = new();
-        public EntityManager() { }
+        protected Dictionary<Guid, Entity> Entities { get; set; } = new();
 
-        public T GetEntityByType<T>() where T : Entity => (T)Entities.Find(x => x.GetType() == typeof(T));
+        #region Singleton
+        private static EntityManager instance;
+
+        private EntityManager() { }
+
+        public static EntityManager GetInstance()
+        {
+            instance ??= new EntityManager();
+            return instance;
+        }
+        #endregion
+
+        public T GetEntityByType<T>() where T : Entity => (T)Entities.Values.FirstOrDefault(x => x.GetType() == typeof(T));
 
         public void AddEntity(Entity ent)
         {
-            Entities.Add(ent);
+            Entities.Add(ent.Id, ent);
         }
 
         public void RemoveEntity(Entity ent)
         {
-            Entities.Remove(ent);
+            Entities.Remove(ent.Id);
         }
     }
 }

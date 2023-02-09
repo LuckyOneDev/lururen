@@ -7,7 +7,7 @@ using OpenTK.Mathematics;
 
 namespace Lururen.Client.ECS.Planar.Components
 {
-    public class SpriteRenderer : Component2D
+    public class SpriteRenderer : Component2D, IRenderer
     {
         public Texture2D Texture { get; set; }
         public Vector2 Pivot { get; set; } = Vector2.Zero;

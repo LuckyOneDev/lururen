@@ -10,12 +10,6 @@ namespace Lururen.Client.Graphics
 {
     public static class OpenGLHelper
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="bufferTarget"></param>
-        /// <returns></returns>
         public static int InitBuffer<T>(T[] data,
                                         BufferTarget bufferTarget,
                                         BufferUsageHint bufferUsageHint = BufferUsageHint.DynamicDraw) where T : struct
@@ -26,9 +20,7 @@ namespace Lururen.Client.Graphics
             return buffer;
         }
 
-        public static int InitBuffer(
-                                BufferTarget bufferTarget,
-                                BufferUsageHint bufferUsageHint = BufferUsageHint.DynamicDraw)
+        public static int InitBuffer(BufferTarget bufferTarget)
         {
             int buffer = GL.GenBuffer();
             GL.BindBuffer(bufferTarget, buffer);
@@ -36,23 +28,23 @@ namespace Lururen.Client.Graphics
         }
 
         public static void SetBuffer<T>(T[] data,
-                                         BufferTarget bufferTarget,
-                                         BufferUsageHint bufferUsageHint = BufferUsageHint.DynamicDraw) where T : struct
+                                        BufferTarget bufferTarget,
+                                        BufferUsageHint bufferUsageHint = BufferUsageHint.DynamicDraw) where T : struct
         {
             GL.BufferData(bufferTarget, data.Length * sizeof(float), data, bufferUsageHint);
         }
 
         public static void SetBuffer<T>(T[] data,
-                                 BufferTarget bufferTarget, int offset) where T : struct
+                                        BufferTarget bufferTarget,
+                                        int offset) where T : struct
         {
             GL.BufferSubData(bufferTarget, offset, data.Length * sizeof(float), data);
         }
 
-        public static int InitVertexArrayObject(Action<int>? callback = default)
+        public static int InitVertexArrayObject()
         {
             int VertexArrayObject = GL.GenVertexArray();
             GL.BindVertexArray(VertexArrayObject);
-            if (callback != null) callback(VertexArrayObject);
             return VertexArrayObject;
         }
 
@@ -72,17 +64,29 @@ namespace Lururen.Client.Graphics
                           PixelType.UnsignedByte,
                           image.Data);
             
-            if (textureParameters.GenerateMipMaps) GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+            if (textureParameters.GenerateMipMap) GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
             return textureHandle;
         }
 
         private static void SetTexParameters(TextureParameters textureParameters)
         {
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)textureParameters.TextureWrapS);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)textureParameters.TextureWrapT);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)textureParameters.TextureMinFilter);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)textureParameters.TextureMagFilter);
+            GL.TexParameter(
+                TextureTarget.Texture2D,
+                TextureParameterName.TextureWrapS,
+                (int)textureParameters.TextureWrapS);
+            GL.TexParameter(
+                TextureTarget.Texture2D,
+                TextureParameterName.TextureWrapT,
+                (int)textureParameters.TextureWrapT);
+            GL.TexParameter(
+                TextureTarget.Texture2D,
+                TextureParameterName.TextureMinFilter,
+                (int)textureParameters.TextureMinFilter);
+            GL.TexParameter(
+                TextureTarget.Texture2D,
+                TextureParameterName.TextureMagFilter,
+                (int)textureParameters.TextureMagFilter);
         }
 
         /// <summary>

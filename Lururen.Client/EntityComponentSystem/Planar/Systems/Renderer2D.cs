@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace Lururen.Client.ECS.Planar.Systems
 {
-    public class Renderer2D : ISystem<SpriteRenderer>
+    public class Renderer2D : IRenderSystem<SpriteRenderer>
     {
         #region Singleton
         private static Renderer2D instance;

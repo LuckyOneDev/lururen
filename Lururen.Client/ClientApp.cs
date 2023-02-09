@@ -1,25 +1,60 @@
 ﻿using Lururen.Client.ECS;
+using Lururen.Client.ECS.Planar.Components;
 using Lururen.Client.ECS.Planar.Systems;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
-
+using OpenTK.Windowing.Common;
+using OpenTK.Windowing.Desktop;
 
 namespace Lururen.Client
 {
     public class ClientApp
     {
         public Game? Window = null;
-        public InputManager Keyboard { get; private set; }
+        public InputManager InputManager { get; private set; }
         public EntityManager EntityManager { get; private set; }
-        public Renderer2D SpriteRenderer { get; private set; }
-        public CameraSystem CameraSystem { get; private set; }
-        public void Start()
+        public IRenderSystem<SpriteRenderer> RenderSystem { get; private set; }
+        public ISystem<Camera> CameraManager { get; private set; }
+        public WindowSettings Settings { get; private set; }
+
+        private GameWindowSettings GenerateGameWindowSettings()
         {
-            Window = new Game(Update, Render, Resize, Init);
-            this.SpriteRenderer = Renderer2D.GetInstance();
-            this.CameraSystem = CameraSystem.GetInstance();
-            this.Keyboard = new InputManager(Window);
-            this.EntityManager = new EntityManager();
+            GameWindowSettings gameWindowSettings = GameWindowSettings.Default;
+            gameWindowSettings.RenderFrequency = Settings.UpdateFrequency == default ? gameWindowSettings.RenderFrequency : Settings.UpdateFrequency;
+            gameWindowSettings.UpdateFrequency = Settings.UpdateFrequency == default ? gameWindowSettings.UpdateFrequency : Settings.UpdateFrequency;
+            return gameWindowSettings;
+        }
+
+        private NativeWindowSettings GenerateNativeWindowSettings()
+        {
+            NativeWindowSettings nativeWindowSettings = NativeWindowSettings.Default;
+            nativeWindowSettings.Title = Settings.Title == default ? nativeWindowSettings.Title : Settings.Title;
+            nativeWindowSettings.WindowState = Settings.WindowState == default ? nativeWindowSettings.WindowState : Settings.WindowState;
+            nativeWindowSettings.Icon = Settings.Icon == default ? nativeWindowSettings.Icon : Settings.Icon;
+            nativeWindowSettings.Size = Settings.Size == default ? nativeWindowSettings.Size : Settings.Size;
+
+            return nativeWindowSettings;
+        }
+
+        public void Start(WindowSettings settings = default)
+        {
+            this.Settings = settings;
+
+            Window = new Game(
+                Update, 
+                Render, 
+                Resize, 
+                Init,
+                GenerateGameWindowSettings(),
+                GenerateNativeWindowSettings());
+
+            Window.VSync = Settings.vSyncMode;
+
+            this.RenderSystem = Renderer2D.GetInstance();
+            this.CameraManager = CameraSystem.GetInstance();
+            this.InputManager = new InputManager(Window);
+            this.EntityManager = EntityManager.GetInstance();
+
             Window.Run();
         }
 
@@ -30,7 +65,7 @@ namespace Lururen.Client
 
         public virtual void Init()
         {
-            SpriteRenderer.Init(Window);
+            RenderSystem.Init(Window);
         }
 
         public virtual void Update(double deltaTime)
@@ -39,8 +74,8 @@ namespace Lururen.Client
 
         public virtual void Render(double deltaTime)
         {
-            this.CameraSystem.Update(deltaTime);
-            this.SpriteRenderer.Update(deltaTime);
+            this.CameraManager.Update(deltaTime);
+            this.RenderSystem.Update(deltaTime);
         }
 
         public virtual void Resize(int width, int height)

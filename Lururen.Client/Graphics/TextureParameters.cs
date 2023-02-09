@@ -15,7 +15,7 @@ namespace Lururen.Client.Graphics
         public TextureWrapMode TextureWrapS = TextureWrapMode.Repeat;
         public TextureWrapMode TextureWrapT = TextureWrapMode.Repeat;
 
-        public bool GenerateMipMaps = true;
+        public bool GenerateMipMap = true;
         public TextureParameters()
         {
         }

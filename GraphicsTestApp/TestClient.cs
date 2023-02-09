@@ -41,7 +41,7 @@ namespace GraphicsTestApp
             base.Update(deltaTime);
 
 
-            if (Keyboard.IsKeyDown(Keys.Escape))
+            if (InputManager.IsKeyDown(Keys.Escape))
             {
                 this.Window.Close();
             }
@@ -50,28 +50,28 @@ namespace GraphicsTestApp
 
             if (player is not null)
             {
-                if (Keyboard.IsKeyDown(Keys.Left))
+                if (InputManager.IsKeyDown(Keys.Left))
                 {
                     player.Transform.Position.X -= (float)deltaTime * camSpeed;
                 }
 
-                if (Keyboard.IsKeyDown(Keys.Right))
+                if (InputManager.IsKeyDown(Keys.Right))
                 {
                     player.Transform.Position.X += (float)deltaTime * camSpeed;
                 }
 
-                if (Keyboard.IsKeyDown(Keys.Up))
+                if (InputManager.IsKeyDown(Keys.Up))
                 {
                     player.Transform.Position.Y += (float)deltaTime * camSpeed;
                 }
 
-                if (Keyboard.IsKeyDown(Keys.Down))
+                if (InputManager.IsKeyDown(Keys.Down))
                 {
                     player.Transform.Position.Y -= (float)deltaTime * camSpeed;
                 }
 
                 // Test object disposal
-                if (Keyboard.IsKeyDown(Keys.F))
+                if (InputManager.IsKeyDown(Keys.F))
                 {
                     if (ents.Count != 0)
                     {
