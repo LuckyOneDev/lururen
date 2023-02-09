@@ -3,6 +3,11 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Lururen.Client
 {
+    /// <summary>
+    /// Provides reference wrapper for usage in generic classes such as List, Dictionary, etc...
+    /// Important! Does not check for null! Be careful when using.
+    /// </summary>
+    /// <typeparam name="T">Type reference to whitch is needed</typeparam>
     public class Ref<T> : IEquatable<Ref<T>>
     {
         private T? _value;
