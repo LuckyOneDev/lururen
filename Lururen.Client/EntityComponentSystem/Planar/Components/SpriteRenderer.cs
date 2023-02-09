@@ -1,12 +1,13 @@
-﻿using Lururen.Client.ECS.Planar.Systems;
+﻿using Lururen.Client.EntityComponentSystem;
 using Lururen.Client.EntityComponentSystem.Planar;
+using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using Lururen.Client.Graphics.Generic;
 using Lururen.Client.Graphics.Shapes;
 using Lururen.Client.Graphics.Texturing;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace Lururen.Client.ECS.Planar.Components
+namespace Lururen.Client.EntityComponentSystem.Planar.Components
 {
     public class SpriteRenderer : Component2D, IRenderer
     {
@@ -14,7 +15,7 @@ namespace Lururen.Client.ECS.Planar.Components
         public Vector2 Pivot { get; set; } = Vector2.Zero;
 
         internal static GLShader Shader = GLShader.FromResource("Lururen.Client.Graphics.Shaders.Texture2D");
-        
+
         protected GLRect Rect { get; set; }
 
         public SpriteRenderer(Texture2D texture)
@@ -29,7 +30,7 @@ namespace Lururen.Client.ECS.Planar.Components
             Rect = GLRect.FromSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
         }
 
-        private void ComputeShaderValues(Camera camera) 
+        private void ComputeShaderValues(Camera camera)
         {
             var correctedPosition = Transform.Position + camera.GetPositionCorrector() + new Vector2(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height);
             var correctedRotation = Transform.Rotation + camera.GetRotationCorrector();

@@ -1,7 +1,7 @@
 ﻿using Lururen.Common;
 using System.Reflection;
 
-namespace Lururen.Client
+namespace Lururen.Client.ResourceManagement
 {
     public record class FileAccessor
     {

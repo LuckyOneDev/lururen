@@ -1,7 +1,6 @@
-﻿using Lururen.Client.ECS;
-using Lururen.Client.ECS.Planar.Components;
-using Lururen.Client.ECS.Planar.Systems;
-using Lururen.Client.EntityComponentSystem;
+﻿using Lururen.Client.EntityComponentSystem;
+using Lururen.Client.EntityComponentSystem.Planar.Components;
+using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
 using OpenTK.Windowing.Common;

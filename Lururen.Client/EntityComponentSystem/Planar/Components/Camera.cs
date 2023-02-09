@@ -1,15 +1,15 @@
-﻿using Lururen.Client.ECS.Planar.Systems;
-using Lururen.Client.EntityComponentSystem.Planar;
+﻿using Lururen.Client.EntityComponentSystem.Planar;
+using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using Lururen.Client.Graphics.Generic;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
 
-namespace Lururen.Client.ECS.Planar.Components
+namespace Lururen.Client.EntityComponentSystem.Planar.Components
 {
     public class Camera : Component2D
     {
-        public Camera() 
+        public Camera()
         {
             Camera2DSystem.GetInstance().Register(this);
         }
@@ -48,7 +48,7 @@ namespace Lururen.Client.ECS.Planar.Components
         internal Vector2 GetPositionCorrector()
         {
             // Do not change. Works twice as fast this way
-            return new Vector2(-Transform.Position.X + ViewportSize.X / 2, -Transform.Position.Y + ViewportSize.Y / 2); 
+            return new Vector2(-Transform.Position.X + ViewportSize.X / 2, -Transform.Position.Y + ViewportSize.Y / 2);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

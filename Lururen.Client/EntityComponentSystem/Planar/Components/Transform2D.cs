@@ -1,12 +1,11 @@
-﻿
-using OpenTK.Mathematics;
+﻿using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.ECS.Planar.Components
+namespace Lururen.Client.EntityComponentSystem.Planar.Components
 {
     public class Transform2D : Component
     {

@@ -1,11 +1,12 @@
-﻿using Lururen.Client.ECS.Planar.Components;
+﻿using Lururen.Client.EntityComponentSystem;
+using Lururen.Client.EntityComponentSystem.Planar.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.ECS.Planar.Systems
+namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {
     public class Camera2DSystem : ISystem<Camera>
     {

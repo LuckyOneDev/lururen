@@ -1,12 +1,11 @@
-﻿using Lururen.Client;
-using Lururen.Client.ECS;
-using Lururen.Client.ECS.Planar;
+﻿using Lururen.Client.ECS;
 using Lururen.Client.ECS.Planar.Components;
 using Lururen.Client.Graphics.Generic;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using ResourceLocation = Lururen.Client.ResourceLocation;
+using ResourceLocation = Lururen.Client.ResourceManagement.ResourceLocation;
 using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Window;
+using Lururen.Client.EntityComponentSystem.Planar;
 
 #if DEBUG
 using System.Diagnostics;

@@ -1,7 +1,7 @@
 ﻿using Lururen.Client.Graphics.Generic;
 using Newtonsoft.Json.Linq;
 
-namespace Lururen.Client
+namespace Lururen.Client.ResourceManagement
 {
     public abstract class ResourceHandle<Value, Accessor> where Accessor : notnull
     {

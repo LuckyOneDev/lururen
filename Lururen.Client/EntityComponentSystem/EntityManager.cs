@@ -1,5 +1,4 @@
-﻿using Lururen.Client.ECS;
-using Lururen.Client.ECS.Planar.Systems;
+﻿using Lururen.Client.ECS.Planar.Systems;
 using Lururen.Client.Graphics.Shapes;
 using Lururen.Common.EntitySystem;
 using OpenTK.Windowing.GraphicsLibraryFramework;

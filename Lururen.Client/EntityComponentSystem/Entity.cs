@@ -1,10 +1,8 @@
-﻿using Lururen.Client.EntityComponentSystem;
-
-namespace Lururen.Client.ECS
+﻿namespace Lururen.Client.EntityComponentSystem
 {
     public class Entity : IDisposable
     {
-        public Entity() 
+        public Entity()
         {
             EntityManager.GetInstance().AddEntity(this);
         }

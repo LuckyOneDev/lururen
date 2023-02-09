@@ -1,4 +1,4 @@
-﻿namespace Lururen.Client.ECS
+﻿namespace Lururen.Client.EntityComponentSystem
 {
     public interface IComponent : IDisposable
     {
@@ -11,8 +11,8 @@
     {
         public Entity? Entity { get; set; }
 
-        public virtual void Init(Entity entity) 
-        { 
+        public virtual void Init(Entity entity)
+        {
             Entity = entity;
         }
 

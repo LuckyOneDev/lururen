@@ -1,4 +1,4 @@
-﻿namespace Lururen.Client.ECS.Planar.Components
+﻿namespace Lururen.Client.EntityComponentSystem.Planar.Components
 {
     public interface IRenderer : IComponent
     {
