@@ -1,6 +1,7 @@
 ﻿using Lururen.Client.ECS;
 using Lururen.Client.ECS.Planar.Components;
 using Lururen.Client.ECS.Planar.Systems;
+using Lururen.Client.EntityComponentSystem;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
 using OpenTK.Windowing.Common;
@@ -51,7 +52,7 @@ namespace Lururen.Client.Window
             Window.VSync = Settings.vSyncMode;
 
             RenderSystem = Renderer2D.GetInstance();
-            CameraManager = CameraSystem.GetInstance();
+            CameraManager = Camera2DSystem.GetInstance();
             InputManager = new InputManager(Window);
             EntityManager = EntityManager.GetInstance();
 

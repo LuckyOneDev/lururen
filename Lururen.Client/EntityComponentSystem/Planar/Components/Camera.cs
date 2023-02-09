@@ -1,5 +1,5 @@
-﻿using Lururen.Client.ECS;
-using Lururen.Client.ECS.Planar.Systems;
+﻿using Lururen.Client.ECS.Planar.Systems;
+using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.Graphics.Generic;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -11,7 +11,7 @@ namespace Lururen.Client.ECS.Planar.Components
     {
         public Camera() 
         {
-            CameraSystem.GetInstance().Register(this);
+            Camera2DSystem.GetInstance().Register(this);
         }
 
         public Vector2i ViewportSize { get; private set; }
@@ -41,7 +41,7 @@ namespace Lururen.Client.ECS.Planar.Components
         public static Camera? GetActiveCamera()
         {
             // Check for active instead
-            return CameraSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera));
+            return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

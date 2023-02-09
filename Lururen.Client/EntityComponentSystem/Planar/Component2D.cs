@@ -1,7 +1,8 @@
-﻿using Lururen.Client.ECS.Planar;
+﻿using Lururen.Client.ECS;
+using Lururen.Client.ECS.Planar;
 using Lururen.Client.ECS.Planar.Components;
 
-namespace Lururen.Client.ECS
+namespace Lururen.Client.EntityComponentSystem.Planar
 {
     public abstract class Component2D : Component
     {

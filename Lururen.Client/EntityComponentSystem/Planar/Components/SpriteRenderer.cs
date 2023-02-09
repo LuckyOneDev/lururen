@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.ECS.Planar.Systems;
+using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.Graphics.Generic;
 using Lururen.Client.Graphics.Shapes;
 using Lururen.Client.Graphics.Texturing;

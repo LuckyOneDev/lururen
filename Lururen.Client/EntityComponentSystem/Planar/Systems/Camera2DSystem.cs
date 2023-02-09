@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Lururen.Client.ECS.Planar.Systems
 {
-    public class CameraSystem : ISystem<Camera>
+    public class Camera2DSystem : ISystem<Camera>
     {
         #region Singleton
-        private static CameraSystem instance;
+        private static Camera2DSystem instance;
 
-        private CameraSystem() { }
+        private Camera2DSystem() { }
 
-        public static CameraSystem GetInstance()
+        public static Camera2DSystem GetInstance()
         {
             if (instance == null)
-                instance = new CameraSystem();
+                instance = new Camera2DSystem();
             return instance;
         }
         #endregion

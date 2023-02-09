@@ -1,7 +1,8 @@
-﻿using Lururen.Client.ECS.Planar.Components;
+﻿using Lururen.Client.ECS;
+using Lururen.Client.ECS.Planar.Components;
 using Lururen.Client.Graphics;
 
-namespace Lururen.Client.ECS.Planar.Systems
+namespace Lururen.Client.EntityComponentSystem
 {
     public interface IRenderSystem<T> : ISystem<T> where T : IRenderer
     {

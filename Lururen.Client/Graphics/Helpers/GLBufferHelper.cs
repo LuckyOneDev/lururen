@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.Graphics.Shapes;
+using Lururen.Client.ResourceManagement;
 using Newtonsoft.Json.Linq;
 using OpenTK.Graphics.OpenGL4;
 using System;

@@ -2,13 +2,14 @@
 using Lururen.Client.ECS;
 using Lururen.Client.ECS.Planar;
 using Lururen.Client.ECS.Planar.Components;
-using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 using ResourceLocation = Lururen.Client.ResourceLocation;
+using Lururen.Client.Graphics.Texturing;
+using Lururen.Client.Window;
 
 #if DEBUG
-    using System.Diagnostics;
+using System.Diagnostics;
 #endif
 
 namespace GraphicsTestApp

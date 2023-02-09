@@ -1,10 +1,9 @@
 ﻿using GraphicsTestApp;
 using Lururen.Client.ECS.Planar.Systems;
-
-var a = 24 + sizeof(float) * 16;
+using Lururen.Client.Window;
 
 var client = new TestClient();
-client.Start(new Lururen.Client.WindowSettings 
+client.Start(new WindowSettings 
 { 
     vSyncMode = OpenTK.Windowing.Common.VSyncMode.Adaptive
 });
