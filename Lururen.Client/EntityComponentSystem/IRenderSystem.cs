@@ -1,5 +1,4 @@
-﻿using Lururen.Client.EntityComponentSystem.Planar.Components;
-using Lururen.Client.Graphics;
+﻿using Lururen.Client.Graphics;
 
 namespace Lururen.Client.EntityComponentSystem
 {
