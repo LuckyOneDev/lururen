@@ -21,5 +21,10 @@ namespace Lururen.Client
         {
             Entities.Add(ent);
         }
+
+        public void RemoveEntity(Entity ent)
+        {
+            Entities.Remove(ent);
+        }
     }
 }

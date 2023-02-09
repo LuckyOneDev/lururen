@@ -37,14 +37,14 @@ namespace Lururen.Client.Graphics.Shapes
         {
             TopRightCorner = topRightCorner;
             BottomLeftCorner = bottomLeftCorner;
-            Index = BufferHelper.Add(BuildVertexArray(TopRightCorner, BottomLeftCorner));
+            Index.Value = BufferHelper.Add(BuildVertexArray(TopRightCorner, BottomLeftCorner));
         }
 
         public void SetSizes(float width, float height)
         {
             TopRightCorner = new Vector2(width, height);
             BottomLeftCorner = Vector2.Zero;
-            Index = BufferHelper.Set(Index, BuildVertexArray(TopRightCorner, BottomLeftCorner));
+            BufferHelper.Set(ref Index.Value, BuildVertexArray(TopRightCorner, BottomLeftCorner));
         }
 
         static GLRect()
@@ -62,7 +62,7 @@ namespace Lururen.Client.Graphics.Shapes
 
         protected static int VBO { get; set; }
         public static float[] VertexArray { get; private set; }
-        public int Index { get; private set; }
+        public Ref<int> Index { get; private set; } = new();
 
         #endregion OpenGL handles
 
@@ -76,7 +76,7 @@ namespace Lururen.Client.Graphics.Shapes
 
         public void Dispose()
         {
-            BufferHelper.Remove(Index);
+            BufferHelper.Remove(ref Index.Value);
         }
     }
 }

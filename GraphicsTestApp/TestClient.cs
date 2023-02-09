@@ -69,26 +69,41 @@ namespace GraphicsTestApp
                 {
                     player.Transform.Position.Y -= (float)deltaTime * camSpeed;
                 }
+
+                // Test object disposal
+                if (Keyboard.IsKeyDown(Keys.F))
+                {
+                    if (ents.Count != 0)
+                    {
+                        ents.ForEach(x => x.Dispose());
+                        ents.Clear();
+                    } 
+                    else
+                    {
+                        var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
+                        for (int j = 0; j < 100; j++)
+                        {
+                            for (int i = 0; i < 100; i++)
+                            {
+                                var ent = new ImageEntity(texture);
+                                ent.Transform.Position.X = i * texture.Width;
+                                ent.Transform.Position.Y = j * texture.Height;
+                                ents.Add(ent);
+                            }
+                        }
+                    }
+                    
+                }
             }
 
         }
 
+        List<ImageEntity> ents = new();
+
         public override void Init()
         {
             base.Init();
-
-            var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
             EntityManager.AddEntity(new PlayerEntity());
-
-            for (int j = 0; j < 100; j++)
-            {
-                for (int i = 0; i < 100; i++)
-                {
-                    var ent1 = new ImageEntity(texture);
-                    ent1.Transform.Position.X = i * texture.Width;
-                    ent1.Transform.Position.Y = j * texture.Height;
-                }
-            }
         }
 
         public override void Render(double deltaTime)

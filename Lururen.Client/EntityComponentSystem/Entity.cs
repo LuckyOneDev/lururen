@@ -1,6 +1,6 @@
 ﻿namespace Lururen.Client.ECS
 {
-    public class Entity
+    public class Entity : IDisposable
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -21,6 +21,11 @@
         public List<T> GetComponents<T>() where T : Component
         {
             return Components.FindAll(component => component.GetType().Equals(typeof(T))).Select(x => (T)x).ToList();
+        }
+
+        public virtual void Dispose()
+        {
+            Components.ForEach(x => x.Dispose());
         }
     }
 }

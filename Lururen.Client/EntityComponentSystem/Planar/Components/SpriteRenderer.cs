@@ -50,7 +50,7 @@ namespace Lururen.Client.ECS.Planar.Components
                 GLRect.indices.Length,
                 DrawElementsType.UnsignedInt,
                 0,
-                Rect.Index * 4); // I have no clue why is this 4. OpenGL is hard.
+                Rect.Index.Value * 4); // I have no clue why is this 4. OpenGL is hard.
         }
 
         public override void Update(double deltaTime)
@@ -60,6 +60,13 @@ namespace Lururen.Client.ECS.Planar.Components
                 // Size correction 
                 Rect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
             }
+        }
+
+        public override void Dispose()
+        {
+            Renderer2D.GetInstance().Unregister(this);
+            base.Dispose();
+            Rect.Dispose();
         }
     }
 }

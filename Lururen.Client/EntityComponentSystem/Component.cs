@@ -3,17 +3,24 @@ using Lururen.Client.ECS.Planar.Components;
 
 namespace Lururen.Client.ECS
 {
-    public class Component
+    public abstract class Component : IDisposable
     {
-        public Entity Entity { get; set; }
+        public Entity? Entity { get; set; }
+
         public virtual void Init(Entity entity) 
         { 
             Entity = entity;
         }
+
         public virtual void Update(double deltaTime) { }
+
+        public virtual void Dispose()
+        {
+            Entity = null;
+        }
     }
 
-    public class Component2D : Component
+    public abstract class Component2D : Component
     {
         public Transform2D Transform { get; set; }
         public override void Init(Entity entity)

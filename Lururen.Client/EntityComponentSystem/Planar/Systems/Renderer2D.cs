@@ -92,6 +92,11 @@ namespace Lururen.Client.ECS.Planar.Systems
             }
         }
 
+        public void Unregister(SpriteRenderer component)
+        {
+            Components.RemoveFromList(component);
+        }
+
         public static Vector2i WindowSize => Window.ClientSize;
     }
 }

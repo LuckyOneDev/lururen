@@ -3,7 +3,6 @@ using System;
 
 namespace Lururen.Client.Graphics.Shapes
 {
-    // LinkedList ?
     public class GLBufferHelper<T> where T : struct
     {
         public GLBufferHelper(uint[] Indices) 
@@ -16,53 +15,67 @@ namespace Lururen.Client.Graphics.Shapes
 
         private int counter = 0;
 
-        Dictionary<int, long> ReferenceCount = new();
-        Dictionary<int, T[]> BufferedData = new();
+        Dictionary<Ref<int>, long> ReferenceCount = new();
+        Dictionary<Ref<int>, T[]> BufferedData = new();
 
         public uint[] BaseIndices { get; }
 
-        public int Add(T[] value)
+        public ref int Add(T[] value)
         {
             var found = BufferedData.FirstOrDefault(x => Enumerable.SequenceEqual(value, x.Value));
             if (found.Value != null)
             {
                 ReferenceCount[found.Key]++;
-                return found.Key;
+                return ref found.Key.Value;
             } else
             {
-                BufferedData.Add(counter, value);
-                ReferenceCount.Add(counter, 1);
+                var indexRef = new Ref<int>(counter);
+                BufferedData.Add(indexRef, value);
+                ReferenceCount.Add(indexRef, 1);
                 counter++;
-                return counter - 1;
+                return ref indexRef.Value;
             }
         }
 
-        public int Set(int index, T[] value)
+        public void Set(ref int index, T[] value)
         {
-            if (ReferenceCount[index] > 1)
-            {
-                if (Enumerable.SequenceEqual(BufferedData[index], value)) return index;
+            var indexRef = new Ref<int>(ref index);
 
-                BufferedData.Add(counter, value);
-                ReferenceCount.Add(counter, 1);
-                ReferenceCount[index]--;
-                counter++;
-                return counter - 1;
+            if (ReferenceCount[indexRef] == 1)
+            {
+                BufferedData[indexRef] = value;
             } 
             else
             {
-                BufferedData[index] = value;
-                return index;
+                if (Enumerable.SequenceEqual(BufferedData[indexRef], value)) return;
+
+                var countRef = new Ref<int>(counter);
+
+                BufferedData.Add(countRef, value);
+                ReferenceCount.Add(countRef, 1);
+                ReferenceCount[indexRef]--;
+                counter++;
             }
         }
 
-        public void Remove(int index)
+        public void Remove(ref int index)
         {
-            ReferenceCount[index]--;
-            if (ReferenceCount[index] <= 0)
+            var indexRef = new Ref<int>(ref index);
+
+            ReferenceCount[indexRef]--;
+            if (ReferenceCount[indexRef] == 0)
             {
-                ReferenceCount.Remove(index);
-                BufferedData.Remove(index);
+                ReferenceCount.Remove(indexRef);
+                ReferenceCount.ToList()
+                    .ForEach(x => { if (x.Key.Value > indexRef.Value) x.Key.Value = x.Key.Value - 1; });
+
+                BufferedData.Remove(indexRef);
+                BufferedData.ToList()
+                    .ForEach(x => { if (x.Key.Value > indexRef.Value) x.Key.Value = x.Key.Value - 1; });
+
+                // Invalidate index just in case
+                index = -1;
+                counter--;
             }
         }
 
@@ -92,18 +105,6 @@ namespace Lururen.Client.Graphics.Shapes
             {
                 OpenGLHelper.SetBuffer(joinedData, BufferTarget.ArrayBuffer, 0);
             }
-        }
-
-        private uint[] GenIndices()
-        {
-            var genInd = new List<uint>();
-
-            for (uint i = 0; i < BufferedData.Count; i++)
-            {
-                genInd.AddRange(BaseIndices.Select(ind => ind + i * (uint)BaseIndices.Length));
-            }
-
-            return genInd.ToArray();
         }
     }
 }

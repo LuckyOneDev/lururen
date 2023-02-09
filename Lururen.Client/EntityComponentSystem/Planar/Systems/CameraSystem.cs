@@ -32,5 +32,10 @@ namespace Lururen.Client.ECS.Planar.Systems
         {
             Cameras.ForEach(camera => camera.Update(deltaTime));
         }
+
+        public void Unregister(Camera component)
+        {
+            Cameras.Remove(component);
+        }
     }
 }
