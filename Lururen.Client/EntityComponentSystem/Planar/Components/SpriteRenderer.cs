@@ -1,7 +1,7 @@
 ﻿using Lururen.Client.ECS.Planar.Systems;
-using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
 using Lururen.Client.Graphics.Shapes;
+using Lururen.Client.Graphics.Texturing;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 

@@ -6,7 +6,7 @@ using Lururen.Client.Input;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
-namespace Lururen.Client
+namespace Lururen.Client.Window
 {
     public class ClientApp
     {
@@ -38,22 +38,22 @@ namespace Lururen.Client
 
         public void Start(WindowSettings settings = default)
         {
-            this.Settings = settings;
+            Settings = settings;
 
             Window = new Game(
-                Update, 
-                Render, 
-                Resize, 
+                Update,
+                Render,
+                Resize,
                 Init,
                 GenerateGameWindowSettings(),
                 GenerateNativeWindowSettings());
 
             Window.VSync = Settings.vSyncMode;
 
-            this.RenderSystem = Renderer2D.GetInstance();
-            this.CameraManager = CameraSystem.GetInstance();
-            this.InputManager = new InputManager(Window);
-            this.EntityManager = EntityManager.GetInstance();
+            RenderSystem = Renderer2D.GetInstance();
+            CameraManager = CameraSystem.GetInstance();
+            InputManager = new InputManager(Window);
+            EntityManager = EntityManager.GetInstance();
 
             Window.Run();
         }
@@ -74,8 +74,8 @@ namespace Lururen.Client
 
         public virtual void Render(double deltaTime)
         {
-            this.CameraManager.Update(deltaTime);
-            this.RenderSystem.Update(deltaTime);
+            CameraManager.Update(deltaTime);
+            RenderSystem.Update(deltaTime);
         }
 
         public virtual void Resize(int width, int height)

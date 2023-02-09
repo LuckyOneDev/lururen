@@ -1,4 +1,6 @@
-﻿namespace Lururen.Client.ECS
+﻿using Lururen.Client.EntityComponentSystem;
+
+namespace Lururen.Client.ECS
 {
     public class Entity : IDisposable
     {

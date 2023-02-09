@@ -1,4 +1,6 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Lururen.Client.Graphics.Helpers;
+using Lururen.Client.Graphics.Texturing;
+using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 
 namespace Lururen.Client.Graphics.Generic

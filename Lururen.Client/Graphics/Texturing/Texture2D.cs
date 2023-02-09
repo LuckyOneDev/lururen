@@ -2,7 +2,7 @@
 using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 
-namespace Lururen.Client.Graphics
+namespace Lururen.Client.Graphics.Texturing
 {
     public class Texture2D
     {

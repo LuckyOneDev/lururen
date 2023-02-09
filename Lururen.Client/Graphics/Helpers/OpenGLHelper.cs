@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.Graphics
+namespace Lururen.Client.Graphics.Helpers
 {
     public static class OpenGLHelper
     {
@@ -53,7 +53,7 @@ namespace Lururen.Client.Graphics
             int textureHandle = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, textureHandle);
             SetTexParameters(textureParameters);
-            
+
             GL.TexImage2D(TextureTarget.Texture2D,
                           0,
                           PixelInternalFormat.Rgba,
@@ -63,7 +63,7 @@ namespace Lururen.Client.Graphics
                           PixelFormat.Rgba,
                           PixelType.UnsignedByte,
                           image.Data);
-            
+
             if (textureParameters.GenerateMipMap) GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
             return textureHandle;

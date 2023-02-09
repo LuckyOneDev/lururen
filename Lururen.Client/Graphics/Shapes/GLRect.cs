@@ -11,7 +11,7 @@ namespace Lururen.Client.Graphics.Shapes
                 1, 2, 3    // second triangle
         };
 
-        private static GLBufferHelper<float> BufferHelper { get; set; } = new(indices);
+        private static GLBufferHelper BufferHelper { get; set; } = new(indices);
 
         public static GLRect FromSizes(float width, float height)
         {

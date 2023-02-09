@@ -99,11 +99,11 @@ namespace GraphicsTestApp
         }
 
         List<ImageEntity> ents = new();
-
+        PlayerEntity player;
         public override void Init()
         {
             base.Init();
-            EntityManager.AddEntity(new PlayerEntity());
+            player = new PlayerEntity();
         }
 
         public override void Render(double deltaTime)

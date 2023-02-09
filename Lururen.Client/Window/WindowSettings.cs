@@ -2,7 +2,7 @@
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Common.Input;
 
-namespace Lururen.Client
+namespace Lururen.Client.Window
 {
     public struct WindowSettings
     {
