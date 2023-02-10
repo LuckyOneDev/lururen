@@ -15,7 +15,7 @@
         /// Init method is called only once after component is successufly registered in corresponding system.
         /// </summary>
         /// <param name="entity"></param>
-        public void Init(Entity entity);
+        public void Init();
 
         /// <summary>
         /// Called every time corresponding system needs to update this component.

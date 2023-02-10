@@ -9,7 +9,7 @@ namespace Lururen.Client.EntityComponentSystem
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public Entity? Entity { get; set; }
-        public bool Active { get; set; }
+        public bool Active { get; set; } = true;
 
         public Component(Entity entity)
         {
@@ -17,7 +17,7 @@ namespace Lururen.Client.EntityComponentSystem
             EntityComponentManager.GetInstance().AddComponent(this);
         }
 
-        public virtual void Init(Entity entity) { }
+        public virtual void Init() { }
 
         public virtual void Update(double deltaTime) { }
 

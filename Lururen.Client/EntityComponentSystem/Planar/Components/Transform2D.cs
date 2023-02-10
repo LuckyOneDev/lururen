@@ -12,7 +12,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
             float posX = 0,
             float posY = 0,
             float rotation = 0,
-            float scale = 0,
+            float scale = 1,
             int layer = 0) : base(entity)
         {
             Position = new Vector2(posX, posY);

@@ -8,7 +8,7 @@ namespace Lururen.Client.EntityComponentSystem
     public class Entity : IEntity<Component>
     {
 
-        private bool active = false;
+        private bool active;
 
         /// <summary>
         /// Gets or sets Active state of component.
@@ -27,6 +27,7 @@ namespace Lururen.Client.EntityComponentSystem
         public Entity()
         {
             EntityComponentManager.GetInstance().AddEntity(this);
+            Active = true;
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -35,7 +36,7 @@ namespace Lururen.Client.EntityComponentSystem
 
         public Component AddComponent(Component component)
         {
-            component.Init(this);
+            component.Init();
             Components.Add(component);
             component.Active = Active;
             return component;
