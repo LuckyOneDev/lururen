@@ -1,6 +1,15 @@
 ﻿namespace Lururen.Client.EntityComponentSystem
 {
-    public class Entity : IDisposable
+    public interface IEntity<T> : IDisposable where T : IComponent
+    {
+        public Guid Id { get; set; }
+        public T AddComponent(T component);
+        public T1? GetComponent<T1>() where T1 : T;
+        public List<T1> GetComponents<T1>() where T1 : T;
+        public void RemoveComponent(T component);
+    }
+
+    public class Entity : IEntity<Component>
     {
         public Entity()
         {
@@ -9,7 +18,7 @@
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        List<Component> Components = new List<Component>();
+        List<Component> Components { get; set; } = new List<Component>();
 
         public Component AddComponent(Component component)
         {
@@ -18,20 +27,26 @@
             return component;
         }
 
-        public T? GetComponent<T>() where T : Component
-        {
-            return (T?)Components.Find(component => component.GetType().Equals(typeof(T)));
-        }
-
-        public List<T> GetComponents<T>() where T : Component
-        {
-            return Components.FindAll(component => component.GetType().Equals(typeof(T))).Select(x => (T)x).ToList();
-        }
-
         public virtual void Dispose()
         {
             Components.ForEach(x => x.Dispose());
             EntityManager.GetInstance().RemoveEntity(this);
+        }
+
+        public T1? GetComponent<T1>() where T1 : Component
+        {
+            return (T1?)Components.Find(component => component.GetType().Equals(typeof(T1)));
+        }
+
+        public List<T1> GetComponents<T1>() where T1 : Component
+        {
+            return Components.FindAll(component => component.GetType().Equals(typeof(T1))).Select(x => (T1)x).ToList();
+        }
+
+        public void RemoveComponent(Component component)
+        {
+            Components.Remove(component);
+            component.Dispose();
         }
     }
 }

@@ -2,7 +2,7 @@
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-namespace Lururen.Client.Graphics.Shapes
+namespace Lururen.Client.Graphics.Generic
 {
     public class GLRect : IDisposable
     {

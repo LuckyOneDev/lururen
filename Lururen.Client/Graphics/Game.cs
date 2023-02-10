@@ -4,17 +4,17 @@ using OpenTK.Windowing.Desktop;
 
 namespace Lururen.Client.Graphics
 {
-    public delegate void FrameUpdateEvent(double deltaTime);
+    public delegate void UpdateEvent(double deltaTime);
     public delegate void ResizeEvent(int width, int height);
     public class Game : GameWindow
     {
-        private FrameUpdateEvent OnUpdate { get; set; }
-        private FrameUpdateEvent OnRender { get; set; }
+        private UpdateEvent OnUpdate { get; set; }
+        private UpdateEvent OnRender { get; set; }
         private ResizeEvent OnResizeWindow { get; set; }
         private Action OnLoadEvent { get; set; }
 
-        public Game(FrameUpdateEvent onUpdateFrame,
-                    FrameUpdateEvent onRender,
+        public Game(UpdateEvent onUpdateFrame,
+                    UpdateEvent onRender,
                     ResizeEvent onResize,
                     Action onLoad,
                     GameWindowSettings gameWindowSettings,
