@@ -39,8 +39,4 @@
     <ProjectReference Include="..\Lururen.Common\Lururen.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="EntityComponentSystem\Generic\" />
-  </ItemGroup>
-
 </Project>
