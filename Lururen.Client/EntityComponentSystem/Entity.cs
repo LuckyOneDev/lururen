@@ -26,7 +26,7 @@ namespace Lururen.Client.EntityComponentSystem
 
         public Entity()
         {
-            EntityManager.GetInstance().AddEntity(this);
+            EntityComponentManager.GetInstance().AddEntity(this);
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -44,7 +44,7 @@ namespace Lururen.Client.EntityComponentSystem
         public virtual void Dispose()
         {
             Components.ForEach(x => x.Dispose());
-            EntityManager.GetInstance().RemoveEntity(this);
+            EntityComponentManager.GetInstance().RemoveEntity(this);
         }
 
         public T1? GetComponent<T1>() where T1 : Component

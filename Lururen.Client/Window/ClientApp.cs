@@ -12,7 +12,7 @@ namespace Lururen.Client.Window
     {
         public Game? Window = null;
         public InputManager InputManager { get; private set; }
-        public EntityManager EntityManager { get; private set; }
+        public EntityComponentManager EntityManager { get; private set; }
         public IRenderSystem<SpriteRenderer> RenderSystem { get; private set; }
         public ISystem<Camera2D> CameraManager { get; private set; }
         public WindowSettings Settings { get; private set; }
@@ -53,7 +53,7 @@ namespace Lururen.Client.Window
             RenderSystem = Renderer2D.GetInstance();
             CameraManager = Camera2DSystem.GetInstance();
             InputManager = new InputManager(Window);
-            EntityManager = EntityManager.GetInstance();
+            EntityManager = EntityComponentManager.GetInstance();
 
             Window.Run();
         }

@@ -14,6 +14,7 @@ namespace Lururen.Client.EntityComponentSystem
         public Component(Entity entity)
         {
             Entity = entity;
+            EntityComponentManager.GetInstance().AddComponent(this);
         }
 
         public virtual void Init(Entity entity) { }
@@ -23,6 +24,7 @@ namespace Lururen.Client.EntityComponentSystem
         public virtual void Dispose()
         {
             Entity = null;
+            EntityComponentManager.GetInstance().RemoveComponent(this);
         }
     }
 }
