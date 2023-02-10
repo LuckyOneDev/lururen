@@ -20,18 +20,18 @@ namespace Lururen.Client.Window
         private GameWindowSettings GenerateGameWindowSettings()
         {
             GameWindowSettings gameWindowSettings = GameWindowSettings.Default;
-            gameWindowSettings.RenderFrequency = Settings.UpdateFrequency == default ? gameWindowSettings.RenderFrequency : Settings.UpdateFrequency;
-            gameWindowSettings.UpdateFrequency = Settings.UpdateFrequency == default ? gameWindowSettings.UpdateFrequency : Settings.UpdateFrequency;
+            gameWindowSettings.RenderFrequency = Settings.UpdateFrequency ?? gameWindowSettings.RenderFrequency;
+            gameWindowSettings.UpdateFrequency = Settings.UpdateFrequency ?? gameWindowSettings.UpdateFrequency;
             return gameWindowSettings;
         }
 
         private NativeWindowSettings GenerateNativeWindowSettings()
         {
             NativeWindowSettings nativeWindowSettings = NativeWindowSettings.Default;
-            nativeWindowSettings.Title = Settings.Title == default ? nativeWindowSettings.Title : Settings.Title;
-            nativeWindowSettings.WindowState = Settings.WindowState == default ? nativeWindowSettings.WindowState : Settings.WindowState;
-            nativeWindowSettings.Icon = Settings.Icon == default ? nativeWindowSettings.Icon : Settings.Icon;
-            nativeWindowSettings.Size = Settings.Size == default ? nativeWindowSettings.Size : Settings.Size;
+            nativeWindowSettings.Title = Settings.Title ?? nativeWindowSettings.Title;
+            nativeWindowSettings.WindowState = Settings.WindowState ?? nativeWindowSettings.WindowState;
+            nativeWindowSettings.Icon = Settings.Icon ?? nativeWindowSettings.Icon;
+            nativeWindowSettings.Size = Settings.Size ?? nativeWindowSettings.Size;
 
             return nativeWindowSettings;
         }
