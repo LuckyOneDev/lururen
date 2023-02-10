@@ -1,4 +1,4 @@
-﻿namespace Lururen.Client.EntityComponentSystem
+﻿namespace Lururen.Client.EntityComponentSystem.Generic
 {
     public interface IEntity<T> : IDisposable where T : IComponent
     {

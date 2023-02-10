@@ -1,4 +1,6 @@
-﻿namespace Lururen.Client.EntityComponentSystem
+﻿using Lururen.Client.EntityComponentSystem.Generic;
+
+namespace Lururen.Client.EntityComponentSystem
 {
 
     public abstract class Component : IComponent
