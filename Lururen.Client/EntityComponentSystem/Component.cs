@@ -7,6 +7,7 @@ namespace Lururen.Client.EntityComponentSystem
     /// </summary>
     public abstract class Component : IComponent
     {
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Entity? Entity { get; set; }
         public bool Active { get; set; }
 

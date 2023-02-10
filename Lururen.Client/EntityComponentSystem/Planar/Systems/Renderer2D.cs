@@ -74,7 +74,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         /// <returns></returns>
         protected static List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera2D camera)
         {
-            return sprites.AsParallel().Where(x => IsVisible(x, camera)).ToList();
+            return sprites.AsParallel().Where(x => IsVisible(x, camera) && x.Active).ToList();
         }
 
         /// <summary>

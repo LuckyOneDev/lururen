@@ -7,6 +7,23 @@ namespace Lururen.Client.EntityComponentSystem
     /// </summary>
     public class Entity : IEntity<Component>
     {
+
+        private bool active = false;
+
+        /// <summary>
+        /// Gets or sets Active state of component.
+        /// Also sets all child components equal to this value.
+        /// </summary>
+        public bool Active
+        {
+            get { return active; }
+            set 
+            { 
+                active = value;
+                Components.ForEach(x => x.Active = active);
+            }
+        }
+
         public Entity()
         {
             EntityManager.GetInstance().AddEntity(this);
@@ -20,6 +37,7 @@ namespace Lururen.Client.EntityComponentSystem
         {
             component.Init(this);
             Components.Add(component);
+            component.Active = Active;
             return component;
         }
 
