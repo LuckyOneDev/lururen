@@ -8,7 +8,7 @@ namespace Lururen.Client.EntityComponentSystem.Generic
     public interface IRenderer : IComponent
     {
         /// <summary>
-        /// Render event should be bound to corresponding system render frame event.
+        /// Render event is bound to corresponding system render frame event.
         /// </summary>
         /// <param name="camera"></param>
         public void Render(Camera2D camera);

@@ -3,6 +3,9 @@ using Lururen.Client.EntityComponentSystem.Planar.Components;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {
+    /// <summary>
+    /// Handles cameras.
+    /// </summary>
     public class Camera2DSystem : ISystem<Camera2D>
     {
         #region Singleton
