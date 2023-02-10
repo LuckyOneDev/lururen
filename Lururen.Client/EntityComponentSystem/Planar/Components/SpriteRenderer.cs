@@ -30,7 +30,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="texture"></param>
-        public SpriteRenderer(Entity entity, Texture2D texture) : base(entity)
+        public SpriteRenderer(Entity2D entity, Texture2D texture) : base(entity)
         {
             Texture = texture;
             Renderer2D.GetInstance().Register(this);

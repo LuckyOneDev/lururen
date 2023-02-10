@@ -10,7 +10,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
     /// </summary>
     public class Camera2D : Component2D
     {
-        public Camera2D(Entity entity) : base(entity)
+        public Camera2D(Entity2D entity) : base(entity)
         {
             Camera2DSystem.GetInstance().Register(this);
         }
