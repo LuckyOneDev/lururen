@@ -8,9 +8,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
     /// <summary>
     /// Component whitch
     /// </summary>
-    public class Camera : Component2D
+    public class Camera2D : Component2D
     {
-        public Camera(Entity entity) : base(entity)
+        public Camera2D(Entity entity) : base(entity)
         {
             Camera2DSystem.GetInstance().Register(this);
         }
@@ -39,10 +39,10 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
             GL.Viewport(0, 0, ViewportSize.X, ViewportSize.Y);
         }
 
-        public static Camera? GetActiveCamera()
+        public static Camera2D? GetActiveCamera()
         {
             // Check for active instead
-            return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera));
+            return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera2D));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

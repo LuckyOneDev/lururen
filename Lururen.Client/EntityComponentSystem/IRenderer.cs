@@ -4,6 +4,6 @@ namespace Lururen.Client.EntityComponentSystem
 {
     public interface IRenderer : IComponent
     {
-        public void Render(Camera camera);
+        public void Render(Camera2D camera);
     }
 }

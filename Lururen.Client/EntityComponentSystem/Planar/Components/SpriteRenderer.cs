@@ -27,7 +27,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
             Rect = GLRect.FromSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
         }
 
-        private void ComputeShaderValues(Camera camera)
+        private void ComputeShaderValues(Camera2D camera)
         {
             var correctedPosition = Transform.Position + camera.GetPositionCorrector() + new Vector2(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height);
             var correctedRotation = Transform.Rotation + camera.GetRotationCorrector();
@@ -41,7 +41,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
             Shader.SetMatrix4("projection", projection);
         }
 
-        public void Render(Camera camera)
+        public void Render(Camera2D camera)
         {
             ComputeShaderValues(camera);
             GL.DrawElementsBaseVertex(

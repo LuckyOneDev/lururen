@@ -39,7 +39,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             Components.AddOrCreateList(component.Texture.Accessor, component);
         }
 
-        protected static bool IsVisible(SpriteRenderer spriteRenderer, Camera camera)
+        protected static bool IsVisible(SpriteRenderer spriteRenderer, Camera2D camera)
         {
             RectangleF spriteRect = new(
                 spriteRenderer.Transform.Position.X,
@@ -58,7 +58,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             return viewRect.IntersectsWith(spriteRect);
         }
 
-        protected static List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera camera)
+        protected static List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera2D camera)
         {
             return sprites.AsParallel().Where(x => IsVisible(x, camera)).ToList();
         }
@@ -69,7 +69,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         /// <param name="deltaTime"></param>
         public void Update(double deltaTime)
         {
-            var camera = Camera.GetActiveCamera();
+            var camera = Camera2D.GetActiveCamera();
 
             if (camera != null)
             {

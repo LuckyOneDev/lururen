@@ -13,7 +13,7 @@ namespace Lururen.Client.Window
         public InputManager InputManager { get; private set; }
         public EntityManager EntityManager { get; private set; }
         public IRenderSystem<SpriteRenderer> RenderSystem { get; private set; }
-        public ISystem<Camera> CameraManager { get; private set; }
+        public ISystem<Camera2D> CameraManager { get; private set; }
         public WindowSettings Settings { get; private set; }
 
         private GameWindowSettings GenerateGameWindowSettings()

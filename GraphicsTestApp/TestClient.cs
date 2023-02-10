@@ -28,7 +28,7 @@ namespace GraphicsTestApp
             var texture = new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded);
             var spriteRenderer = new SpriteRenderer(this, texture);
             AddComponent(spriteRenderer);
-            AddComponent(new Camera(this));
+            AddComponent(new Camera2D(this));
             spriteRenderer.Pivot = new OpenTK.Mathematics.Vector2(0.5f, 0.5f);
         }
     }

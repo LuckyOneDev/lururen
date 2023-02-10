@@ -2,7 +2,7 @@
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {
-    public class Camera2DSystem : ISystem<Camera>
+    public class Camera2DSystem : ISystem<Camera2D>
     {
         #region Singleton
         private static Camera2DSystem instance;
@@ -17,8 +17,8 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         }
         #endregion
 
-        public List<Camera> Cameras = new();
-        public void Register(Camera component)
+        public List<Camera2D> Cameras = new();
+        public void Register(Camera2D component)
         {
             Cameras.Add(component);
         }
@@ -28,7 +28,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             Cameras.ForEach(camera => camera.Update(deltaTime));
         }
 
-        public void Unregister(Camera component)
+        public void Unregister(Camera2D component)
         {
             Cameras.Remove(component);
         }
