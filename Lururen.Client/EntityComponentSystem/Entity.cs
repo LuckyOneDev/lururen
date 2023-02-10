@@ -2,7 +2,9 @@
 
 namespace Lururen.Client.EntityComponentSystem
 {
-
+    /// <summary>
+    /// Default implementation of IEntity<Component> interface.
+    /// </summary>
     public class Entity : IEntity<Component>
     {
         public Entity()

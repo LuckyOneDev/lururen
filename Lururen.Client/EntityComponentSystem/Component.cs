@@ -2,7 +2,9 @@
 
 namespace Lururen.Client.EntityComponentSystem
 {
-
+    /// <summary>
+    /// Default implementation of IComponent interface.
+    /// </summary>
     public abstract class Component : IComponent
     {
         public Entity? Entity { get; set; }
