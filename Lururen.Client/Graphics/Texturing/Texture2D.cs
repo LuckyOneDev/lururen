@@ -10,11 +10,10 @@ namespace Lururen.Client.Graphics.Texturing
         internal FileAccessor Accessor;
         public Texture2D(string path, ResourceLocation location = ResourceLocation.FileSystem)
         {
-            Accessor = new FileAccessor()
-            {
-                Path = path,
-                ResourceLocation = location
-            };
+            Accessor = new FileAccessor(
+                Path: path,
+                ResourceLocation: location
+            );
 
             var texture = FileHandle<GLTexture>.GetInstance().Get(Accessor);
             Width = texture.Width;
