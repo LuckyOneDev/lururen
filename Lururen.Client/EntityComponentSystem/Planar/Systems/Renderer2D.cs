@@ -1,7 +1,7 @@
-﻿using Lururen.Client.EntityComponentSystem.Planar.Components;
+﻿using Lururen.Client.EntityComponentSystem.Generic;
+using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
-using Lururen.Client.Graphics.Shapes;
 using Lururen.Client.ResourceManagement;
 using Lururen.Common.Extensions;
 using OpenTK.Graphics.OpenGL4;
@@ -11,6 +11,10 @@ using StbImageSharp;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {
+    /// <summary>
+    /// Implements rendering pipeline. 
+    /// Calls SpriteRenderers with needed optmizations.
+    /// </summary>
     public class Renderer2D : IRenderSystem<SpriteRenderer>
     {
         #region Singleton
@@ -30,7 +34,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 
         public void Init(Game window)
         {
-            GL.Enable(EnableCap.DepthTest);
+            // Enable depth test.
+            GL.Enable(EnableCap.DepthTest); 
+            // Initialize imaging library. So images are compactible with OpenGL
             StbImage.stbi_set_flip_vertically_on_load(1);
             Window = window;
         }
@@ -40,7 +46,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             Components.AddOrCreateList(component.Texture.Accessor, component);
         }
 
-        protected static bool IsVisible(SpriteRenderer spriteRenderer, Camera camera)
+        protected static bool IsVisible(SpriteRenderer spriteRenderer, Camera2D camera)
         {
             RectangleF spriteRect = new(
                 spriteRenderer.Transform.Position.X,
@@ -59,7 +65,14 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             return viewRect.IntersectsWith(spriteRect);
         }
 
-        protected static List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera camera)
+        /// <summary>
+        /// Determines whitch part of sprite collecton is visible and
+        /// therefore should be rendered.
+        /// </summary>
+        /// <param name="sprites"></param>
+        /// <param name="camera"></param>
+        /// <returns></returns>
+        protected static List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera2D camera)
         {
             return sprites.AsParallel().Where(x => IsVisible(x, camera)).ToList();
         }
@@ -70,7 +83,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         /// <param name="deltaTime"></param>
         public void Update(double deltaTime)
         {
-            var camera = Camera.GetActiveCamera();
+            var camera = Camera2D.GetActiveCamera();
 
             if (camera != null)
             {
@@ -97,6 +110,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             Components.RemoveFromList(component);
         }
 
+        /// <summary>
+        /// Size of current game window.
+        /// </summary>
         public static Vector2i WindowSize => Window.ClientSize;
     }
 }

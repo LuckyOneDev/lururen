@@ -1,10 +1,23 @@
-﻿namespace Lururen.Client.ResourceManagement
+﻿using System.Collections.ObjectModel;
+
+namespace Lururen.Client.ResourceManagement
 {
+    /// <summary>
+    /// Base class for all resource handles.
+    /// Guarantees that only one instance of resource is created.
+    /// </summary>
+    /// <typeparam name="Value"></typeparam>
+    /// <typeparam name="Accessor"></typeparam>
     public abstract class ResourceHandle<Value, Accessor> where Accessor : notnull
     {
+        /// <summary>
+        /// Gets resource from memory or loads it.
+        /// </summary>
+        /// <param name="accessor"></param>
+        /// <returns></returns>
         public Value Get(Accessor accessor)
         {
-            var loaded = GetResourceLoaded(accessor);
+            var loaded = IsLoaded(accessor);
             if (!loaded)
             {
                 LoadResource(accessor);
@@ -12,14 +25,27 @@
             return GetResource(accessor);
         }
 
-        public abstract Dictionary<Accessor, Value> GetLoaded();
+        /// <summary>
+        /// Returns all loaded resources.
+        /// </summary>
+        /// <returns></returns>
+        public abstract ReadOnlyDictionary<Accessor, Value> GetLoadedResources();
 
-        public abstract bool GetResourceLoaded(Accessor acessor);
+        /// <summary>
+        /// Determines if resource is loaded into memory.
+        /// </summary>
+        /// <returns></returns>
+        public abstract bool IsLoaded(Accessor acessor);
+
+        /// <summary>
+        /// Unloads resource from memory.
+        /// </summary>
+        /// <returns></returns>
+        public abstract void UnloadResource(Accessor acessor);
 
         protected abstract Value GetResource(Accessor accessor);
 
         protected abstract void LoadResource(Accessor acessor);
 
-        protected abstract void UnloadResource(Accessor acessor);
     }
 }

@@ -6,22 +6,23 @@ using System.Runtime.CompilerServices;
 namespace Lururen.Client.EntityComponentSystem.Planar.Components
 {
     /// <summary>
-    /// Component whitch
+    /// Provides camera abstraction in 2D context.
     /// </summary>
-    public class Camera : Component2D
+    public class Camera2D : Component2D
     {
-        public Camera(Entity entity) : base(entity)
+        public Camera2D(Entity2D entity) : base(entity)
         {
             Camera2DSystem.GetInstance().Register(this);
         }
 
-        public Vector2i ViewportSize { get; private set; }
+        /// <summary>
+        /// Current visible part of the screen dimentions.
+        /// </summary>
+        public Vector2i ViewportSize { get; set; }
 
-        public void SetViewportSize(int width, int height)
-        {
-            ViewportSize = new Vector2i(width, height);
-        }
-
+        /// <summary>
+        /// Sets viewport size to screen size.
+        /// </summary>
         public void ResetViewportSize()
         {
             ViewportSize = Renderer2D.WindowSize;
@@ -39,10 +40,15 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
             GL.Viewport(0, 0, ViewportSize.X, ViewportSize.Y);
         }
 
-        public static Camera? GetActiveCamera()
+        /// <summary>
+        /// Gets first active camera. Note that if there are more than one active camera
+        /// it may return any of active cameras.
+        /// </summary>
+        /// <returns></returns>
+        public static Camera2D? GetActiveCamera()
         {
             // Check for active instead
-            return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera));
+            return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera2D));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

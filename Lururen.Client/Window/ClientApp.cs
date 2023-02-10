@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.EntityComponentSystem;
+using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using Lururen.Client.Graphics;
@@ -13,24 +14,24 @@ namespace Lururen.Client.Window
         public InputManager InputManager { get; private set; }
         public EntityManager EntityManager { get; private set; }
         public IRenderSystem<SpriteRenderer> RenderSystem { get; private set; }
-        public ISystem<Camera> CameraManager { get; private set; }
+        public ISystem<Camera2D> CameraManager { get; private set; }
         public WindowSettings Settings { get; private set; }
 
         private GameWindowSettings GenerateGameWindowSettings()
         {
             GameWindowSettings gameWindowSettings = GameWindowSettings.Default;
-            gameWindowSettings.RenderFrequency = Settings.UpdateFrequency == default ? gameWindowSettings.RenderFrequency : Settings.UpdateFrequency;
-            gameWindowSettings.UpdateFrequency = Settings.UpdateFrequency == default ? gameWindowSettings.UpdateFrequency : Settings.UpdateFrequency;
+            gameWindowSettings.RenderFrequency = Settings.UpdateFrequency ?? gameWindowSettings.RenderFrequency;
+            gameWindowSettings.UpdateFrequency = Settings.UpdateFrequency ?? gameWindowSettings.UpdateFrequency;
             return gameWindowSettings;
         }
 
         private NativeWindowSettings GenerateNativeWindowSettings()
         {
             NativeWindowSettings nativeWindowSettings = NativeWindowSettings.Default;
-            nativeWindowSettings.Title = Settings.Title == default ? nativeWindowSettings.Title : Settings.Title;
-            nativeWindowSettings.WindowState = Settings.WindowState == default ? nativeWindowSettings.WindowState : Settings.WindowState;
-            nativeWindowSettings.Icon = Settings.Icon == default ? nativeWindowSettings.Icon : Settings.Icon;
-            nativeWindowSettings.Size = Settings.Size == default ? nativeWindowSettings.Size : Settings.Size;
+            nativeWindowSettings.Title = Settings.Title ?? nativeWindowSettings.Title;
+            nativeWindowSettings.WindowState = Settings.WindowState ?? nativeWindowSettings.WindowState;
+            nativeWindowSettings.Icon = Settings.Icon ?? nativeWindowSettings.Icon;
+            nativeWindowSettings.Size = Settings.Size ?? nativeWindowSettings.Size;
 
             return nativeWindowSettings;
         }
@@ -47,7 +48,7 @@ namespace Lururen.Client.Window
                 GenerateGameWindowSettings(),
                 GenerateNativeWindowSettings());
 
-            Window.VSync = Settings.vSyncMode;
+            Window.VSync = Settings.vSyncMode ?? Window.VSync;
 
             RenderSystem = Renderer2D.GetInstance();
             CameraManager = Camera2DSystem.GetInstance();

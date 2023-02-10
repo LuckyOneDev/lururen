@@ -2,6 +2,9 @@
 
 namespace Lururen.Client.EntityComponentSystem.Planar
 {
+    /// <summary>
+    /// Entity with guranteed Transform2D created.
+    /// </summary>
     public class Entity2D : Entity
     {
         public Entity2D()

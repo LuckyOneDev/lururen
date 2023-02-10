@@ -1,13 +1,10 @@
-﻿namespace Lururen.Client.EntityComponentSystem
-{
-    public interface IComponent : IDisposable
-    {
-        public Entity? Entity { get; set; }
-        public void Init(Entity entity);
-        public void Update(double deltaTime);
-        public bool Active { get; set; }
-    }
+﻿using Lururen.Client.EntityComponentSystem.Generic;
 
+namespace Lururen.Client.EntityComponentSystem
+{
+    /// <summary>
+    /// Default implementation of IComponent interface.
+    /// </summary>
     public abstract class Component : IComponent
     {
         public Entity? Entity { get; set; }

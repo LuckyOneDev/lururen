@@ -1,5 +1,9 @@
 ﻿namespace Lururen.Client.ResourceManagement
 {
+    /// <summary>
+    /// Base class for everything that should manage shared objects.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class MemoryManager<T>
     {
         private int counter = 0;

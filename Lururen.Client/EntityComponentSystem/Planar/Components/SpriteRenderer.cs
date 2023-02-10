@@ -1,34 +1,47 @@
-﻿using Lururen.Client.EntityComponentSystem.Planar.Systems;
+﻿using Lururen.Client.EntityComponentSystem.Generic;
+using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using Lururen.Client.Graphics.Generic;
-using Lururen.Client.Graphics.Shapes;
 using Lururen.Client.Graphics.Texturing;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Components
 {
+    /// <summary>
+    /// Handles Texture2D rendering in 2D space.
+    /// </summary>
     public class SpriteRenderer : Component2D, IRenderer
     {
         public Texture2D Texture { get; set; }
+
+        /// <summary>
+        /// Normalized texture offset. E.g. [1,1] means that texture would appear one width to the right
+        /// and one texture height to the left.
+        /// [0,0] is default.
+        /// </summary>
         public Vector2 Pivot { get; set; } = Vector2.Zero;
 
         internal static GLShader Shader = GLShader.FromResource("Lururen.Client.Graphics.Shaders.Texture2D");
 
         protected GLRect Rect { get; set; }
 
-        public SpriteRenderer(Entity entity, Texture2D texture) : base(entity)
+        /// <summary>
+        /// Creates instance of SpriteRenderer.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="texture"></param>
+        public SpriteRenderer(Entity2D entity, Texture2D texture) : base(entity)
         {
             Texture = texture;
             Renderer2D.GetInstance().Register(this);
-        }
-
-        public override void Init(Entity ent)
-        {
-            base.Init(ent);
             Rect = GLRect.FromSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
         }
 
-        private void ComputeShaderValues(Camera camera)
+        /// <summary>
+        /// Computes shader unifroms and sets them.
+        /// </summary>
+        /// <param name="camera"></param>
+        private void ComputeShaderValues(Camera2D camera)
         {
             var correctedPosition = Transform.Position + camera.GetPositionCorrector() + new Vector2(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height);
             var correctedRotation = Transform.Rotation + camera.GetRotationCorrector();
@@ -42,9 +55,11 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
             Shader.SetMatrix4("projection", projection);
         }
 
-        public void Render(Camera camera)
+        public void Render(Camera2D camera)
         {
             ComputeShaderValues(camera);
+
+            // Buffer is guaranteed to be filled with data already.
             GL.DrawElementsBaseVertex(
                 PrimitiveType.Triangles,
                 GLRect.indices.Length,
@@ -55,11 +70,8 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
 
         public override void Update(double deltaTime)
         {
-            if (Transform != null)
-            {
-                // Size correction 
-                Rect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
-            }
+            // Size correction 
+            Rect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
         }
 
         public override void Dispose()

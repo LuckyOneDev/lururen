@@ -2,11 +2,18 @@
 
 namespace Lururen.Client.EntityComponentSystem.Planar
 {
+    /// <summary>
+    /// Component whitch relies on Entity2D's Transform2D component.
+    /// </summary>
     public abstract class Component2D : Component
     {
-        protected Component2D(Entity entity) : base(entity)
+        /// <summary>
+        /// Creates instance of Component2D.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <exception cref="Exception"></exception>
+        protected Component2D(Entity2D entity) : base(entity as Entity)
         {
-            if (entity is not Entity2D) throw new Exception();
             Transform = entity.GetComponent<Transform2D>()!;
         }
 
