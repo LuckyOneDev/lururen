@@ -1,20 +1,11 @@
-﻿using Lururen.Common;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Reflection;
+using Lururen.Common;
 
 namespace Lururen.Client.ResourceManagement
 {
-    public record class FileAccessor
-    {
-        public FileAccessor(string path, ResourceLocation location = ResourceLocation.FileSystem)
-        {
-            Path = path;
-            ResourceLocation = location;
-        }
+    public record FileAccessor(string Path, ResourceLocation ResourceLocation = ResourceLocation.FileSystem);
 
-        public string Path { get; init; }
-        public ResourceLocation ResourceLocation { get; init; }
-    }
     public enum ResourceLocation
     {
         FileSystem = 0,
