@@ -1,10 +1,17 @@
 ﻿using Lururen.Common;
+using System.Collections.ObjectModel;
 using System.Reflection;
 
 namespace Lururen.Client.ResourceManagement
 {
     public record class FileAccessor
     {
+        public FileAccessor(string path, ResourceLocation location = ResourceLocation.FileSystem)
+        {
+            Path = path;
+            ResourceLocation = location;
+        }
+
         public string Path { get; init; }
         public ResourceLocation ResourceLocation { get; init; }
     }
@@ -37,7 +44,7 @@ namespace Lururen.Client.ResourceManagement
 
         protected static Dictionary<FileAccessor, T> Loaded = new();
 
-        public override bool GetResourceLoaded(FileAccessor acessor)
+        public override bool IsLoaded(FileAccessor acessor)
         {
             return Loaded.ContainsKey(acessor);
         }
@@ -64,14 +71,14 @@ namespace Lururen.Client.ResourceManagement
             Loaded.Add(acessor, T.FromBytes(bytes));
         }
 
-        protected override void UnloadResource(FileAccessor acessor)
+        public override void UnloadResource(FileAccessor acessor)
         {
             Loaded.Remove(acessor);
         }
 
-        public override Dictionary<FileAccessor, T> GetLoaded()
+        public override ReadOnlyDictionary<FileAccessor, T> GetLoadedResources()
         {
-            return Loaded;
+            return Loaded.AsReadOnly();
         }
     }
 }
