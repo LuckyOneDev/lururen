@@ -48,7 +48,7 @@ namespace Lururen.Client.Window
                 GenerateGameWindowSettings(),
                 GenerateNativeWindowSettings());
 
-            Window.VSync = Settings.vSyncMode;
+            Window.VSync = Settings.vSyncMode ?? Window.VSync;
 
             RenderSystem = Renderer2D.GetInstance();
             CameraManager = Camera2DSystem.GetInstance();
