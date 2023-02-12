@@ -4,7 +4,7 @@ using OpenTK.Graphics.OpenGL4;
 namespace Lururen.Client.Graphics.Helpers
 {
 
-    public class GLBufferHelper : MemoryManager<float[]>
+    public class GLBufferHelper : SharedObjectManager<float[]>
     {
         public GLBufferHelper(uint[] Indices)
         {

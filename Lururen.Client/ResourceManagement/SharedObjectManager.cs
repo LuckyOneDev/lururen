@@ -7,7 +7,7 @@ namespace Lururen.Client.ResourceManagement
     /// Base class for everything that should manage shared objects.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class MemoryManager<T>
+    public abstract class SharedObjectManager<T>
     {
         protected List<(T Value, int ReferenceCount)> SharedObjects { get; set; } = new();
         protected Dictionary<int, int> IndexMapping { get; set; } = new();
