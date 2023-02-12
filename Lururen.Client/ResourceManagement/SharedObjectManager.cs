@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace Lururen.Client.ResourceManagement
 {
     /// <summary>
-    /// Base class for everything that should manage shared objects.
+    /// Collection that uses less space in memory by storing only unique objects giving non-changing indexes to them.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class SharedObjectManager<T>
@@ -12,7 +12,10 @@ namespace Lururen.Client.ResourceManagement
         protected List<(T Value, int ReferenceCount)> SharedObjects { get; set; } = new();
         protected Dictionary<int, int> IndexMapping { get; set; } = new();
 
-        int maxIndex = -1;
+        /// <summary>
+        /// Maximum index reached in mapping
+        /// </summary>
+        int maxMappingIndex = -1;
 
         protected abstract bool CheckEquality(T a, T b);
 
@@ -22,17 +25,15 @@ namespace Lururen.Client.ResourceManagement
             var actualIndex = SharedObjects.FindIndex(x => CheckEquality(x.Value, value));
             if (actualIndex == -1) // Entry not found
             {
-                // Add new entry
-
                 // Create new mapping entry
-                maxIndex++;
-                IndexMapping[maxIndex] = SharedObjects.Count;
+                maxMappingIndex++;
+                IndexMapping[maxMappingIndex] = SharedObjects.Count;
 
                 // Add data to memory with reference count = 1
                 SharedObjects.Add((value, 1));
 
-                Debug.WriteLine($"Add {maxIndex}");
-                return maxIndex;
+                Debug.WriteLine($"Add {maxMappingIndex}");
+                return maxMappingIndex;
             } 
             else
             {
