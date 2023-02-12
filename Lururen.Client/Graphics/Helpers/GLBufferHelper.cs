@@ -16,7 +16,7 @@ namespace Lururen.Client.Graphics.Helpers
 
         protected float[] GetJoined()
         {
-            return MemoryData.SelectMany(x => x.Item1).ToArray();
+            return SharedObjects.SelectMany(x => x.Item1).ToArray();
         }
 
         public void SetBuffers()
