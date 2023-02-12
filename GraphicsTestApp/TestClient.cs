@@ -97,7 +97,7 @@ namespace GraphicsTestApp
                     var ent = new ImageEntity(texture);
                     ent.Transform.Position.X = player.Transform.Position.X;
                     ent.Transform.Position.Y = player.Transform.Position.Y;
-                    ent.Transform.Scale = 1f / rand.Next(1, 4);
+                    ent.Transform.Scale = 1f / rand.Next(1, 10);
                     ent.Transform.Rotation = rand.Next(0, 360) / 360f;
                     ents.Enqueue(ent);
                 }
@@ -123,7 +123,7 @@ namespace GraphicsTestApp
         {
             base.Render(deltaTime);
 #if DEBUG
-            Debug.WriteLine(1 / deltaTime); // fps
+            //Debug.WriteLine(1 / deltaTime); // fps
 #endif
         }
     }

@@ -81,6 +81,6 @@ namespace Lururen.Client.Graphics.Generic
             BufferHelper.Remove(Index);
         }
 
-        internal int GetBufferOffset() => BufferHelper.GetIndex(Index);
+        internal int GetBufferOffset() => BufferHelper.GetInnerIndex(Index);
     }
 }

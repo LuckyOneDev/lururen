@@ -1,4 +1,7 @@
-﻿namespace Lururen.Client.ResourceManagement
+﻿using System;
+using System.Diagnostics;
+
+namespace Lururen.Client.ResourceManagement
 {
     /// <summary>
     /// Base class for everything that should manage shared objects.
@@ -6,86 +9,107 @@
     /// <typeparam name="T"></typeparam>
     public abstract class MemoryManager<T>
     {
-        protected List<(T, int)> MemoryData { get; set; } = new();
+        protected List<(T Value, int ReferenceCount)> MemoryData { get; set; } = new();
         protected Dictionary<int, int> Mapping { get; set; } = new();
+
+        int maxIndex = -1;
 
         protected abstract bool CheckEquality(T a, T b);
 
         public int Add(T value)
         {
             // Try to find index.
-            var index = MemoryData.FindIndex(x => CheckEquality(x.Item1, value));
-            if (index == -1) // Index not found
+            var actualIndex = MemoryData.FindIndex(x => CheckEquality(x.Value, value));
+            if (actualIndex == -1) // Entry not found
             {
                 // Add new entry
+
+                // Create new mapping entry
+                maxIndex++;
+                Mapping[maxIndex] = MemoryData.Count;
+
+                // Add data to memory with reference count = 1
                 MemoryData.Add((value, 1));
-                return MemoryData.Count - 1;
+
+                Debug.WriteLine($"Add {maxIndex}");
+                return maxIndex;
             } 
             else
             {
-                var (val, refCount) = MemoryData[index];
-                MemoryData[index] = (val, refCount + 1);
-                return index;
+                // Increase reference count
+                var (val, refCount) = MemoryData[actualIndex];
+                MemoryData[actualIndex] = (val, refCount + 1);
+
+                // Return mapped index
+                return Mapping.FirstOrDefault(x => x.Value == actualIndex).Key;
             }
         }
 
         public int Set(int index, T value)
         {
-            // Map index
-            int actualIndex = GetIndex(index);
-            
-            // If rewrite is not needed.
-            if (CheckEquality(MemoryData[actualIndex].Item1, value)) return actualIndex;
+            // Find actual index
+            int actualIndex = GetInnerIndex(index);
+
+            // If value is the same setting is not needed.
+            if (CheckEquality(MemoryData[actualIndex].Value, value)) return index;
 
             // If index is referenced more than once
-            if (MemoryData[actualIndex].Item2 > 1)
+            if (MemoryData[actualIndex].ReferenceCount > 1)
             {
-                // Decrease reference count
-                MemoryData[actualIndex] = (MemoryData[actualIndex].Item1, MemoryData[actualIndex].Item2 - 1);
-                // Add new entry (or find existing, which Add() does)
+                // Decrease reference counter
+                MemoryData[actualIndex] = (MemoryData[actualIndex].Value, MemoryData[actualIndex].ReferenceCount - 1);
+                // Add new entry (or find another existing, which Add() does)
                 return Add(value);
             } else
             {
                 // Just rewrite data
                 MemoryData[actualIndex] = (value, 1);
-                return actualIndex;
+                return index;
             }
         }
 
         public void Remove(int index)
         {
-            int actualIndex = GetIndex(index);
+            // Find actual index
+            int actualIndex = GetInnerIndex(index);
+
+            Debug.WriteLine($"Remove {index}");
+
+            // Decrease reference counter
             MemoryData[actualIndex] = (MemoryData[actualIndex].Item1, MemoryData[actualIndex].Item2 - 1);
-            if (MemoryData[actualIndex].Item2 == 0) // Noone references entry anymore
+
+            // Noone references entry anymore
+            if (MemoryData[actualIndex].ReferenceCount == 0) 
             {
+                // Remove entry
+                MemoryData.RemoveAt(actualIndex);
                 // We have a hole. Reindexing needed.
-                Reindex(actualIndex);
+                Reindex(index);
             }
         }
 
         public void Reindex(int holeIndex)
         {
-            for (int i = holeIndex + 1; i < MemoryData.Count; i++)
+            // Invalidate hole index
+            Mapping[holeIndex] = -1;
+
+            // Decrease every following index
+            for (int i = holeIndex + 1; i < Mapping.Count; i++)
             {
-                Mapping[i] = i - 1;
+                Mapping[i]--;
             }
-            MemoryData.RemoveAt(holeIndex);
+            
+            Debug.WriteLine($"Reindex {holeIndex}");
         }
 
-        public int GetIndex(int index)
+        public int GetInnerIndex(int index)
         {
-            if (Mapping.ContainsKey(index))
-            {
-                return GetIndex(Mapping[index]);
-            } else
-            {
-                return index;
-            }
+            return Mapping[index];
         }
 
         public T GetValue(int index)
         {
-            return MemoryData[GetIndex(index)].Item1;
+            return MemoryData[GetInnerIndex(index)].Item1;
         }
 
     }
