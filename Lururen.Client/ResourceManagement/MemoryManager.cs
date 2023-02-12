@@ -6,70 +6,86 @@
     /// <typeparam name="T"></typeparam>
     public abstract class MemoryManager<T>
     {
-        private int counter = 0;
-        protected Dictionary<Ref<int>, long> ReferenceCount = new();
-        protected Dictionary<Ref<int>, T> MemoryData = new();
+        protected List<(T, int)> MemoryData { get; set; } = new();
+        protected Dictionary<int, int> Mapping { get; set; } = new();
 
         protected abstract bool CheckEquality(T a, T b);
 
-        public ref int Add(T value)
+        public int Add(T value)
         {
-            var found = MemoryData.FirstOrDefault(x => CheckEquality(value, x.Value));
-            if (found.Value != null)
+            // Try to find index.
+            var index = MemoryData.FindIndex(x => CheckEquality(x.Item1, value));
+            if (index == -1) // Index not found
             {
-                ReferenceCount[found.Key]++;
-                return ref found.Key.Value;
-            }
+                // Add new entry
+                MemoryData.Add((value, 1));
+                return MemoryData.Count - 1;
+            } 
             else
             {
-                var indexRef = new Ref<int>(counter);
-                MemoryData.Add(indexRef, value);
-                ReferenceCount.Add(indexRef, 1);
-                counter++;
-                return ref indexRef.Value;
+                var (val, refCount) = MemoryData[index];
+                MemoryData[index] = (val, refCount + 1);
+                return index;
             }
         }
 
-        public void Set(ref int index, T value)
+        public int Set(int index, T value)
         {
-            var indexRef = new Ref<int>(ref index);
+            // Map index
+            int actualIndex = GetIndex(index);
+            
+            // If rewrite is not needed.
+            if (CheckEquality(MemoryData[actualIndex].Item1, value)) return actualIndex;
 
-            if (ReferenceCount[indexRef] == 1)
+            // If index is referenced more than once
+            if (MemoryData[actualIndex].Item2 > 1)
             {
-                MemoryData[indexRef] = value;
-            }
-            else
+                // Decrease reference count
+                MemoryData[actualIndex] = (MemoryData[actualIndex].Item1, MemoryData[actualIndex].Item2 - 1);
+                // Add new entry (or find existing, which Add() does)
+                return Add(value);
+            } else
             {
-                if (CheckEquality(MemoryData[indexRef], value)) return;
-
-                var countRef = new Ref<int>(counter);
-
-                MemoryData.Add(countRef, value);
-                ReferenceCount.Add(countRef, 1);
-                ReferenceCount[indexRef]--;
-                counter++;
+                // Just rewrite data
+                MemoryData[actualIndex] = (value, 1);
+                return actualIndex;
             }
         }
 
-        public void Remove(ref int index)
+        public void Remove(int index)
         {
-            var indexRef = new Ref<int>(ref index);
-
-            ReferenceCount[indexRef]--;
-            if (ReferenceCount[indexRef] == 0)
+            int actualIndex = GetIndex(index);
+            MemoryData[actualIndex] = (MemoryData[actualIndex].Item1, MemoryData[actualIndex].Item2 - 1);
+            if (MemoryData[actualIndex].Item2 == 0) // Noone references entry anymore
             {
-                ReferenceCount.Remove(indexRef);
-                ReferenceCount.ToList()
-                    .ForEach(x => { if (x.Key.Value > indexRef.Value) x.Key.Value = x.Key.Value - 1; });
-
-                MemoryData.Remove(indexRef);
-                MemoryData.ToList()
-                    .ForEach(x => { if (x.Key.Value > indexRef.Value) x.Key.Value = x.Key.Value - 1; });
-
-                // Invalidate index just in case
-                index = -1;
-                counter--;
+                // We have a hole. Reindexing needed.
+                Reindex(actualIndex);
             }
+        }
+
+        public void Reindex(int holeIndex)
+        {
+            for (int i = holeIndex + 1; i < MemoryData.Count; i++)
+            {
+                Mapping[i] = i - 1;
+            }
+            MemoryData.RemoveAt(holeIndex);
+        }
+
+        public int GetIndex(int index)
+        {
+            if (Mapping.ContainsKey(index))
+            {
+                return GetIndex(Mapping[index]);
+            } else
+            {
+                return index;
+            }
+        }
+
+        public T GetValue(int index)
+        {
+            return MemoryData[GetIndex(index)].Item1;
         }
 
     }

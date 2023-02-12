@@ -65,7 +65,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
                 GLRect.indices.Length,
                 DrawElementsType.UnsignedInt,
                 0,
-                Rect.Index.Value * 4); // I have no clue why is this 4. OpenGL is hard.
+                Rect.GetBufferOffset() * 4); // I have no clue why is this 4. OpenGL is hard.
         }
 
         public override void Update(double deltaTime)

@@ -4,6 +4,7 @@ using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.EntityComponentSystem.Planar.Components;
+using Lururen.Client.Graphics.Generic;
 
 #if DEBUG
 
@@ -71,32 +72,27 @@ namespace GraphicsTestApp
                 }
 
                 // Test object disposal
-                if (InputManager.IsKeyDown(Keys.F))
+                if (InputManager.IsKeyPressed(Keys.F))
                 {
-                    if (ents.Count != 0)
-                    {
-                        ents.ForEach(x => x.Dispose());
-                        ents.Clear();
-                    }
-                    else
-                    {
-                        var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
-                        for (int j = 0; j < 100; j++)
-                        {
-                            for (int i = 0; i < 100; i++)
-                            {
-                                var ent = new ImageEntity(texture);
-                                ent.Transform.Position.X = i * texture.Width;
-                                ent.Transform.Position.Y = j * texture.Height;
-                                ents.Add(ent);
-                            }
-                        }
-                    }
+                    var rand = new Random();
+                    var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
+                    var ent = new ImageEntity(texture);
+                    ent.Transform.Position.X = player.Transform.Position.X;
+                    ent.Transform.Position.Y = player.Transform.Position.Y;
+                    ent.Transform.Scale = 1f / rand.Next(1, 4);
+                    ent.Transform.Rotation = rand.Next(0, 360) / 360f;
+                    ents.Enqueue(ent);
+                }
+                    
+                if (InputManager.IsKeyPressed(Keys.R))
+                {
+                    ents.TryDequeue(out Entity2D ent);
+                    if (ent is not null) ent.Dispose();
                 }
             }
         }
 
-        private List<ImageEntity> ents = new();
+        private Queue<Entity2D> ents = new();
         private PlayerEntity player;
 
         public override void Init()

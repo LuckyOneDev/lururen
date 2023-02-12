@@ -37,14 +37,14 @@ namespace Lururen.Client.Graphics.Generic
         {
             TopRightCorner = topRightCorner;
             BottomLeftCorner = bottomLeftCorner;
-            Index.Value = BufferHelper.Add(BuildVertexArray(TopRightCorner, BottomLeftCorner));
+            Index = BufferHelper.Add(BuildVertexArray(TopRightCorner, BottomLeftCorner));
         }
 
         public void SetSizes(float width, float height)
         {
             TopRightCorner = new Vector2(width, height);
             BottomLeftCorner = Vector2.Zero;
-            BufferHelper.Set(ref Index.Value, BuildVertexArray(TopRightCorner, BottomLeftCorner));
+            Index = BufferHelper.Set(Index, BuildVertexArray(TopRightCorner, BottomLeftCorner));
         }
 
         static GLRect()
@@ -61,8 +61,10 @@ namespace Lururen.Client.Graphics.Generic
         protected static int VAO { get; }
 
         protected static int VBO { get; set; }
+
         public static float[] VertexArray { get; private set; }
-        public Ref<int> Index { get; private set; } = new();
+
+        private int Index { get; set; } = new();
 
         #endregion OpenGL handles
 
@@ -76,7 +78,9 @@ namespace Lururen.Client.Graphics.Generic
 
         public void Dispose()
         {
-            BufferHelper.Remove(ref Index.Value);
+            BufferHelper.Remove(Index);
         }
+
+        internal int GetBufferOffset() => BufferHelper.GetIndex(Index);
     }
 }
