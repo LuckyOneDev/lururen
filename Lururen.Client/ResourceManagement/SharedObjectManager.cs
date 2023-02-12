@@ -32,7 +32,6 @@ namespace Lururen.Client.ResourceManagement
                 // Add data to memory with reference count = 1
                 SharedObjects.Add((value, 1));
 
-                Debug.WriteLine($"Add {maxMappingIndex}");
                 return maxMappingIndex;
             } 
             else
