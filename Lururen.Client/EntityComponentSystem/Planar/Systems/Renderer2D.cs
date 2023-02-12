@@ -48,18 +48,21 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 
         protected static bool IsVisible(SpriteRenderer spriteRenderer, Camera2D camera)
         {
+            var diagonalA = (float)Math.Sqrt(Math.Pow(spriteRenderer.Texture.Width, 2) + Math.Pow(spriteRenderer.Texture.Height, 2));
+            var diagonalB = (float)Math.Sqrt(Math.Pow(camera.ViewportSize.X, 2) + Math.Pow(camera.ViewportSize.Y, 2));
+
             RectangleF spriteRect = new(
-                spriteRenderer.Transform.Position.X,
-                spriteRenderer.Transform.Position.Y,
-                spriteRenderer.Texture.Width * spriteRenderer.Transform.Scale,
-                spriteRenderer.Texture.Height * spriteRenderer.Transform.Scale
+                spriteRenderer.Transform.Position.X - diagonalA,
+                spriteRenderer.Transform.Position.Y - diagonalA,
+                2 * diagonalA * spriteRenderer.Transform.Scale,
+                2 * diagonalA * spriteRenderer.Transform.Scale
             );
 
             RectangleF viewRect = new(
-                -camera.GetPositionCorrector().X,
-                -camera.GetPositionCorrector().Y,
-                camera.ViewportSize.X,
-                camera.ViewportSize.Y
+                -camera.GetPositionCorrector().X - diagonalB,
+                -camera.GetPositionCorrector().Y - diagonalB,
+                2 * diagonalB,
+                2 * diagonalB
             );
 
             return viewRect.IntersectsWith(spriteRect);

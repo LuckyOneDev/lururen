@@ -72,6 +72,24 @@ namespace GraphicsTestApp
                 }
 
                 // Test object disposal
+                if (InputManager.IsKeyDown(Keys.Q))
+                {
+                    for (int i = 0; i < 1000; i++)
+                    {
+                        for (int j = 0; j < 1000; j++)
+                        {
+                            var rand = new Random();
+                            var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
+                            var ent = new ImageEntity(texture);
+                            ent.Transform.Position.X = i * texture.Width;
+                            ent.Transform.Position.Y = j * texture.Height;
+                            ents.Enqueue(ent);
+                        }
+                    }
+                    
+                }
+
+                // Test object disposal
                 if (InputManager.IsKeyPressed(Keys.F))
                 {
                     var rand = new Random();
