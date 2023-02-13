@@ -10,7 +10,10 @@ namespace Lururen.Client.ResourceManagement
     public abstract class SharedObjectManager<T>
     {
         protected List<(T Value, int ReferenceCount)> SharedObjects { get; set; } = new();
+        
         protected Dictionary<int, int> IndexMapping { get; set; } = new();
+        protected Dictionary<int, int> ReverseIndexMapping { get; set; } = new();
+        protected Queue<int> Holes { get; set; } = new();
 
         /// <summary>
         /// Maximum index reached in mapping
@@ -25,14 +28,25 @@ namespace Lururen.Client.ResourceManagement
             var actualIndex = SharedObjects.FindIndex(x => CheckEquality(x.Value, value));
             if (actualIndex == -1) // Entry not found
             {
-                // Create new mapping entry
-                maxMappingIndex++;
-                IndexMapping[maxMappingIndex] = SharedObjects.Count;
+                if (Holes.TryDequeue(out int index))
+                {
+                    IndexMapping[index] = SharedObjects.Count;
+                    ReverseIndexMapping[SharedObjects.Count] = index;
+                    // Add data to memory with reference count = 1
+                    SharedObjects.Add((value, 1));
+                    return index;
+                } 
+                else
+                {
+                    // Create new mapping entry
+                    maxMappingIndex++;
+                    IndexMapping[maxMappingIndex] = SharedObjects.Count;
+                    ReverseIndexMapping[SharedObjects.Count] = maxMappingIndex;
+                    // Add data to memory with reference count = 1
+                    SharedObjects.Add((value, 1));
+                    return maxMappingIndex;
+                }
 
-                // Add data to memory with reference count = 1
-                SharedObjects.Add((value, 1));
-
-                return maxMappingIndex;
             } 
             else
             {
@@ -41,7 +55,7 @@ namespace Lururen.Client.ResourceManagement
                 SharedObjects[actualIndex] = (val, refCount + 1);
 
                 // Return mapped index
-                return IndexMapping.FirstOrDefault(x => x.Value == actualIndex).Key;
+                return ReverseIndexMapping[actualIndex];
             }
         }
 
@@ -88,14 +102,19 @@ namespace Lururen.Client.ResourceManagement
 
         public void Reindex(int holeIndex)
         {
-            // Invalidate hole index
-            IndexMapping[holeIndex] = -1;
-
             // Decrease every following index
-            for (int i = holeIndex + 1; i < IndexMapping.Count; i++)
+            for (int i = holeIndex + 1; i < SharedObjects.Count - IndexMapping[holeIndex]; i++)
             {
-                IndexMapping[i]--;
+                ReverseIndexMapping[IndexMapping[i]] = ReverseIndexMapping[IndexMapping[i]] + 1;
+                IndexMapping[i] = IndexMapping[i] + 1;
+
             }
+
+            // Invalidate hole index
+            ReverseIndexMapping[IndexMapping[holeIndex]] = -1;
+            IndexMapping[holeIndex] = -1;
+            
+            Holes.Enqueue(holeIndex);
         }
 
         public int GetInnerIndex(int index)
