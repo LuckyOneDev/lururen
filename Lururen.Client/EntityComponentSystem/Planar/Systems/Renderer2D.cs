@@ -2,8 +2,8 @@
 using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
-using Lururen.Client.ResourceManagement;
 using Lururen.Common.Extensions;
+using Lururen.Common.ResourceManagement;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using SixLabors.ImageSharp;

@@ -1,8 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reflection;
-using Lururen.Common;
 
-namespace Lururen.Client.ResourceManagement
+namespace Lururen.Common.ResourceManagement
 {
     public record FileAccessor(string Path, ResourceLocation ResourceLocation = ResourceLocation.FileSystem);
 

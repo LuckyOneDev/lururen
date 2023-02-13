@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Common
+namespace Lururen.Common.ResourceManagement
 {
     public static class EmbededResourceHelper
     {
@@ -24,14 +24,14 @@ namespace Lururen.Common
 
         public static byte[] ReadBytes(this Assembly asm, string path)
         {
-            var stream = GetStream(asm, path);
+            var stream = asm.GetStream(path);
             BinaryReader binaryReader = new BinaryReader(stream);
             return binaryReader.ReadAllBytes();
         }
 
         public static string ReadString(this Assembly asm, string path)
         {
-            var stream = GetStream(asm, path);
+            var stream = asm.GetStream(path);
             StreamReader reader = new StreamReader(stream);
             return reader.ReadToEnd();
         }

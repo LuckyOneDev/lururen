@@ -1,4 +1,4 @@
-﻿using Lururen.Common;
+﻿using Lururen.Common.ResourceManagement;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Reflection;

@@ -1,5 +1,5 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
-using ResourceLocation = Lururen.Client.ResourceManagement.ResourceLocation;
+using ResourceLocation = Lururen.Common.ResourceManagement.ResourceLocation;
 using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;

@@ -1,4 +1,4 @@
-﻿using Lururen.Client.ResourceManagement;
+﻿using Lururen.Common.ResourceManagement;
 using OpenTK.Graphics.OpenGL4;
 
 namespace Lururen.Client.Graphics.Helpers

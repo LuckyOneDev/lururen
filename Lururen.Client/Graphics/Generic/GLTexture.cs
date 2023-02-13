@@ -1,6 +1,6 @@
 ﻿using Lururen.Client.Graphics.Helpers;
 using Lururen.Client.Graphics.Texturing;
-using Lururen.Client.ResourceManagement;
+using Lururen.Common.ResourceManagement;
 using OpenTK.Graphics.OpenGL4;
 using StbImageSharp;
 

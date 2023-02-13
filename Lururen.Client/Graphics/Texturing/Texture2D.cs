@@ -1,5 +1,5 @@
 ﻿using Lururen.Client.Graphics.Generic;
-using Lururen.Client.ResourceManagement;
+using Lururen.Common.ResourceManagement;
 using SixLabors.ImageSharp;
 
 namespace Lururen.Client.Graphics.Texturing

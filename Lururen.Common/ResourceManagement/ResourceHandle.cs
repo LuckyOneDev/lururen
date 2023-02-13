@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace Lururen.Client.ResourceManagement
+namespace Lururen.Common.ResourceManagement
 {
     /// <summary>
     /// Base class for all resource handles.

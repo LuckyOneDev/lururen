@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Lururen.Client.ResourceManagement
+namespace Lururen.Common.ResourceManagement
 {
     /// <summary>
     /// Collection that uses less space in memory by storing only unique objects giving non-changing indexes to them.
@@ -10,7 +10,7 @@ namespace Lururen.Client.ResourceManagement
     public abstract class SharedObjectManager<T>
     {
         protected List<(T Value, int ReferenceCount)> SharedObjects { get; set; } = new();
-        
+
         protected Dictionary<int, int> IndexMapping { get; set; } = new();
         protected Dictionary<int, int> ReverseIndexMapping { get; set; } = new();
         protected Queue<int> Holes { get; set; } = new();
@@ -35,7 +35,7 @@ namespace Lururen.Client.ResourceManagement
                     // Add data to memory with reference count = 1
                     SharedObjects.Add((value, 1));
                     return index;
-                } 
+                }
                 else
                 {
                     // Create new mapping entry
@@ -47,7 +47,7 @@ namespace Lururen.Client.ResourceManagement
                     return maxMappingIndex;
                 }
 
-            } 
+            }
             else
             {
                 // Increase reference count
@@ -74,7 +74,8 @@ namespace Lururen.Client.ResourceManagement
                 SharedObjects[actualIndex] = (SharedObjects[actualIndex].Value, SharedObjects[actualIndex].ReferenceCount - 1);
                 // Add new entry (or find another existing, which Add() does)
                 return Add(value);
-            } else
+            }
+            else
             {
                 // Just rewrite data
                 SharedObjects[actualIndex] = (value, 1);
@@ -91,7 +92,7 @@ namespace Lururen.Client.ResourceManagement
             SharedObjects[actualIndex] = (SharedObjects[actualIndex].Item1, SharedObjects[actualIndex].Item2 - 1);
 
             // Noone references entry anymore
-            if (SharedObjects[actualIndex].ReferenceCount == 0) 
+            if (SharedObjects[actualIndex].ReferenceCount == 0)
             {
                 // Remove entry
                 SharedObjects.RemoveAt(actualIndex);
@@ -113,7 +114,7 @@ namespace Lururen.Client.ResourceManagement
             // Invalidate hole index
             ReverseIndexMapping[IndexMapping[holeIndex]] = -1;
             IndexMapping[holeIndex] = -1;
-            
+
             Holes.Enqueue(holeIndex);
         }
 
