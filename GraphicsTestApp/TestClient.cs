@@ -5,12 +5,8 @@ using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.Graphics.Generic;
-
-#if DEBUG
-
-using System.Diagnostics;
-
-#endif
+using Lururen.Client.Audio.Generic;
+using Lururen.Client.Audio;
 
 namespace GraphicsTestApp
 {
@@ -122,9 +118,6 @@ namespace GraphicsTestApp
         public override void Render(double deltaTime)
         {
             base.Render(deltaTime);
-#if DEBUG
-            //Debug.WriteLine(1 / deltaTime); // fps
-#endif
         }
     }
 }

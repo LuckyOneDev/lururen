@@ -1,46 +1,60 @@
 ﻿using OpenTK.Audio.OpenAL;
 using OpenTK.Compute.OpenCL;
 using OpenTK.Mathematics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Lururen.Client.Audio.Generic
 {
     public class ALSoundSoruce : IDisposable
     {
         private int sourceHandle;
+        public ALSoundEffect CurrentSoundEffect = null;
+
+        public ALSourceState State { get; private set; }
+
+        public ALSoundSoruce()
+        {
+            this.sourceHandle = AL.GenSource();
+            //AL.Source(sourceHandle, ALSourcef.Pitch, 1f);
+            //AL.Source(sourceHandle, ALSourcef.Gain, 1f);
+            //AL.Source(sourceHandle, ALSource3f.Position, 0, 0, 0);
+            //AL.Source(sourceHandle, ALSource3f.Direction, 0, 0, 0);
+            //AL.Source(sourceHandle, ALSource3f.Velocity, 0, 0, 0);
+        }
 
         public ALSoundSoruce(Vector3 position, Vector3 direction, Vector3 velocity, float pitch, float gain)
         {
             this.sourceHandle = AL.GenSource();
-            AL.Source(sourceHandle, ALSourcei.Buffer, 0);
-
-            AL.Source(sourceHandle, ALSourcef.Pitch, pitch);
-            AL.Source(sourceHandle, ALSourcef.Gain, gain);
-            AL.Source(sourceHandle, ALSource3f.Position, position.X, position.Y, position.Z);
-            AL.Source(sourceHandle, ALSource3f.Direction, direction.X, direction.Y, direction.Z);
-            AL.Source(sourceHandle, ALSource3f.Velocity, velocity.X, velocity.Y, velocity.Z);
+            //AL.Source(sourceHandle, ALSourcef.Pitch, pitch);
+            //AL.Source(sourceHandle, ALSourcef.Gain, gain);
+            //AL.Source(sourceHandle, ALSource3f.Position, position.X, position.Y, position.Z);
+            //AL.Source(sourceHandle, ALSource3f.Direction, direction.X, direction.Y, direction.Z);
+            //AL.Source(sourceHandle, ALSource3f.Velocity, velocity.X, velocity.Y, velocity.Z);
         }
 
-        public void Play(int buffer)
+        public async Task Play(ALSoundEffect sound)
         {
-            /*
-            if (buffer_to_play != p_Buffer)
+            if (CurrentSoundEffect != sound)
             {
-                p_Buffer = buffer_to_play;
-                alSourcei(p_Source, AL_BUFFER, (ALint)p_Buffer);
+                CurrentSoundEffect = sound;
+                AL.Source(sourceHandle, ALSourcei.Buffer, sound.Handle);
             }
 
-            alSourcePlay(p_Source);
+            AL.SourcePlay(sourceHandle);
 
+            this.State = ALSourceState.Playing;  
+            var error = ALError.NoError;
 
-            ALint state = AL_PLAYING;
-            std::cout << "playing sound\n";
-            while (state == AL_PLAYING && alGetError() == AL_NO_ERROR)
+            while (this.State == ALSourceState.Playing && error == ALError.NoError)
             {
-                std::cout << "currently playing sound\n";
-                alGetSourcei(p_Source, AL_SOURCE_STATE, &state);
+                this.State = AL.GetSourceState(sourceHandle);
+                error = AL.GetError();
             }
-            std::cout << "done playing sound\n";
-            */
+
+            if (error != ALError.NoError) 
+            {
+                throw new OpenALException($"Could not play sound effect. Error: {error}.");
+            }
         }
 
         public void Dispose()

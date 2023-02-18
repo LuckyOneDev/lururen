@@ -8,10 +8,10 @@ namespace Lururen.Client.Graphics.Generic
 {
     public class GLTexture : IByteConstructable<GLTexture>
     {
-        public GLTexture(byte[] texture)
+        public GLTexture(Stream textureStream)
         {
             TextureParameters = new TextureParameters();
-            ImageResult Image = ImageResult.FromMemory(texture, ColorComponents.RedGreenBlueAlpha);
+            ImageResult Image = ImageResult.FromStream(textureStream, ColorComponents.RedGreenBlueAlpha);
             Width = Image.Width;
             Height = Image.Height;
             Handle = OpenGLHelper.LoadTexture(Image, TextureParameters);
@@ -37,9 +37,9 @@ namespace Lururen.Client.Graphics.Generic
             GL.BindTexture(TextureTarget.Texture2D, Handle);
         }
 
-        public static GLTexture FromBytes(byte[] bytes)
+        public static GLTexture FromBytes(Stream byteStream, FileAccessor accessor)
         {
-            return new GLTexture(bytes);
+            return new GLTexture(byteStream);
         }
     }
 }

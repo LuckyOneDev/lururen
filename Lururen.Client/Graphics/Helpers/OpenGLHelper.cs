@@ -4,6 +4,7 @@ using StbImageSharp;
 
 namespace Lururen.Client.Graphics.Helpers
 {
+
     public static class OpenGLHelper
     {
         public static int InitBuffer<T>(T[] data,

@@ -1,5 +1,6 @@
 ﻿using OpenTK;
 using OpenTK.Audio.OpenAL;
+using OpenTK.Mathematics;
 
 namespace Lururen.Client.Audio.Generic
 {
@@ -12,12 +13,16 @@ namespace Lururen.Client.Audio.Generic
         {
             this.Device = ALC.OpenDevice(null);
             this.Context = ALC.CreateContext(this.Device, (int*)null);
-            
-            if (!ALC.MakeContextCurrent(this.Context))
+
+            var error = ALC.GetError(this.Device);
+            if (!ALC.MakeContextCurrent(this.Context) || error != AlcError.NoError)
             {
                 // Something went wrong
-                throw new Exception($"Audio subsystem could not initialize. Error: {ALC.GetError(this.Device)}");
+                throw new Exception($"Audio subsystem could not be initialized. Error: {error}.");
             }
+
+            AL.Listener(ALListener3f.Position, 0, 0, 0);
+            AL.Listener(ALListener3f.Velocity, 0, 0, 0);
         }
           
         public void Dispose()

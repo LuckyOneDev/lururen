@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -38,6 +38,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lururen.Common\Lururen.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <ContentWithTargetPath Include="Audio\OpenAL\Win64\OpenAL32.dll">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		  <TargetPath>OpenAL32.dll</TargetPath>
+	  </ContentWithTargetPath>
+	  <None Include="Audio\OpenAL\Win64\OpenAL32.dll" />
   </ItemGroup>
 
 </Project>
