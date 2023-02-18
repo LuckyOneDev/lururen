@@ -2,6 +2,7 @@
 using Lururen.Client.ResourceManagement;
 using NAudio.Wave;
 using OpenTK.Audio.OpenAL;
+using System.Collections;
 using System.ComponentModel;
 using System.Reflection.PortableExecutable;
 using System.Threading.Channels;
@@ -29,16 +30,12 @@ namespace Lururen.Client.Audio.Generic
                 sampleRate = waveFileReader.WaveFormat.SampleRate;
 
                 soundFormat = GetSoundFormat(waveFileReader.WaveFormat.Channels, waveFileReader.WaveFormat.BitsPerSample);
-                List<byte> byteBuffer = new();
 
-
-                for (long i = 0; i < waveFileReader.SampleCount; i++)
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    var frame = waveFileReader.ReadNextSampleFrame();
-                    byteBuffer.AddRange(frame.SelectMany(x => BitConverter.GetBytes(x)));
+                    waveFileReader.CopyTo(ms);
+                    return ms.ToArray();
                 }
-
-                return byteBuffer.ToArray();
             }
         }
 
