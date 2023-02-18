@@ -31,11 +31,11 @@ namespace Lururen.Client.Audio.Generic
 
                 soundFormat = GetSoundFormat(waveFileReader.WaveFormat.Channels, waveFileReader.WaveFormat.BitsPerSample);
 
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    waveFileReader.CopyTo(ms);
-                    return ms.ToArray();
-                }
+                if (waveFileReader.WaveFormat.BitsPerSample == 24) throw new NotSupportedException("24 bps files not supported");
+
+                var buffer = new byte[waveFileReader.Length];
+                waveFileReader.Read(buffer, 0, buffer.Length);
+                return buffer;
             }
         }
 

@@ -11,6 +11,6 @@ using Lururen.Client.ResourceManagement;
 //});
 
 var device = new ALSoundDevice();
-var sound = new Sound("GraphicsTestApp.npc_wolf_attackpower_01.wav", ResourceLocation.Embeded);
+var sound = new Sound("GraphicsTestApp.matselect-1.wav", ResourceLocation.Embeded);
 var source = new SoundSource();
 await source.Play(sound);
