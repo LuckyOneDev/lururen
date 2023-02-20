@@ -19,7 +19,7 @@ namespace Lururen.Client.Audio.Generic
             this.Handle = OpenALHelper.InitBuffer(bytes, format, sampleRate);
         }
 
-        protected static void ResamplePcm(Stream waveFileReader, out byte[] buffer, int blockAlign, int channels)
+        protected static void ResamplePcm(Stream waveFileReader, out byte[] buffer, ref int sampleRate, int blockAlign, int channels)
         {
             const int targetByteSize = 2;
 
@@ -42,6 +42,8 @@ namespace Lururen.Client.Audio.Generic
                 }
                 sampleBuffer = new byte[bytesPerChannel * blockAlign];
             }
+
+            sampleRate = sampleRate * targetByteSize / bytesPerChannel;
         }
 
         public static byte[] LoadWave(Stream stream, out ALFormat soundFormat, out int sampleRate)
@@ -59,7 +61,7 @@ namespace Lururen.Client.Audio.Generic
                 // Resampling to 16 bit format
                 if (waveFileReader.WaveFormat.BitsPerSample > 16)
                 {
-                    ResamplePcm(waveFileReader, out byte[] buffer, waveFileReader.WaveFormat.BlockAlign, waveFileReader.WaveFormat.Channels);
+                    ResamplePcm(waveFileReader, out byte[] buffer, ref sampleRate, waveFileReader.WaveFormat.BlockAlign, waveFileReader.WaveFormat.Channels);
                     return buffer;
                 } 
                 else
