@@ -19,6 +19,11 @@ namespace Lururen.Client.Audio.Generic
             this.Handle = OpenALHelper.InitBuffer(bytes, format, sampleRate);
         }
 
+        //protected void ResamplePcm(byte[] inBytes, out byte[] outBytes, int blockAlign, int channels)
+        //{
+
+        //}
+
         public static byte[] LoadWave(Stream stream, out ALFormat soundFormat, out int sampleRate)
         {
             using (WaveFileReader waveFileReader = new WaveFileReader(stream))
@@ -31,11 +36,37 @@ namespace Lururen.Client.Audio.Generic
 
                 soundFormat = GetSoundFormat(waveFileReader.WaveFormat.Channels, waveFileReader.WaveFormat.BitsPerSample);
 
-                if (waveFileReader.WaveFormat.BitsPerSample == 24) throw new NotSupportedException("24 bps files not supported");
+                // Resampling to 16 bit format
+                if (waveFileReader.WaveFormat.BitsPerSample > 16)
+                {
+                    var bytesPerChannel = waveFileReader.WaveFormat.BlockAlign / waveFileReader.WaveFormat.Channels;
 
-                var buffer = new byte[waveFileReader.Length];
-                waveFileReader.Read(buffer, 0, buffer.Length);
-                return buffer;
+                    var buffer = new byte[waveFileReader.Length * 2 / bytesPerChannel];
+
+                    var sampleBuffer = new byte[waveFileReader.WaveFormat.BlockAlign];
+                    
+                    // Read block by block and resample
+                    for (int i = 0; waveFileReader.Read(sampleBuffer, 0, waveFileReader.WaveFormat.BlockAlign) != 0; i ++)
+                    {
+                        // Go over every channel
+                        for (int j = 0; j < waveFileReader.WaveFormat.Channels; j++)
+                        {
+                            // Get channel data 
+                            var channelSample = new byte[2];
+                            Array.Copy(sampleBuffer, j * (bytesPerChannel - 1), channelSample, 0, 2);
+                            channelSample.CopyTo(buffer, 2 * i + j);
+                        }
+                        sampleBuffer = new byte[bytesPerChannel * waveFileReader.WaveFormat.BlockAlign];
+                    }
+
+                    return buffer;
+                } 
+                else
+                {
+                    var buffer = new byte[waveFileReader.Length];
+                    waveFileReader.Read(buffer, 0, buffer.Length);
+                    return buffer;
+                }
             }
         }
 
