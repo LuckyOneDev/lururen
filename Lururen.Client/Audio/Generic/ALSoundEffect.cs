@@ -1,16 +1,12 @@
-﻿using Lururen.Client.Graphics.Generic;
-using Lururen.Client.ResourceManagement;
+﻿using Lururen.Client.ResourceManagement;
 using NAudio.Wave;
 using OpenTK.Audio.OpenAL;
-using System.Collections;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Reflection.PortableExecutable;
-using System.Threading.Channels;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Lururen.Client.Audio.Generic
 {
+    /// <summary>
+    /// OpenAL backend for SoundEffect.
+    /// </summary>
     public class ALSoundEffect : IByteConstructable<ALSoundEffect>
     {
         public ALSoundEffect(byte[] bytes, int sampleRate, ALFormat format)
@@ -21,50 +17,65 @@ namespace Lururen.Client.Audio.Generic
             this.Handle = OpenALHelper.InitBuffer(bytes, format, sampleRate);
         }
 
-        protected static byte[] ResampleToInt16(byte[] buffer, int blockAlign, int channels)
-        {
-            const int i16Size = 2;
-            int channelBytes = blockAlign / channels;
-            var outBuffer = new byte[buffer.Length * i16Size / channelBytes];
+        /// <summary>
+        /// Gets raw PCM data.
+        /// </summary>
+        public byte[] Data { get; }
 
-            for (int i = 0; i < outBuffer.Length; i += i16Size)
+        /// <summary>
+        /// Gets OpenAL sound format.
+        /// </summary>
+        public ALFormat Format { get; }
+
+        /// <summary>
+        /// Gets OpenAL buffer handle.
+        /// </summary>
+        public int Handle { get; }
+
+        /// <summary>
+        /// Gets sample rate.
+        /// </summary>
+        public int SampleRate { get; }
+
+        public static ALSoundEffect FromBytes(Stream byteStream, FileAccessor accessor)
+        {
+            byte[] bytes;
+            int sampleRate;
+            ALFormat format;
+
+            var fileExtension = accessor.Path.Split('.').Last();
+
+            switch (fileExtension)
             {
-                Array.Copy(buffer, i / i16Size * channelBytes, outBuffer, i, i16Size);
+                case "wav":
+                    bytes = LoadWave(byteStream, out format, out sampleRate);
+                    break;
+
+                default:
+                    throw new NotSupportedException($"Audio file format {fileExtension} not supported");
             }
 
-            return outBuffer;
+            return new ALSoundEffect(bytes, sampleRate, format);
         }
 
-        protected static byte[] ResampleToFloat32(byte[] buffer, int blockAlign, int channels)
+        public static ALFormat GetSoundFormat(int channels, int bits)
         {
-            const int TargetSize = sizeof(float);
-            int channelBytes = blockAlign / channels;
-            var outBuffer = new byte[buffer.Length * TargetSize / channelBytes];
-
-            for (int i = 0; i < outBuffer.Length; i += TargetSize)
+            switch (channels)
             {
-                var subBuffer = new byte[4];
-
-                if (BitConverter.IsLittleEndian)
-                {
-                    // subBuffer[0] is the least significant byte
-                    Array.Copy(buffer, i / TargetSize * channelBytes, subBuffer, 1, channelBytes);
-                } 
-                else
-                {
-                    throw new NotSupportedException("Big endian processors not supported.");
-                }
-
-                float fSample = BitConverter.ToInt32(subBuffer, 0) / (float)uint.MaxValue;
-                if (fSample > 1) fSample = 1;
-                if (fSample < -1) fSample = -1;
-
-                Array.Copy(BitConverter.GetBytes(fSample), 0, outBuffer, i, TargetSize);
+                case 1: return bits == 8 ? ALFormat.Mono8 : ALFormat.Mono16;
+                case 2: return bits == 8 ? ALFormat.Stereo8 : ALFormat.Stereo16;
+                default: throw new NotSupportedException("The specified sound format is not supported.");
             }
-
-            return outBuffer;
         }
 
+        /// <summary>
+        /// Reads wav file to PCM byte array.
+        /// </summary>
+        /// <param name="stream">Filestream</param>
+        /// <param name="soundFormat">resulting sound format</param>
+        /// <param name="sampleRate">resulting sample rate</param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
         public static byte[] LoadWave(Stream stream, out ALFormat soundFormat, out int sampleRate)
         {
             using (WaveFileReader waveFileReader = new WaveFileReader(stream))
@@ -80,53 +91,51 @@ namespace Lururen.Client.Audio.Generic
                 var buffer = new byte[waveFileReader.Length];
                 waveFileReader.Read(buffer, 0, buffer.Length);
 
-                // Resampling to 16 bit format
+                // Resampling to float32 format
                 if (waveFileReader.WaveFormat.BitsPerSample > 16)
                 {
                     soundFormat = waveFileReader.WaveFormat.Channels > 1 ? ALFormat.StereoFloat32Ext : ALFormat.StereoFloat32Ext;
                     buffer = ResampleToFloat32(buffer, waveFileReader.WaveFormat.BlockAlign, waveFileReader.WaveFormat.Channels);
-                    return buffer;
-                } 
+                }
+
+                return buffer;
+            }
+        }
+
+        /// <summary>
+        /// Resamples PCM format from int24 to float32.
+        /// </summary>
+        /// <param name="buffer">int24 PCM data</param>
+        /// <param name="blockAlign">data sample block align</param>
+        /// <param name="channels">channels count</param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
+        protected static byte[] ResampleToFloat32(byte[] buffer, int blockAlign, int channels)
+        {
+            int channelBytes = blockAlign / channels;
+            var outBuffer = new byte[buffer.Length * sizeof(float) / channelBytes];
+
+            for (int i = 0; i < outBuffer.Length; i += sizeof(float))
+            {
+                var subBuffer = new byte[4];
+
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Copy(buffer, i / sizeof(float) * channelBytes, subBuffer, 1, channelBytes);
+                }
                 else
                 {
-                    return buffer;
+                    throw new NotSupportedException("Big endian processors not supported.");
                 }
-            }
-        }
 
-        public static ALFormat GetSoundFormat(int channels, int bits)
-        {
-            switch (channels)
-            {
-                case 1: return bits == 8 ? ALFormat.Mono8 : ALFormat.Mono16;
-                case 2: return bits == 8 ? ALFormat.Stereo8 : ALFormat.Stereo16;
-                default: throw new NotSupportedException("The specified sound format is not supported.");
-            }
-        }
+                float fSample = BitConverter.ToInt32(subBuffer, 0) / (float)uint.MaxValue;
+                if (fSample > 1) fSample = 1;
+                if (fSample < -1) fSample = -1;
 
-        public static ALSoundEffect FromBytes(Stream byteStream, FileAccessor accessor)
-        {
-            byte[] bytes = null;
-            int sampleRate = 0;
-            ALFormat format;
-
-            var fileExtension = accessor.Path.Split('.').Last();
-
-            switch (fileExtension)
-            {
-                case "wav":
-                    bytes = LoadWave(byteStream, out format, out sampleRate);
-                    break;
-                default:
-                    throw new NotSupportedException($"Audio file format {fileExtension} not supported");
+                Array.Copy(BitConverter.GetBytes(fSample), 0, outBuffer, i, sizeof(float));
             }
 
-            return new ALSoundEffect(bytes.ToArray(), sampleRate, format);
+            return outBuffer;
         }
-
-        public ALFormat Format { get; }
-        public int Handle { get; }
-        public byte[] Data { get; }
-        public int SampleRate { get; }
     }
 }
