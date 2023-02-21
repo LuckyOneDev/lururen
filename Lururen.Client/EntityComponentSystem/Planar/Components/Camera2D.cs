@@ -1,4 +1,5 @@
-﻿using Lururen.Client.EntityComponentSystem.Planar.Systems;
+﻿using Lururen.Client.Audio.Generic;
+using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
@@ -10,9 +11,13 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
     /// </summary>
     public class Camera2D : Component2D
     {
+        public ALSoundDevice SoundDevice;
+
         public Camera2D(Entity2D entity) : base(entity)
         {
             Camera2DSystem.GetInstance().Register(this);
+            SoundSystem.GetInstance().Register(this);
+            SoundDevice = new ALSoundDevice();
         }
 
         /// <summary>
@@ -31,12 +36,14 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         public override void Init()
         {
             ViewportSize = Renderer2D.WindowSize;
+            SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
 
         public override void Update(double deltaTime)
         {
             ViewportSize = Renderer2D.WindowSize;
             GL.Viewport(0, 0, ViewportSize.X, ViewportSize.Y);
+            SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
 
         /// <summary>

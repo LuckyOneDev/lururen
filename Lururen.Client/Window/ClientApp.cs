@@ -13,15 +13,17 @@ namespace Lururen.Client.Window
         public Game? Window = null;
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
-        public IRenderSystem<SpriteRenderer> RenderSystem { get; private set; }
+        public IRenderSystem RenderSystem { get; private set; }
         public ISystem<Camera2D> CameraManager { get; private set; }
         public WindowSettings Settings { get; private set; }
+        public ISoundSystem SoundSystem { get; private set; }
 
         private GameWindowSettings GenerateGameWindowSettings()
         {
             GameWindowSettings gameWindowSettings = GameWindowSettings.Default;
             gameWindowSettings.RenderFrequency = Settings.UpdateFrequency ?? gameWindowSettings.RenderFrequency;
             gameWindowSettings.UpdateFrequency = Settings.UpdateFrequency ?? gameWindowSettings.UpdateFrequency;
+
             return gameWindowSettings;
         }
 
@@ -50,11 +52,11 @@ namespace Lururen.Client.Window
 
             Window.VSync = Settings.vSyncMode ?? Window.VSync;
 
-            RenderSystem = Renderer2D.GetInstance();
+            RenderSystem = (IRenderSystem)Renderer2D.GetInstance();
             CameraManager = Camera2DSystem.GetInstance();
             InputManager = new InputManager(Window);
             EntityManager = EntityComponentManager.GetInstance();
-
+            SoundSystem = EntityComponentSystem.Planar.Systems.SoundSystem.GetInstance();
             Window.Run();
         }
 
@@ -66,10 +68,12 @@ namespace Lururen.Client.Window
         public virtual void Init()
         {
             RenderSystem.Init(Window);
+            SoundSystem.Init();
         }
 
         public virtual void Update(double deltaTime)
         {
+            SoundSystem.Update(deltaTime);
         }
 
         public virtual void Render(double deltaTime)

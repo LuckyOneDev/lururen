@@ -7,9 +7,9 @@ namespace Lururen.Client.Audio.Generic
 {
     public class ALSoundSoruce : IDisposable
     {
-        private int sourceHandle;
-        public ALSoundEffect CurrentSoundEffect = null;
+        internal int sourceHandle;
 
+        public ALSoundEffect? CurrentSoundEffect = null;
         public ALSourceState State { get; private set; }
 
         public ALSoundSoruce()
@@ -30,6 +30,11 @@ namespace Lururen.Client.Audio.Generic
             //AL.Source(sourceHandle, ALSource3f.Position, position.X, position.Y, position.Z);
             //AL.Source(sourceHandle, ALSource3f.Direction, direction.X, direction.Y, direction.Z);
             //AL.Source(sourceHandle, ALSource3f.Velocity, velocity.X, velocity.Y, velocity.Z);
+        }
+
+        public void SetPos(Vector3 pos)
+        {
+
         }
 
         public async Task Play(ALSoundEffect sound)

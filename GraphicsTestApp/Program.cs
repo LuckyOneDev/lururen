@@ -4,17 +4,8 @@ using Lururen.Client.Audio.Generic;
 using Lururen.Client.Window;
 using Lururen.Client.ResourceManagement;
 
-//var client = new TestClient();
-//client.Start(new WindowSettings
-//{
-//    vSyncMode = OpenTK.Windowing.Common.VSyncMode.Adaptive
-//});
-
-var device = new ALSoundDevice();
-var sound = new Sound("GraphicsTestApp.matselect-1.wav", ResourceLocation.Embeded);
-var source = new SoundSource();
-
-while (Console.ReadKey().Key != ConsoleKey.Escape)
+var client = new TestClient();
+client.Start(new WindowSettings
 {
-    await source.Play(sound);
-}
+    vSyncMode = OpenTK.Windowing.Common.VSyncMode.Adaptive
+});

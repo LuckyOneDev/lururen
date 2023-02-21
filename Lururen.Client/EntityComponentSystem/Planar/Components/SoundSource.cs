@@ -1,26 +1,42 @@
-﻿using Lururen.Client.ResourceManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Lururen.Client.EntityComponentSystem.Planar;
+using Lururen.Client.ResourceManagement;
 
 namespace Lururen.Client.Audio.Generic
 {
-    public class SoundSource
+    public record SoundPlayProperties
     {
-        public ALSoundSoruce ALSoundSource = new();
-        public Sound Sound { get; set; } = null;
-        public SoundSource()
-        {
+        public bool Looping = false;
+        public int Pitch = 1;
+        public int Gain = 0;
+        public float Speed = 1;
+    }
 
+    public class SoundSource : Component2D
+    {
+        internal ALSoundSoruce ALSoundSource = new();
+        public bool IsPlaying { get; protected set; } = false;
+        public SoundSource(Entity2D entity) : base(entity)
+        {
         }
 
-        public async Task Play(Sound sound)
+        public Sound? CurrentSound { get; set; }
+        public SoundPlayProperties? properties { get; set; }
+
+        public async Task Play(Sound sound, SoundPlayProperties properties = default)
         {
-            this.Sound = Sound;
+            this.CurrentSound = CurrentSound;
             var soundEffect = FileHandle<ALSoundEffect>.GetInstance().Get(sound.Accessor);
-            await ALSoundSource.Play(soundEffect);
+            do
+            {
+                IsPlaying = true;
+                await ALSoundSource.Play(soundEffect);
+            }
+            while (properties.Looping && IsPlaying);
+        }
+
+        public void Stop()
+        {
+            IsPlaying = false;
         }
     }
 }

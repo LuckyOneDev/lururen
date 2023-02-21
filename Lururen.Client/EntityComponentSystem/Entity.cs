@@ -34,7 +34,7 @@ namespace Lururen.Client.EntityComponentSystem
 
         List<Component> Components { get; set; } = new List<Component>();
 
-        public Component AddComponent(Component component)
+        public T AddComponent<T>(T component) where T : Component
         {
             component.Init();
             Components.Add(component);
@@ -62,6 +62,11 @@ namespace Lururen.Client.EntityComponentSystem
         {
             Components.Remove(component);
             component.Dispose();
+        }
+
+        public async virtual void Init()
+        {
+
         }
     }
 }

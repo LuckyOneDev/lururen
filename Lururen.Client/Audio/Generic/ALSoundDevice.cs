@@ -24,6 +24,12 @@ namespace Lururen.Client.Audio.Generic
             AL.Listener(ALListener3f.Position, 0, 0, 0);
             AL.Listener(ALListener3f.Velocity, 0, 0, 0);
         }
+
+        public void SetPosition(Vector3 pos)
+        {
+            ALC.MakeContextCurrent(this.Context);
+            AL.Listener(ALListener3f.Position, pos.X, pos.Y, pos.Z);
+        }
           
         public void Dispose()
         {
