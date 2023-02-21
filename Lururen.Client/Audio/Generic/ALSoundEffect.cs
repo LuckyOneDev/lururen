@@ -27,11 +27,39 @@ namespace Lururen.Client.Audio.Generic
             int channelBytes = blockAlign / channels;
             var outBuffer = new byte[buffer.Length * i16Size / channelBytes];
 
-            var rand = new Random();
             for (int i = 0; i < outBuffer.Length; i += i16Size)
             {
-                outBuffer[i] = buffer[i / i16Size * channelBytes];
-                outBuffer[i + 1] = buffer[i / i16Size * channelBytes + 1]; 
+                Array.Copy(buffer, i / i16Size * channelBytes, outBuffer, i, i16Size);
+            }
+
+            return outBuffer;
+        }
+
+        protected static byte[] ResampleToFloat32(byte[] buffer, int blockAlign, int channels)
+        {
+            const int TargetSize = sizeof(float);
+            int channelBytes = blockAlign / channels;
+            var outBuffer = new byte[buffer.Length * TargetSize / channelBytes];
+
+            for (int i = 0; i < outBuffer.Length; i += TargetSize)
+            {
+                var subBuffer = new byte[4];
+
+                if (BitConverter.IsLittleEndian)
+                {
+                    // subBuffer[0] is the least significant byte
+                    Array.Copy(buffer, i / TargetSize * channelBytes, subBuffer, 1, channelBytes);
+                } 
+                else
+                {
+                    throw new NotSupportedException("Big endian processors not supported.");
+                }
+
+                float fSample = BitConverter.ToInt32(subBuffer, 0) / (float)uint.MaxValue;
+                if (fSample > 1) fSample = 1;
+                if (fSample < -1) fSample = -1;
+
+                Array.Copy(BitConverter.GetBytes(fSample), 0, outBuffer, i, TargetSize);
             }
 
             return outBuffer;
@@ -55,7 +83,8 @@ namespace Lururen.Client.Audio.Generic
                 // Resampling to 16 bit format
                 if (waveFileReader.WaveFormat.BitsPerSample > 16)
                 {
-                    buffer = ResampleToInt16(buffer, waveFileReader.WaveFormat.BlockAlign, waveFileReader.WaveFormat.Channels);
+                    soundFormat = waveFileReader.WaveFormat.Channels > 1 ? ALFormat.StereoFloat32Ext : ALFormat.StereoFloat32Ext;
+                    buffer = ResampleToFloat32(buffer, waveFileReader.WaveFormat.BlockAlign, waveFileReader.WaveFormat.Channels);
                     return buffer;
                 } 
                 else
