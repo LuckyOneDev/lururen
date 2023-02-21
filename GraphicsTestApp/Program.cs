@@ -13,4 +13,8 @@ using Lururen.Client.ResourceManagement;
 var device = new ALSoundDevice();
 var sound = new Sound("GraphicsTestApp.matselect-1.wav", ResourceLocation.Embeded);
 var source = new SoundSource();
-await source.Play(sound);
+
+while (Console.ReadKey().Key != ConsoleKey.Escape)
+{
+    await source.Play(sound);
+}
