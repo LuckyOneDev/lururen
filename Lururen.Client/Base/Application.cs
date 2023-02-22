@@ -13,10 +13,20 @@ namespace Lururen.Client.Window
         public Game? Window = null;
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
-        public IRenderSystem RenderSystem { get; private set; }
-        public ISystem<Camera2D> CameraManager { get; private set; }
         public WindowSettings Settings { get; private set; }
-        public ISoundSystem SoundSystem { get; private set; }
+        public List<ISystem<IComponent>> Systems { get; private set; } = new();
+
+        public void Register(ISystem<IComponent> system)
+        {
+            this.Systems.Add(system);
+            system.Init(this);
+        }
+
+        public void Unregister(ISystem<IComponent> system)
+        {
+            this.Systems.Remove(system);
+            system.Destroy();
+        }
 
         private GameWindowSettings GenerateGameWindowSettings()
         {
@@ -52,11 +62,12 @@ namespace Lururen.Client.Window
 
             Window.VSync = Settings.vSyncMode ?? Window.VSync;
 
-            RenderSystem = (IRenderSystem)Renderer2D.GetInstance();
-            CameraManager = Camera2DSystem.GetInstance();
+            // RenderSystem = (IRenderSystem)Renderer2D.GetInstance();
+            // CameraManager = Camera2DSystem.GetInstance();
+            // SoundSystem = EntityComponentSystem.Planar.Systems.SoundSystem.GetInstance();
+
             InputManager = new InputManager(Window);
             EntityManager = EntityComponentManager.GetInstance();
-            SoundSystem = EntityComponentSystem.Planar.Systems.SoundSystem.GetInstance();
             Window.Run();
         }
 
@@ -67,19 +78,19 @@ namespace Lururen.Client.Window
 
         public virtual void Init()
         {
-            RenderSystem.Init(Window);
-            SoundSystem.Init();
+            //RenderSystem.Init(Window);
+            //SoundSystem.Init();
         }
 
         public virtual void Update(double deltaTime)
         {
-            SoundSystem.Update(deltaTime);
+            //SoundSystem.Update(deltaTime);
         }
 
         public virtual void Render(double deltaTime)
         {
-            CameraManager.Update(deltaTime);
-            RenderSystem.Update(deltaTime);
+            //CameraManager.Update(deltaTime);
+            //RenderSystem.Update(deltaTime);
         }
 
         public virtual void Resize(int width, int height)
