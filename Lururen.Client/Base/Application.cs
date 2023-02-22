@@ -14,15 +14,15 @@ namespace Lururen.Client.Window
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
         public WindowSettings Settings { get; private set; }
-        public List<ISystem<IComponent>> Systems { get; private set; } = new();
+        public List<ISystem> Systems { get; private set; } = new();
 
-        public void Register(ISystem<IComponent> system)
+        public void Register(ISystem system)
         {
             this.Systems.Add(system);
             system.Init(this);
         }
 
-        public void Unregister(ISystem<IComponent> system)
+        public void Unregister(ISystem system)
         {
             this.Systems.Remove(system);
             system.Destroy();
@@ -61,11 +61,6 @@ namespace Lururen.Client.Window
                 GenerateNativeWindowSettings());
 
             Window.VSync = Settings.vSyncMode ?? Window.VSync;
-
-            // RenderSystem = (IRenderSystem)Renderer2D.GetInstance();
-            // CameraManager = Camera2DSystem.GetInstance();
-            // SoundSystem = EntityComponentSystem.Planar.Systems.SoundSystem.GetInstance();
-
             InputManager = new InputManager(Window);
             EntityManager = EntityComponentManager.GetInstance();
             Window.Run();
@@ -95,6 +90,17 @@ namespace Lururen.Client.Window
 
         public virtual void Resize(int width, int height)
         {
+        }
+    }
+
+    public class Application2D : Application
+    {
+        public override void Init()
+        {
+            base.Init();
+            Register(new Renderer2D());
+            Register(new Camera2DSystem());
+            Register(new SoundSystem());
         }
     }
 }

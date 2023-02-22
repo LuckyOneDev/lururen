@@ -10,7 +10,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
     /// <summary>
     /// Handles Texture2D rendering in 2D space.
     /// </summary>
-    public class SpriteRenderer : Component2D, IRenderer
+    public class SpriteRenderer : Component2D
     {
         public Texture2D Texture { get; set; }
 

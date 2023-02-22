@@ -15,20 +15,8 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
     /// Implements rendering pipeline. 
     /// Calls SpriteRenderers with needed optmizations.
     /// </summary>
-    public class Renderer2D : IRenderSystem<SpriteRenderer>
+    public class Renderer2D : ISystem<SpriteRenderer>
     {
-        #region Singleton
-        private static Renderer2D instance;
-
-        private Renderer2D() { }
-
-        public static Renderer2D GetInstance()
-        {
-            instance ??= new Renderer2D();
-            return instance;
-        }
-        #endregion
-
         private readonly Dictionary<FileAccessor, List<SpriteRenderer>> Components = new();
         protected static GLWindow Window { get; set; }
 

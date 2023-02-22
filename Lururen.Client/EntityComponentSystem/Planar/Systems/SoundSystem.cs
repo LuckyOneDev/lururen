@@ -14,19 +14,6 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         List<SoundSource> Sources { get; set; } = new();
         List<ALSoundDevice> Devices { get; set; } = new();
         
-        #region Singleton
-        private static SoundSystem instance;
-
-        private SoundSystem() { }
-
-        public static SoundSystem GetInstance()
-        {
-            if (instance == null)
-                instance = new SoundSystem();
-            return instance;
-        }
-        #endregion
-
         public void Init()
         {
         }
