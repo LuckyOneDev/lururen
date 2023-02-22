@@ -30,9 +30,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         #endregion
 
         private readonly Dictionary<FileAccessor, List<SpriteRenderer>> Components = new();
-        protected static Game Window { get; set; }
+        protected static GLWindow Window { get; set; }
 
-        public void Init(Game window)
+        public void Init(GLWindow window)
         {
             // Enable depth test.
             GL.Enable(EnableCap.DepthTest); 

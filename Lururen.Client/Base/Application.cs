@@ -10,7 +10,7 @@ namespace Lururen.Client.Window
 {
     public class Application
     {
-        public Game? Window = null;
+        public GLWindow? Window = null;
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
         public WindowSettings Settings { get; private set; }
@@ -52,7 +52,7 @@ namespace Lururen.Client.Window
         {
             Settings = settings;
 
-            Window = new Game(
+            Window = new GLWindow(
                 Update,
                 Render,
                 Resize,

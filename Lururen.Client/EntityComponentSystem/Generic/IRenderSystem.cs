@@ -8,7 +8,7 @@ namespace Lururen.Client.EntityComponentSystem.Generic
         /// Initializes render system and prepares it for drawing.
         /// </summary>
         /// <param name="window"></param>
-        void Init(Game window);
+        void Init(GLWindow window);
 
         /// <summary>
         /// Should be bound to corresponding update event.

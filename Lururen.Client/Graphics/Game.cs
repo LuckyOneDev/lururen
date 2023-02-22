@@ -6,14 +6,14 @@ namespace Lururen.Client.Graphics
 {
     public delegate void UpdateEvent(double deltaTime);
     public delegate void ResizeEvent(int width, int height);
-    public class Game : GameWindow
+    public class GLWindow : GameWindow
     {
         private UpdateEvent OnUpdate { get; set; }
         private UpdateEvent OnRender { get; set; }
         private ResizeEvent OnResizeWindow { get; set; }
         private Action OnLoadEvent { get; set; }
 
-        public Game(UpdateEvent onUpdateFrame,
+        public GLWindow(UpdateEvent onUpdateFrame,
                     UpdateEvent onRender,
                     ResizeEvent onResize,
                     Action onLoad,
