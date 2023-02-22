@@ -43,7 +43,7 @@ namespace GraphicsTestApp
         }
     }
 
-    public class TestClient : ClientApp
+    public class TestClient : Application
     {
         private const float camSpeed = 1000f;
 

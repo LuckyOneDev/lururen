@@ -8,7 +8,7 @@ using OpenTK.Windowing.Desktop;
 
 namespace Lururen.Client.Window
 {
-    public class ClientApp
+    public class Application
     {
         public Game? Window = null;
         public InputManager InputManager { get; private set; }
