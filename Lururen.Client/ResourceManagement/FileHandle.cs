@@ -14,7 +14,7 @@ namespace Lururen.Client.ResourceManagement
 
     public interface IByteConstructable<Value>
     {
-        public static abstract Value FromBytes(byte[] bytes);
+        public static abstract Value FromBytes(Stream byteStream, FileAccessor accessor);
     }
 
     public class FileHandle<T> : ResourceHandle<T, FileAccessor> where T : IByteConstructable<T>
@@ -45,21 +45,21 @@ namespace Lururen.Client.ResourceManagement
             return Loaded[accessor];
         }
 
-        protected override void LoadResource(FileAccessor acessor)
+        protected override void LoadResource(FileAccessor accessor)
         {
-            byte[] bytes = null;
-            switch (acessor.ResourceLocation)
+            Stream byteStream = null;
+            switch (accessor.ResourceLocation)
             {
                 case ResourceLocation.FileSystem:
-                    bytes = File.ReadAllBytes(acessor.Path);
+                    byteStream = File.OpenRead(accessor.Path);
                     break;
 
                 case ResourceLocation.Embeded:
-                    bytes = Assembly.GetEntryAssembly().ReadBytes(acessor.Path);
+                    byteStream = Assembly.GetEntryAssembly().GetStream(accessor.Path);
                     break;
             }
 
-            Loaded.Add(acessor, T.FromBytes(bytes));
+            Loaded.Add(accessor, T.FromBytes(byteStream, accessor));
         }
 
         public override void UnloadResource(FileAccessor acessor)

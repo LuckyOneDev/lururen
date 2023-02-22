@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public T AddComponent(T component);
+        public T1 AddComponent<T1>(T1 component) where T1 : T;
 
         /// <summary>
         /// Retrieves any component of given type.

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.1.0" />
     <PackageReference Include="OpenTK" Version="4.7.5" />
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />
     <PackageReference Include="StbImageSharp" Version="2.27.13" />
@@ -37,6 +38,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lururen.Common\Lururen.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <ContentWithTargetPath Include="Audio\OpenAL\Win64\OpenAL32.dll">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		  <TargetPath>OpenAL32.dll</TargetPath>
+	  </ContentWithTargetPath>
+	  <None Include="Audio\OpenAL\Win64\OpenAL32.dll" />
   </ItemGroup>
 
 </Project>

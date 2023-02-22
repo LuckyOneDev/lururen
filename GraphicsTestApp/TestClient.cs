@@ -5,12 +5,8 @@ using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.Graphics.Generic;
-
-#if DEBUG
-
-using System.Diagnostics;
-
-#endif
+using Lururen.Client.Audio.Generic;
+using Lururen.Client.Audio;
 
 namespace GraphicsTestApp
 {
@@ -30,7 +26,20 @@ namespace GraphicsTestApp
             var spriteRenderer = new SpriteRenderer(this, texture);
             AddComponent(spriteRenderer);
             AddComponent(new Camera2D(this));
+            SoundSource ss = AddComponent(new SoundSource(this));
+
             spriteRenderer.Pivot = new OpenTK.Mathematics.Vector2(0.5f, 0.5f);
+
+            Task.Run(() =>
+            {
+                _ = ss.Play(
+                    new Sound("GraphicsTestApp.npc_wolf_attackpower_01.wav", ResourceLocation.Embeded),
+                    new SoundPlayProperties()
+                    {
+                        Looping = true
+                    });
+            });
+
         }
     }
 
@@ -122,9 +131,6 @@ namespace GraphicsTestApp
         public override void Render(double deltaTime)
         {
             base.Render(deltaTime);
-#if DEBUG
-            //Debug.WriteLine(1 / deltaTime); // fps
-#endif
         }
     }
 }

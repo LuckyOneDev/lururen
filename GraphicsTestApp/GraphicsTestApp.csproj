@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="matselect-1.wav" />
     <None Remove="megumin.png" />
+    <None Remove="npc_wolf_attackpower_01.wav" />
     <None Remove="wall.jpg" />
   </ItemGroup>
 
@@ -17,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="matselect-1.wav" />
+    <EmbeddedResource Include="npc_wolf_attackpower_01.wav" />
     <EmbeddedResource Include="wall.jpg" />
   </ItemGroup>
 

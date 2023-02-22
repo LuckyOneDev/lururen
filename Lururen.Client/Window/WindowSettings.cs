@@ -4,7 +4,7 @@ using OpenTK.Windowing.Common.Input;
 
 namespace Lururen.Client.Window
 {
-    public class WindowSettings
+    public record WindowSettings
     {
         public VSyncMode? vSyncMode { get; set; }
         public string? Title { get; set; }
