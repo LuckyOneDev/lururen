@@ -48,4 +48,8 @@
 	  <None Include="Audio\OpenAL\Win64\OpenAL32.dll" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Base\" />
+  </ItemGroup>
+
 </Project>
