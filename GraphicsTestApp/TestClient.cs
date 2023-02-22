@@ -26,21 +26,20 @@ namespace GraphicsTestApp
             var spriteRenderer = new SpriteRenderer(this, texture);
             AddComponent(spriteRenderer);
             AddComponent(new Camera2D(this));
-            AddComponent(new SoundSource(this));
+            SoundSource ss = AddComponent(new SoundSource(this));
 
             spriteRenderer.Pivot = new OpenTK.Mathematics.Vector2(0.5f, 0.5f);
-        }
 
-        public async override void Init()
-        {
-            SoundSource ss = this.GetComponent<SoundSource>();
+            Task.Run(() =>
+            {
+                _ = ss.Play(
+                    new Sound("GraphicsTestApp.npc_wolf_attackpower_01.wav", ResourceLocation.Embeded),
+                    new SoundPlayProperties()
+                    {
+                        Looping = true
+                    });
+            });
 
-            _ = ss.Play(
-                new Sound("GraphicsTestApp.npc_wolf_attackpower_01.wav", ResourceLocation.Embeded),
-                new SoundPlayProperties()
-                {
-                    Looping = true
-                });
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.ResourceManagement;
+using OpenTK.Mathematics;
 
 namespace Lururen.Client.Audio.Generic
 {
@@ -37,6 +38,12 @@ namespace Lururen.Client.Audio.Generic
         public void Stop()
         {
             IsPlaying = false;
+        }
+
+        public override void Update(double deltaTime)
+        {
+            base.Update(deltaTime);
+            ALSoundSource.SetPos(new Vector3(Transform.Position));
         }
     }
 }
