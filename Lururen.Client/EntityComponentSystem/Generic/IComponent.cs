@@ -3,7 +3,7 @@
     /// <summary>
     /// Basic component whitch should be bound to IEntity.
     /// </summary>
-    public interface IComponent : IDisposable
+    public interface IComponent<T> : IDisposable where T : IComponent<T>
     {
         /// <summary>
         /// Entity this component is bound to. 
@@ -15,7 +15,7 @@
         /// Init method is called only once after component is successufly registered in corresponding system.
         /// </summary>
         /// <param name="entity"></param>
-        public void Init();
+        public void Init(ISystem<T> system);
 
         /// <summary>
         /// Called every time corresponding system needs to update this component.
@@ -28,6 +28,12 @@
         /// Determines if component should be considered by corresponding system.
         /// Set to true when component is successfully registered.
         /// </summary>
-        public bool Active { get; set; }
+        public void SetActive(bool state)
+
+        /// <summary>
+        /// Determines if component should be considered by corresponding system.
+        /// Set to true when component is successfully registered.
+        /// </summary>
+        public bool IsActive();
     }
 }

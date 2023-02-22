@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {
-    public class SoundSystem : ISoundSystem<SoundSource>, ISoundSystem<Camera2D>
+    public class SoundSystem : ISystem<SoundSource>, ISystem<SoundListener>
     {
         List<SoundSource> Sources { get; set; } = new();
-        List<ALSoundDevice> Devices { get; set; } = new();
+        List<SoundListener> Listeners { get; set; } = new();
         
         public void Init()
         {
@@ -23,9 +23,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             Sources.Add(component);
         }
 
-        public void Register(Camera2D component)
+        public void Register(SoundListener component)
         {
-            Devices.Add(component.SoundDevice);
+            Listeners.Add(component);
         }
 
         public void Unregister(SoundSource component)
@@ -33,9 +33,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             Sources.Remove(component);
         }
 
-        public void Unregister(Camera2D component)
+        public void Unregister(SoundListener component)
         {
-            Devices.Remove(component.SoundDevice);
+            Listeners.Remove(component);
         }
 
         public void Update(double deltaTime)

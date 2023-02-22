@@ -8,12 +8,18 @@ using OpenTK.Windowing.Desktop;
 
 namespace Lururen.Client.Window
 {
+    using InitEvent = Action;
+
+    public delegate void UpdateEvent(double deltaTime);
+
+    public delegate void ResizeEvent(int width, int height);
+
     public class Application
     {
         public GLWindow? Window = null;
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
-        public WindowSettings Settings { get; private set; }
+        public WindowSettings Settings { get; private set; } = default;
         public List<ISystem> Systems { get; private set; } = new();
 
         public void Register(ISystem system)
@@ -48,49 +54,62 @@ namespace Lururen.Client.Window
             return nativeWindowSettings;
         }
 
+        private void CreateWindow()
+        {
+            Window = new GLWindow(
+                            GenerateGameWindowSettings(),
+                            GenerateNativeWindowSettings());
+
+            OnLoad = Window.OnLoadEvent;
+            OnLoad = Window.OnLoadEvent;
+            OnUpdate = Window.OnUpdate;
+            OnRender = Window.OnRender;
+            OnResizeWindow = Window.OnResizeWindow;
+        }
+
         public void Start(WindowSettings settings = default)
         {
             Settings = settings;
 
-            Window = new GLWindow(
-                Update,
-                Render,
-                Resize,
-                Init,
-                GenerateGameWindowSettings(),
-                GenerateNativeWindowSettings());
+            CreateWindow();
 
-            Window.VSync = Settings.vSyncMode ?? Window.VSync;
+            Window!.VSync = Settings.vSyncMode ?? Window.VSync;
+
             InputManager = new InputManager(Window);
             EntityManager = EntityComponentManager.GetInstance();
+
             Window.Run();
         }
 
         public void Stop()
         {
-            Window.Close();
+            Window!.Close();
         }
 
-        public virtual void Init()
+        protected virtual void Init() 
         {
-            //RenderSystem.Init(Window);
-            //SoundSystem.Init();
+            OnLoad();
         }
 
-        public virtual void Update(double deltaTime)
+        protected virtual void Update(double deltaTime) 
         {
-            //SoundSystem.Update(deltaTime);
+            OnUpdate(deltaTime);
         }
 
-        public virtual void Render(double deltaTime)
+        protected virtual void Render(double deltaTime) 
         {
-            //CameraManager.Update(deltaTime);
-            //RenderSystem.Update(deltaTime);
+            OnRender(deltaTime);
         }
 
-        public virtual void Resize(int width, int height)
+        protected virtual void Resize(int width, int height) 
         {
+            OnResizeWindow(width, height);
         }
+
+        public InitEvent OnLoad { get; set; }
+        public UpdateEvent OnUpdate { get; set; }
+        public UpdateEvent OnRender { get; set; }
+        public ResizeEvent OnResizeWindow { get; set; }
     }
 
     public class Application2D : Application

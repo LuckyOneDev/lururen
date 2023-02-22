@@ -1,30 +1,22 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Lururen.Client.Window;
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 namespace Lururen.Client.Graphics
 {
-    public delegate void UpdateEvent(double deltaTime);
-    public delegate void ResizeEvent(int width, int height);
     public class GLWindow : GameWindow
     {
-        private UpdateEvent OnUpdate { get; set; }
-        private UpdateEvent OnRender { get; set; }
-        private ResizeEvent OnResizeWindow { get; set; }
-        private Action OnLoadEvent { get; set; }
+        public UpdateEvent OnUpdate { get; set; }
+        public UpdateEvent OnRender { get; set; }
+        public ResizeEvent OnResizeWindow { get; set; }
+        public Action OnLoadEvent { get; set; }
 
-        public GLWindow(UpdateEvent onUpdateFrame,
-                    UpdateEvent onRender,
-                    ResizeEvent onResize,
-                    Action onLoad,
-                    GameWindowSettings gameWindowSettings,
-                    NativeWindowSettings nativeWindowSettings)
+        public GLWindow(
+                GameWindowSettings gameWindowSettings,
+                NativeWindowSettings nativeWindowSettings)
             : base(gameWindowSettings, nativeWindowSettings)
         {
-            OnUpdate = onUpdateFrame;
-            OnRender = onRender;
-            OnResizeWindow = onResize;
-            OnLoadEvent = onLoad;
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args)
