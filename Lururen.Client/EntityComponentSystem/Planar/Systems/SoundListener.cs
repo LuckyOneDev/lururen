@@ -2,21 +2,9 @@
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {
-    internal class SoundListener : IComponent<SoundListener>
+    public class SoundListener : Component2D
     {
-        public Entity? Entity { get; set; }
-        public bool Active { get; set; }
-
-        public void Init(ISystem<SoundListener> system)
-        {
-            system.Register(this);
-        }
-
-        public void Update(double deltaTime)
-        {
-        }
-
-        public void Dispose()
+        public SoundListener(Entity2D entity) : base(entity)
         {
         }
     }

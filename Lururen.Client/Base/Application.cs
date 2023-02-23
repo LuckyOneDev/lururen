@@ -1,9 +1,11 @@
-﻿using Lururen.Client.EntityComponentSystem;
+﻿using Lururen.Client.Audio.Generic;
+using Lururen.Client.EntityComponentSystem;
 using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
+using Lururen.Common.Extensions;
 using OpenTK.Windowing.Desktop;
 
 namespace Lururen.Client.Window
@@ -20,18 +22,27 @@ namespace Lururen.Client.Window
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
         public WindowSettings Settings { get; private set; } = default;
-        public List<ISystem> Systems { get; private set; } = new();
+        public Dictionary<Type, List<ISystem>> Systems { get; private set; } = new();
 
-        public void Register(ISystem system)
+        public void RegisterSystem<T>(ISystem<T> system) where T : IComponent
         {
-            this.Systems.Add(system);
+            this.Systems.AddOrCreateList(typeof(T), system);
             system.Init(this);
         }
 
-        public void Unregister(ISystem system)
+        public void UnregisterSystem<T>(ISystem<T> system) where T : IComponent
         {
-            this.Systems.Remove(system);
+            this.Systems.RemoveFromList(system);
             system.Destroy();
+        }
+
+        public void RegisterComponent<T>(T component) where T : IComponent
+        {
+            Systems[typeof(T)].ForEach(system =>
+            {
+                var castedSystem = system as ISystem<T>;
+                castedSystem!.Register(component);
+            });
         }
 
         private GameWindowSettings GenerateGameWindowSettings()
@@ -86,22 +97,23 @@ namespace Lururen.Client.Window
             Window!.Close();
         }
 
-        protected virtual void Init() 
+
+        protected virtual void Init()
         {
             OnLoad();
         }
 
-        protected virtual void Update(double deltaTime) 
+        protected virtual void Update(double deltaTime)
         {
             OnUpdate(deltaTime);
         }
 
-        protected virtual void Render(double deltaTime) 
+        protected virtual void Render(double deltaTime)
         {
             OnRender(deltaTime);
         }
 
-        protected virtual void Resize(int width, int height) 
+        protected virtual void Resize(int width, int height)
         {
             OnResizeWindow(width, height);
         }
@@ -114,12 +126,15 @@ namespace Lururen.Client.Window
 
     public class Application2D : Application
     {
-        public override void Init()
+        protected override void Init()
         {
             base.Init();
-            Register(new Renderer2D());
-            Register(new Camera2DSystem());
-            Register(new SoundSystem());
+            RegisterSystem(new Renderer2D());
+            RegisterSystem(new Camera2DSystem());
+
+            var soundSystem = new SoundSystem();
+            RegisterSystem<SoundSource>(soundSystem);
+            RegisterSystem<SoundListener>(soundSystem);
         }
     }
 }

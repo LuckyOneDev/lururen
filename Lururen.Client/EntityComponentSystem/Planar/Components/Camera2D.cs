@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.Audio.Generic;
+using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.EntityComponentSystem.Planar.Systems;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -15,8 +16,6 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
 
         public Camera2D(Entity2D entity) : base(entity)
         {
-            Camera2DSystem.GetInstance().Register(this);
-            SoundSystem.GetInstance().Register(this);
             SoundDevice = new ALSoundDevice();
         }
 
@@ -33,8 +32,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
             ViewportSize = Renderer2D.WindowSize;
         }
 
-        public override void Init()
+        public override void Init<T>(ISystem<T> system)
         {
+            base.Init(system);
             ViewportSize = Renderer2D.WindowSize;
             SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
@@ -54,7 +54,8 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         public static Camera2D? GetActiveCamera()
         {
             // Check for active instead
-            return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera2D));
+            //return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera2D));
+            throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

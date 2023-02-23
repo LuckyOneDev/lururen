@@ -1,4 +1,6 @@
-﻿using Lururen.Client.EntityComponentSystem.Generic;
+﻿using Lururen.Client.Base;
+using Lururen.Client.EntityComponentSystem.Generic;
+using static OpenTK.Compute.OpenCL.CLGL;
 
 namespace Lururen.Client.EntityComponentSystem
 {
@@ -7,40 +9,28 @@ namespace Lururen.Client.EntityComponentSystem
     /// </summary>
     public class Entity : IEntity<Component>
     {
+        private bool Active { get; set; } = true;
 
-        private bool active;
-
-        /// <summary>
-        /// Gets or sets Active state of component.
-        /// Also sets all child components equal to this value.
-        /// </summary>
-        public bool Active
+        public void SetActive(bool state)
         {
-            get { return active; }
-            set 
-            { 
-                active = value;
-                Components.ForEach(x => x.Active = active);
-            }
+            Active = state;
         }
 
-        public Entity()
+        public bool IsActive()
+        {
+            return Active;
+        }
+
+        public Entity(World world)
         {
             EntityComponentManager.GetInstance().AddEntity(this);
-            Active = true;
+            this.World = world;
         }
 
         public Guid Id { get; set; } = Guid.NewGuid();
 
         List<Component> Components { get; set; } = new List<Component>();
-
-        public T AddComponent<T>(T component) where T : Component
-        {
-            component.Init();
-            Components.Add(component);
-            component.Active = Active;
-            return component;
-        }
+        public World World { get; }
 
         public virtual void Dispose()
         {
@@ -67,6 +57,20 @@ namespace Lururen.Client.EntityComponentSystem
         public async virtual void Init()
         {
 
+        }
+
+        public T1 AddComponent<T1>() where T1 : Component
+        {
+            var component = (T1)Activator.CreateInstance(typeof(T1), this);
+            Components.Add(component);
+            return component;
+        }
+
+        public Component AddComponent(Type componentType)
+        {
+            var component = (Component)Activator.CreateInstance(componentType, this);
+            Components.Add(component);
+            return component;
         }
     }
 }

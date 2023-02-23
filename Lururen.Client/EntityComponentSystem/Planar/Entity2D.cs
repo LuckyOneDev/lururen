@@ -1,16 +1,16 @@
-﻿using Lururen.Client.EntityComponentSystem.Planar.Components;
+﻿using Lururen.Client.Base;
+using Lururen.Client.EntityComponentSystem.Planar.Components;
 
 namespace Lururen.Client.EntityComponentSystem.Planar
 {
     /// <summary>
     /// Entity with guranteed Transform2D created.
     /// </summary>
-    public class Entity2D : Entity
+    public sealed class Entity2D : Entity
     {
-        public Entity2D()
+        public Entity2D(World world) : base(world)
         {
-            Transform = new Transform2D(this);
-            AddComponent(Transform);
+            Transform = AddComponent<Transform2D>();
         }
 
         public Transform2D Transform { get; }

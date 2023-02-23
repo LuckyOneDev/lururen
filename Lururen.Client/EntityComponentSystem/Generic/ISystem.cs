@@ -26,7 +26,7 @@ namespace Lururen.Client.EntityComponentSystem.Generic
     /// Base type for all systems.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface ISystem<T> : ISystem where T : IComponent<T>
+    public interface ISystem<T> : ISystem where T : IComponent
     {
         /// <summary>
         /// Registers component in system and initializes it.

@@ -1,23 +1,21 @@
 ﻿using Lururen.Client.EntityComponentSystem.Generic;
+using Lururen.Common.EntitySystem;
 
 namespace Lururen.Client.EntityComponentSystem
 {
     /// <summary>
     /// Default implementation of IComponent interface.
     /// </summary>
-    public abstract class Component : IComponent
+    public class Component : IComponent
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public Entity? Entity { get; set; }
-        public bool Active { get; set; } = true;
 
         public Component(Entity entity)
         {
             Entity = entity;
             EntityComponentManager.GetInstance().AddComponent(this);
         }
-
-        public virtual void Init() { }
 
         public virtual void Update(double deltaTime) { }
 
@@ -26,5 +24,31 @@ namespace Lururen.Client.EntityComponentSystem
             Entity = null;
             EntityComponentManager.GetInstance().RemoveComponent(this);
         }
+
+        public virtual void Init<T>(ISystem<T> system) where T : IComponent
+        {
+            if (this is T thisCasted)
+            {
+                system.Register(thisCasted);
+            } 
+            else
+            {
+                throw new ArgumentException("System was not of corresponding type");
+            }
+        }
+
+        private bool Active { get; set; } = true;
+        Entity? IComponent.Entity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public void SetActive(bool state)
+        {
+            Active = state;
+        }
+
+        public bool IsActive()
+        {
+            return Active;
+        }
+
     }
 }

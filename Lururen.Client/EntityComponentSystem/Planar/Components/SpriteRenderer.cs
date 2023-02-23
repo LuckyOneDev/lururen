@@ -30,10 +30,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="texture"></param>
-        public SpriteRenderer(Entity2D entity, Texture2D texture) : base(entity)
+        public SpriteRenderer(Entity2D entity) : base(entity)
         {
-            Texture = texture;
-            Renderer2D.GetInstance().Register(this);
+            //Renderer2D.GetInstance().Register(this);
             Rect = GLRect.FromSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
         }
 
@@ -76,7 +75,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
 
         public override void Dispose()
         {
-            Renderer2D.GetInstance().Unregister(this);
+            //Renderer2D.GetInstance().Unregister(this);
             base.Dispose();
             Rect.Dispose();
         }

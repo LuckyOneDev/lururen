@@ -3,51 +3,15 @@ using ResourceLocation = Lururen.Client.ResourceManagement.ResourceLocation;
 using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
-using Lururen.Client.Graphics.Generic;
-using Lururen.Client.Audio.Generic;
-using Lururen.Client.Audio;
+using Lururen.Client.EntityComponentSystem;
 
 namespace GraphicsTestApp
 {
-    public class ImageEntity : Entity2D
-    {
-        public ImageEntity(Texture2D texture)
-        {
-            AddComponent(new SpriteRenderer(this, texture));
-        }
-    }
-
-    public class PlayerEntity : Entity2D
-    {
-        public PlayerEntity() : base()
-        {
-            var texture = new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded);
-            var spriteRenderer = new SpriteRenderer(this, texture);
-            AddComponent(spriteRenderer);
-            AddComponent(new Camera2D(this));
-            SoundSource ss = AddComponent(new SoundSource(this));
-
-            spriteRenderer.Pivot = new OpenTK.Mathematics.Vector2(0.5f, 0.5f);
-
-            Task.Run(() =>
-            {
-                _ = ss.Play(
-                    new Sound("GraphicsTestApp.npc_wolf_attackpower_01.wav", ResourceLocation.Embeded),
-                    new SoundPlayProperties()
-                    {
-                        Looping = true
-                    });
-            });
-
-        }
-    }
-
-    public class TestClient : Application
+    public class TestClient : Application2D
     {
         private const float camSpeed = 1000f;
 
-        public override void Update(double deltaTime)
+        protected override void Update(double deltaTime)
         {
             base.Update(deltaTime);
 
@@ -120,17 +84,12 @@ namespace GraphicsTestApp
         }
 
         private Queue<Entity2D> ents = new();
-        private PlayerEntity player;
+        //private PlayerEntity player;
 
-        public override void Init()
+        protected override void Init()
         {
             base.Init();
-            player = new PlayerEntity();
-        }
-
-        public override void Render(double deltaTime)
-        {
-            base.Render(deltaTime);
+            //player = new PlayerEntity();
         }
     }
 }

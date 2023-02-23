@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public T1 AddComponent<T1>(T1 component) where T1 : T;
+        public T1 AddComponent<T1>() where T1 : T;
 
         /// <summary>
         /// Retrieves any component of given type.
@@ -33,11 +33,24 @@
         /// <typeparam name="T1"></typeparam>
         /// <returns></returns>
         public List<T1> GetComponents<T1>() where T1 : T;
-
+        
         /// <summary>
         /// Removes component from this entity's component collection and disposes it.
         /// </summary>
         /// <param name="component"></param>
         public void RemoveComponent(T component);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        bool IsActive();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="state"></param>
+        void SetActive(bool state);
+        Component AddComponent(Type componentType);
     }
 }
