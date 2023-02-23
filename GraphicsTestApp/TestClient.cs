@@ -4,6 +4,7 @@ using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.EntityComponentSystem;
+using Lururen.Client.Base;
 
 namespace GraphicsTestApp
 {
@@ -89,6 +90,9 @@ namespace GraphicsTestApp
         protected override void Init()
         {
             base.Init();
+            var mainWorld = new World(this);
+
+            mainWorld
             //player = new PlayerEntity();
         }
     }
