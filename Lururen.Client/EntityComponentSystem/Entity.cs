@@ -1,5 +1,6 @@
 ﻿using Lururen.Client.Base;
 using Lururen.Client.EntityComponentSystem.Generic;
+using Lururen.Client.EntityComponentSystem.Planar.Components;
 using static OpenTK.Compute.OpenCL.CLGL;
 
 namespace Lururen.Client.EntityComponentSystem
@@ -24,12 +25,15 @@ namespace Lururen.Client.EntityComponentSystem
         public Entity(World world)
         {
             EntityComponentManager.GetInstance().AddEntity(this);
+            Transform = new Transform();
             this.World = world;
         }
 
+        public Transform Transform { get; }
+
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        List<Component> Components { get; set; } = new List<Component>();
+        internal List<Component> Components { get; set; } = new List<Component>();
         public World World { get; }
 
         public virtual void Dispose()

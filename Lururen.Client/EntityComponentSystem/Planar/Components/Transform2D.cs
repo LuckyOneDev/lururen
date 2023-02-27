@@ -5,32 +5,25 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
     /// <summary>
     /// Represents position in 2D space.
     /// </summary>
-    public class Transform2D : Component
+    public record Transform
     {
-        public Transform2D(
-            Entity entity,
+        public Transform(
             float posX = 0,
             float posY = 0,
+            float posZ = 0,
             float rotation = 0,
-            float scale = 1,
-            int layer = 0) : base(entity)
+            float scale = 1
+            )
         {
-            Position = new Vector2(posX, posY);
+            Position = new Vector3(posX, posY, posZ);
             Scale = scale;
             Rotation = rotation;
-            Layer = layer;
         }
 
         /// <summary>
         /// XY position.
         /// </summary>
-        public Vector2 Position;
-
-        /// <summary>
-        /// Layer on which parent component is. 
-        /// More is closer to camera.
-        /// </summary>
-        public int Layer = 0;
+        public Vector3 Position;
 
         /// <summary>
         /// Scale in relative units.

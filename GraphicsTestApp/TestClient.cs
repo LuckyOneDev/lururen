@@ -5,9 +5,30 @@ using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.EntityComponentSystem;
 using Lururen.Client.Base;
+using System.Reflection.Metadata.Ecma335;
+using Lururen.Client.EntityComponentSystem.Planar.Components;
 
 namespace GraphicsTestApp
 {
+    public static class PrefabCollection
+    {
+        public static Prefab Player => new Prefab() { Components = new() 
+        {
+            new() 
+            { 
+                TargetType = typeof(SpriteRenderer),
+                FieldValues = new()
+                {
+                    { (typeof(SpriteRenderer).GetField(nameof(SpriteRenderer.Texture)), new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded)) },
+                }
+            },
+            new()
+            {
+                TargetType = typeof(Camera2D)
+            }
+        } };
+    }
+
     public class TestClient : Application2D
     {
         private const float camSpeed = 1000f;
@@ -20,8 +41,6 @@ namespace GraphicsTestApp
             {
                 this.Window.Close();
             }
-
-            var player = EntityManager.GetEntityByType<PlayerEntity>();
 
             if (player is not null)
             {
@@ -52,12 +71,12 @@ namespace GraphicsTestApp
                     {
                         for (int j = 0; j < 1000; j++)
                         {
-                            var rand = new Random();
-                            var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
-                            var ent = new ImageEntity(texture);
-                            ent.Transform.Position.X = i * texture.Width;
-                            ent.Transform.Position.Y = j * texture.Height;
-                            ents.Enqueue(ent);
+                            //var rand = new Random();
+                            //var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
+                            ////var ent = new ImageEntity(texture);
+                            //ent.Transform.Position.X = i * texture.Width;
+                            //ent.Transform.Position.Y = j * texture.Height;
+                            //ents.Enqueue(ent);
                         }
                     }
                     
@@ -66,14 +85,14 @@ namespace GraphicsTestApp
                 // Test object disposal
                 if (InputManager.IsKeyPressed(Keys.F))
                 {
-                    var rand = new Random();
-                    var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
-                    var ent = new ImageEntity(texture);
-                    ent.Transform.Position.X = player.Transform.Position.X;
-                    ent.Transform.Position.Y = player.Transform.Position.Y;
-                    ent.Transform.Scale = 1f / rand.Next(1, 10);
-                    ent.Transform.Rotation = rand.Next(0, 360) / 360f;
-                    ents.Enqueue(ent);
+                    //var rand = new Random();
+                    //var texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
+                    //var ent = new ImageEntity(texture);
+                    //ent.Transform.Position.X = player.Transform.Position.X;
+                    //ent.Transform.Position.Y = player.Transform.Position.Y;
+                    //ent.Transform.Scale = 1f / rand.Next(1, 10);
+                    //ent.Transform.Rotation = rand.Next(0, 360) / 360f;
+                    //ents.Enqueue(ent);
                 }
                     
                 if (InputManager.IsKeyPressed(Keys.R))
@@ -85,15 +104,13 @@ namespace GraphicsTestApp
         }
 
         private Queue<Entity2D> ents = new();
-        //private PlayerEntity player;
+        private Entity2D player;
 
         protected override void Init()
         {
             base.Init();
-            var mainWorld = new World(this);
 
-            mainWorld
-            //player = new PlayerEntity();
+            player = PrefabCollection.Player.Instantiate();
         }
     }
 }

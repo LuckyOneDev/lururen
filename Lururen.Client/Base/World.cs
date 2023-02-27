@@ -5,8 +5,10 @@ namespace Lururen.Client.Base
 {
     public class World
     {
-        public World(Application app)
+        public string Id { get; set; }
+        public World(Application app, string wId)
         {
+            Id = wId;
             this.Application = app;
         }
 
@@ -17,7 +19,7 @@ namespace Lururen.Client.Base
             var entity = new Entity(this);
             prefab.Components.ForEach(component =>
             {
-                entity.AddComponent(component);
+                entity.Components.Add(component.Build());
             });
             return new Entity(this);
         }

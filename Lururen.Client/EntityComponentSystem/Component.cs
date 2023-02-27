@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.EntityComponentSystem.Generic;
+using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Common.EntitySystem;
 
 namespace Lururen.Client.EntityComponentSystem
@@ -11,9 +12,12 @@ namespace Lururen.Client.EntityComponentSystem
         public Guid Id { get; set; } = Guid.NewGuid();
         public Entity? Entity { get; set; }
 
+        public Transform Transform { get; set; }
+
         public Component(Entity entity)
         {
             Entity = entity;
+            Transform = entity.Transform;
             EntityComponentManager.GetInstance().AddComponent(this);
         }
 

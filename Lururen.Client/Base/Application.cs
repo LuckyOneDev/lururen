@@ -1,4 +1,5 @@
 ﻿using Lururen.Client.Audio.Generic;
+using Lururen.Client.Base;
 using Lururen.Client.EntityComponentSystem;
 using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.EntityComponentSystem.Planar.Components;
@@ -18,6 +19,11 @@ namespace Lururen.Client.Window
 
     public class Application
     {
+        public Application()
+        {
+            WorldManager.Init(this);
+        }
+
         public GLWindow? Window = null;
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
@@ -122,6 +128,11 @@ namespace Lururen.Client.Window
         public UpdateEvent OnUpdate { get; set; }
         public UpdateEvent OnRender { get; set; }
         public ResizeEvent OnResizeWindow { get; set; }
+
+        public World CreateWorld(string worldId)
+        {
+            return new World(this, worldId);
+        }
     }
 
     public class Application2D : Application

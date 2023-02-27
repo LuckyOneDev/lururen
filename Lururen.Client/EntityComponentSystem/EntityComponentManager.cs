@@ -31,7 +31,7 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T? GetEntityByType<T>() where T : Entity => (T?)Entities.Values.FirstOrDefault(x => x.GetType() == typeof(T));
+        public Entity? GetEntityById(Guid entId) => Entities.GetValueOrDefault(entId);
 
         /// <summary>
         /// Gets entity by its id.
