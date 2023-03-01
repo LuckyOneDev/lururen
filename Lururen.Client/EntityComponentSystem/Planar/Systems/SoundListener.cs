@@ -2,9 +2,9 @@
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {
-    public class SoundListener : Component2D
+    public class SoundListener : Component
     {
-        public SoundListener(Entity2D entity) : base(entity)
+        public SoundListener(Entity entity) : base(entity)
         {
         }
     }

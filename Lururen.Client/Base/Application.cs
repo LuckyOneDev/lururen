@@ -17,23 +17,19 @@ namespace Lururen.Client.Window
 
     public delegate void ResizeEvent(int width, int height);
 
-    public class Application
+    public class SystemManager
     {
-        public Application()
+        public SystemManager(Application application)
         {
-            WorldManager.Init(this);
+            Application = application;
         }
 
-        public GLWindow? Window = null;
-        public InputManager InputManager { get; private set; }
-        public EntityComponentManager EntityManager { get; private set; }
-        public WindowSettings Settings { get; private set; } = default;
+        public Application Application { get; }
         public Dictionary<Type, List<ISystem>> Systems { get; private set; } = new();
-
         public void RegisterSystem<T>(ISystem<T> system) where T : IComponent
         {
             this.Systems.AddOrCreateList(typeof(T), system);
-            system.Init(this);
+            system.Init(Application);
         }
 
         public void UnregisterSystem<T>(ISystem<T> system) where T : IComponent
@@ -42,6 +38,11 @@ namespace Lururen.Client.Window
             system.Destroy();
         }
 
+        /// <summary>
+        /// Reroutes component register calls.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
         public void RegisterComponent<T>(T component) where T : IComponent
         {
             Systems[typeof(T)].ForEach(system =>
@@ -50,45 +51,78 @@ namespace Lururen.Client.Window
                 castedSystem!.Register(component);
             });
         }
+    }
 
-        private GameWindowSettings GenerateGameWindowSettings()
+    public class WorldManager
+    {
+        public WorldManager(Application application)
         {
-            GameWindowSettings gameWindowSettings = GameWindowSettings.Default;
-            gameWindowSettings.RenderFrequency = Settings.UpdateFrequency ?? gameWindowSettings.RenderFrequency;
-            gameWindowSettings.UpdateFrequency = Settings.UpdateFrequency ?? gameWindowSettings.UpdateFrequency;
-
-            return gameWindowSettings;
+            Application = application;
         }
 
-        private NativeWindowSettings GenerateNativeWindowSettings()
-        {
-            NativeWindowSettings nativeWindowSettings = NativeWindowSettings.Default;
-            nativeWindowSettings.Title = Settings.Title ?? nativeWindowSettings.Title;
-            nativeWindowSettings.WindowState = Settings.WindowState ?? nativeWindowSettings.WindowState;
-            nativeWindowSettings.Icon = Settings.Icon ?? nativeWindowSettings.Icon;
-            nativeWindowSettings.Size = Settings.Size ?? nativeWindowSettings.Size;
+        public Application Application { get; }
 
-            return nativeWindowSettings;
+        public World Active { get; private set; }
+        List<World> Worlds { get; } = new();
+
+        private void SetActive(World world)
+        {
+            Active = world;
         }
 
-        private void CreateWindow()
+        public void SetActiveWorld(string worldId)
         {
-            Window = new GLWindow(
-                            GenerateGameWindowSettings(),
-                            GenerateNativeWindowSettings());
+            var found = Worlds.Find(x => x.Id == worldId);
+            if (found is not null)
+            {
+                SetActive(found);
+            } 
+            else 
+            {
+                throw new Exception();
+            }
+        }
 
-            OnLoad = Window.OnLoadEvent;
-            OnLoad = Window.OnLoadEvent;
-            OnUpdate = Window.OnUpdate;
-            OnRender = Window.OnRender;
-            OnResizeWindow = Window.OnResizeWindow;
+        public void Create(string worldId)
+        {
+            Worlds.Add(new World(Application, worldId));
+        }
+    }
+    public class Application
+    {
+        public Application()
+        {
+            SystemManager = new(this); 
+            WorldManager = new(this);
+        }
+
+        public WindowSettings Settings { get; private set; } = default;
+        public List<World> Worlds { get; private set; } = new();
+        protected GLWindow? Window { get; set; } = null;
+        public InputManager InputManager { get; private set; }
+        public EntityComponentManager EntityManager { get; private set; }
+        public SystemManager SystemManager { get; }
+        public WorldManager WorldManager { get; }
+
+        private GLWindow? CreateWindow()
+        {
+            var Window = new GLWindow(
+                            Settings.GameWindowSettings(),
+                            Settings.NativeWindowSettings());
+
+            Window.OnLoadEvent += Init;
+            Window.OnUpdate += Update;
+            Window.OnRender += Render;
+            Window.OnResizeWindow += Resize;
+
+            return Window;
         }
 
         public void Start(WindowSettings settings = default)
         {
             Settings = settings;
 
-            CreateWindow();
+            Window = CreateWindow();
 
             Window!.VSync = Settings.vSyncMode ?? Window.VSync;
 
@@ -103,49 +137,45 @@ namespace Lururen.Client.Window
             Window!.Close();
         }
 
-
         protected virtual void Init()
         {
-            OnLoad();
         }
 
         protected virtual void Update(double deltaTime)
         {
-            OnUpdate(deltaTime);
         }
 
         protected virtual void Render(double deltaTime)
         {
-            OnRender(deltaTime);
         }
 
         protected virtual void Resize(int width, int height)
         {
-            OnResizeWindow(width, height);
         }
 
-        public InitEvent OnLoad { get; set; }
-        public UpdateEvent OnUpdate { get; set; }
-        public UpdateEvent OnRender { get; set; }
-        public ResizeEvent OnResizeWindow { get; set; }
-
-        public World CreateWorld(string worldId)
+        public Entity Instantiate(Prefab prefab)
         {
-            return new World(this, worldId);
+            return WorldManager.Active.CreateEntity(prefab);
         }
     }
 
     public class Application2D : Application
     {
+        public Application2D()
+        {
+            WorldManager.Create("default");
+            WorldManager.SetActiveWorld("default");
+        }
+
         protected override void Init()
         {
             base.Init();
-            RegisterSystem(new Renderer2D());
-            RegisterSystem(new Camera2DSystem());
+            SystemManager.RegisterSystem(new SpriteRenderSystem());
+            SystemManager.RegisterSystem(new Camera2DSystem());
 
             var soundSystem = new SoundSystem();
-            RegisterSystem<SoundSource>(soundSystem);
-            RegisterSystem<SoundListener>(soundSystem);
+            SystemManager.RegisterSystem<SoundSource>(soundSystem);
+            SystemManager.RegisterSystem<SoundListener>(soundSystem);
         }
     }
 }

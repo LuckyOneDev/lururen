@@ -1,5 +1,5 @@
 ﻿using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
+using Lururen.Client.Window;
 using Lururen.Common.EntitySystem;
 
 namespace Lururen.Client.EntityComponentSystem
@@ -18,7 +18,6 @@ namespace Lururen.Client.EntityComponentSystem
         {
             Entity = entity;
             Transform = entity.Transform;
-            EntityComponentManager.GetInstance().AddComponent(this);
         }
 
         public virtual void Update(double deltaTime) { }
@@ -26,7 +25,6 @@ namespace Lururen.Client.EntityComponentSystem
         public virtual void Dispose()
         {
             Entity = null;
-            EntityComponentManager.GetInstance().RemoveComponent(this);
         }
 
         public virtual void Init<T>(ISystem<T> system) where T : IComponent
@@ -53,6 +51,5 @@ namespace Lururen.Client.EntityComponentSystem
         {
             return Active;
         }
-
     }
 }

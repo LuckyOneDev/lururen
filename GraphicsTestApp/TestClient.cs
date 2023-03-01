@@ -16,10 +16,10 @@ namespace GraphicsTestApp
         {
             new() 
             { 
-                TargetType = typeof(SpriteRenderer),
+                TargetType = typeof(SpriteComponent),
                 FieldValues = new()
                 {
-                    { (typeof(SpriteRenderer).GetField(nameof(SpriteRenderer.Texture)), new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded)) },
+                    { (typeof(SpriteComponent).GetProperty(nameof(SpriteComponent.Texture)), new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded)) },
                 }
             },
             new()
@@ -97,20 +97,20 @@ namespace GraphicsTestApp
                     
                 if (InputManager.IsKeyPressed(Keys.R))
                 {
-                    ents.TryDequeue(out Entity2D ent);
+                    ents.TryDequeue(out Entity ent);
                     if (ent is not null) ent.Dispose();
                 }
             }
         }
 
-        private Queue<Entity2D> ents = new();
-        private Entity2D player;
+        private Queue<Entity> ents = new();
+        private Entity player;
 
         protected override void Init()
         {
             base.Init();
 
-            player = PrefabCollection.Player.Instantiate();
+            player = Instantiate(PrefabCollection.Player);
         }
     }
 }

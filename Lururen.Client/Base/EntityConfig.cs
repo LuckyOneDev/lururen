@@ -7,12 +7,11 @@ namespace Lururen.Client.Base
     public class ComponentBuilder
     {
         public Type TargetType { get; set; }
-        public object[] ConstructorArgs { get; set; }
-        public List<(FieldInfo field, object? value)> FieldValues { get; set; }
-        public Component Build()
+        public List<(PropertyInfo field, object? value)>? FieldValues { get; set; } = default;
+        public Component Build(Entity entity)
         {
-            var target = Activator.CreateInstance(TargetType, ConstructorArgs) as Component;
-            FieldValues.ForEach(fieldSetter =>
+            var target = Activator.CreateInstance(TargetType, entity) as Component;
+            FieldValues?.ForEach(fieldSetter =>
             {
                 fieldSetter.field.SetValue(target, fieldSetter.value);
             });
@@ -31,17 +30,13 @@ namespace Lururen.Client.Base
             {
                 var compBuilder = new ComponentBuilder();
                 compBuilder.TargetType = component.GetType();
-                compBuilder.FieldValues = compBuilder.TargetType.GetFields().Select(field =>
+                compBuilder.FieldValues = compBuilder.TargetType.GetProperties().Select(field =>
                 {
                     return (field, field.GetValue(component));
                 }).ToList();
                 pref.Components.Add(compBuilder);
             });
             return pref;
-        }
-        public Entity Instantiate()
-        {
-            return WorldManager.CurrentWorld.CreateEntity(this);
         }
     }
 }

@@ -10,11 +10,11 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
     /// <summary>
     /// Provides camera abstraction in 2D context.
     /// </summary>
-    public class Camera2D : Component2D
+    public class Camera2D : Component
     {
         public ALSoundDevice SoundDevice;
 
-        public Camera2D(Entity2D entity) : base(entity)
+        public Camera2D(Entity entity) : base(entity)
         {
             SoundDevice = new ALSoundDevice();
         }
@@ -29,19 +29,19 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         /// </summary>
         public void ResetViewportSize()
         {
-            ViewportSize = Renderer2D.WindowSize;
+            ViewportSize = SpriteRenderSystem.WindowSize;
         }
 
         public override void Init<T>(ISystem<T> system)
         {
             base.Init(system);
-            ViewportSize = Renderer2D.WindowSize;
+            ViewportSize = SpriteRenderSystem.WindowSize;
             SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
 
         public override void Update(double deltaTime)
         {
-            ViewportSize = Renderer2D.WindowSize;
+            ViewportSize = SpriteRenderSystem.WindowSize;
             GL.Viewport(0, 0, ViewportSize.X, ViewportSize.Y);
             SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
@@ -59,10 +59,10 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal Vector2 GetPositionCorrector()
+        internal Vector3 GetPositionCorrector()
         {
             // Do not change. Works twice as fast this way
-            return new Vector2(-Transform.Position.X + ViewportSize.X / 2, -Transform.Position.Y + ViewportSize.Y / 2);
+            return new Vector3(-Transform.Position.X + ViewportSize.X / 2, -Transform.Position.Y + ViewportSize.Y / 2, 0);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -8,6 +8,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 using StbImageSharp;
+using System.ComponentModel;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Systems
 {
@@ -15,11 +16,12 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
     /// Implements rendering pipeline. 
     /// Calls SpriteRenderers with needed optmizations.
     /// </summary>
-    public class Renderer2D : ISystem<SpriteRenderer>
+    public class SpriteRenderSystem : ISystem<SpriteComponent>
     {
-        private readonly Dictionary<FileAccessor, List<SpriteRenderer>> Components = new();
+        private Dictionary<FileAccessor, List<SpriteComponent>> Components = new();
+        private List<SpriteComponent> NoTextureSprites { get; set; } = new();
         protected static GLWindow Window { get; set; }
-
+        
         public void Init(GLWindow window)
         {
             // Enable depth test.
@@ -29,12 +31,31 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             Window = window;
         }
 
-        public void Register(SpriteRenderer component)
+        public void Register(SpriteComponent component)
         {
+            if (component.Texture is null)
+            {
+                NoTextureSprites.Add(component);
+                return;
+            }
             Components.AddOrCreateList(component.Texture.Accessor, component);
         }
 
-        protected static bool IsVisible(SpriteRenderer spriteRenderer, Camera2D camera)
+        protected void CheckNoTextureSprites()
+        {
+            for (int i = 0; i < NoTextureSprites.Count; i++)
+            {
+                var component = NoTextureSprites[i];
+                if (component.Texture is not null)
+                {
+                    Components.AddOrCreateList(component.Texture.Accessor, component);
+                }
+                NoTextureSprites.RemoveAt(i);
+                i--;
+            }
+        }
+
+        protected static bool IsVisible(SpriteComponent spriteRenderer, Camera2D camera)
         {
             var diagonalA = (float)Math.Sqrt(Math.Pow(spriteRenderer.Texture.Width, 2) + Math.Pow(spriteRenderer.Texture.Height, 2));
             var diagonalB = (float)Math.Sqrt(Math.Pow(camera.ViewportSize.X, 2) + Math.Pow(camera.ViewportSize.Y, 2));
@@ -63,7 +84,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         /// <param name="sprites"></param>
         /// <param name="camera"></param>
         /// <returns></returns>
-        protected static List<SpriteRenderer> FilterSprites(List<SpriteRenderer> sprites, Camera2D camera)
+        protected static List<SpriteComponent> FilterSprites(List<SpriteComponent> sprites, Camera2D camera)
         {
             return sprites.AsParallel().Where(x => IsVisible(x, camera) && x.IsActive()).ToList();
         }
@@ -75,10 +96,11 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         public void Update(double deltaTime)
         {
             var camera = Camera2D.GetActiveCamera();
+            CheckNoTextureSprites();
 
             if (camera != null)
             {
-                SpriteRenderer.Shader.Use();
+                SpriteComponent.Shader.Use();
                 GLRect.Use();
 
                 foreach (var entry in Components)
@@ -96,7 +118,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             }
         }
 
-        public void Unregister(SpriteRenderer component)
+        public void Unregister(SpriteComponent component)
         {
             Components.RemoveFromList(component);
         }

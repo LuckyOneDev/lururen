@@ -1,6 +1,5 @@
 ﻿using Lururen.Client.Base;
 using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
 using static OpenTK.Compute.OpenCL.CLGL;
 
 namespace Lururen.Client.EntityComponentSystem

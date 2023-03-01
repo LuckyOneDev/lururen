@@ -1,6 +1,6 @@
 ﻿using OpenTK.Mathematics;
 
-namespace Lururen.Client.EntityComponentSystem.Planar.Components
+namespace Lururen.Client.EntityComponentSystem
 {
     /// <summary>
     /// Represents position in 2D space.

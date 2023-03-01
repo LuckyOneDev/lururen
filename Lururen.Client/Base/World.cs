@@ -19,9 +19,9 @@ namespace Lururen.Client.Base
             var entity = new Entity(this);
             prefab.Components.ForEach(component =>
             {
-                entity.Components.Add(component.Build());
+                entity.Components.Add(component.Build(entity));
             });
-            return new Entity(this);
+            return entity;
         }
     }
 }

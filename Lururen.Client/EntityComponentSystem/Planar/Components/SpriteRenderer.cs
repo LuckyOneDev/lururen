@@ -4,15 +4,28 @@ using Lururen.Client.Graphics.Generic;
 using Lururen.Client.Graphics.Texturing;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+using System.ComponentModel.DataAnnotations;
 
 namespace Lururen.Client.EntityComponentSystem.Planar.Components
 {
     /// <summary>
     /// Handles Texture2D rendering in 2D space.
     /// </summary>
-    public class SpriteRenderer : Component2D
+    public class SpriteComponent : Component
     {
-        public Texture2D Texture { get; set; }
+        private Texture2D texture;
+        public Texture2D Texture 
+        { 
+            get
+            {
+                return texture;
+            }
+            set
+            {
+                Rect = GLRect.FromSizes(value.Width * Transform.Scale, value.Height * Transform.Scale);
+                texture = value;
+            }
+        }
 
         /// <summary>
         /// Normalized texture offset. E.g. [1,1] means that texture would appear one width to the right
@@ -30,10 +43,9 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="texture"></param>
-        public SpriteRenderer(Entity2D entity) : base(entity)
+        public SpriteComponent(Entity entity) : base(entity)
         {
-            //Renderer2D.GetInstance().Register(this);
-            Rect = GLRect.FromSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
+            Entity.World.Application.SystemManager.RegisterComponent(this); // Wtf this lift
         }
 
         /// <summary>
@@ -42,7 +54,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         /// <param name="camera"></param>
         private void ComputeShaderValues(Camera2D camera)
         {
-            var correctedPosition = Transform.Position + camera.GetPositionCorrector() + new Vector2(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height);
+            var correctedPosition = Transform.Position + camera.GetPositionCorrector() + new Vector3(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height, 0);
             var correctedRotation = Transform.Rotation + camera.GetRotationCorrector();
 
             Matrix4 model = Matrix4.CreateRotationZ(correctedRotation);
