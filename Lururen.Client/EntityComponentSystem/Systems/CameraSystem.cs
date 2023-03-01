@@ -1,15 +1,15 @@
 ﻿using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.EntityComponentSystem.Planar.Components;
 
-namespace Lururen.Client.EntityComponentSystem.Planar.Systems
+namespace Lururen.Client.EntityComponentSystem.Systems
 {
     /// <summary>
     /// Handles cameras.
     /// </summary>
-    public class Camera2DSystem : ISystem<Camera2D>
+    public class CameraSystem : ISystem<Camera>
     {
-        public List<Camera2D> Cameras = new();
-        public void Register(Camera2D component)
+        public List<Camera> Cameras = new();
+        public void Register(Camera component)
         {
             Cameras.Add(component);
         }
@@ -19,7 +19,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             Cameras.ForEach(camera => camera.Update(deltaTime));
         }
 
-        public void Unregister(Camera2D component)
+        public void Unregister(Camera component)
         {
             Cameras.Remove(component);
         }

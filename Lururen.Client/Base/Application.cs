@@ -1,6 +1,6 @@
-﻿using Lururen.Client.Audio.Generic;
-using Lururen.Client.Base;
+﻿using Lururen.Client.Base;
 using Lururen.Client.EntityComponentSystem;
+using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.EntityComponentSystem.Planar.Components;
 using Lururen.Client.EntityComponentSystem.Planar.Systems;
@@ -171,7 +171,7 @@ namespace Lururen.Client.Window
         {
             base.Init();
             SystemManager.RegisterSystem(new SpriteRenderSystem());
-            SystemManager.RegisterSystem(new Camera2DSystem());
+            SystemManager.RegisterSystem(new CameraSystem());
 
             var soundSystem = new SoundSystem();
             SystemManager.RegisterSystem<SoundSource>(soundSystem);

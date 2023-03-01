@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.ComponentModel.DataAnnotations;
 
-namespace Lururen.Client.EntityComponentSystem.Planar.Components
+namespace Lururen.Client.EntityComponentSystem.Components
 {
     /// <summary>
     /// Handles Texture2D rendering in 2D space.
@@ -14,8 +14,8 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
     public class SpriteComponent : Component
     {
         private Texture2D texture;
-        public Texture2D Texture 
-        { 
+        public Texture2D Texture
+        {
             get
             {
                 return texture;
@@ -52,7 +52,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         /// Computes shader unifroms and sets them.
         /// </summary>
         /// <param name="camera"></param>
-        private void ComputeShaderValues(Camera2D camera)
+        private void ComputeShaderValues(Camera camera)
         {
             var correctedPosition = Transform.Position + camera.GetPositionCorrector() + new Vector3(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height, 0);
             var correctedRotation = Transform.Rotation + camera.GetRotationCorrector();
@@ -66,7 +66,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
             Shader.SetMatrix4("projection", projection);
         }
 
-        public void Render(Camera2D camera)
+        public void Render(Camera camera)
         {
             ComputeShaderValues(camera);
 

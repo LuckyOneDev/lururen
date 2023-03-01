@@ -1,4 +1,6 @@
-﻿namespace Lururen.Client.EntityComponentSystem.Generic
+﻿using Lururen.Client.EntityComponentSystem.Base;
+
+namespace Lururen.Client.EntityComponentSystem.Generic
 {
     /// <summary>
     /// Basic type for all object that should be used in game.

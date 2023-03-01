@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.EntityComponentSystem.Planar.Systems
+namespace Lururen.Client.EntityComponentSystem.Systems
 {
     public class SoundSystem : ISystem<SoundSource>, ISystem<SoundListener>
     {
         List<SoundSource> Sources { get; set; } = new();
         List<SoundListener> Listeners { get; set; } = new();
-        
+
         public void Init()
         {
         }

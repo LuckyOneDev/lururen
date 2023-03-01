@@ -1,9 +1,11 @@
-﻿using Lururen.Client.EntityComponentSystem;
+﻿using Lururen.Client.Audio;
+using Lururen.Client.Audio.Generic;
+using Lururen.Client.EntityComponentSystem.Base;
 using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.ResourceManagement;
 using OpenTK.Mathematics;
 
-namespace Lururen.Client.Audio.Generic
+namespace Lururen.Client.EntityComponentSystem.Components
 {
     public record SoundPlayProperties
     {
@@ -26,7 +28,7 @@ namespace Lururen.Client.Audio.Generic
 
         public async Task Play(Sound sound, SoundPlayProperties properties = default)
         {
-            this.CurrentSound = CurrentSound;
+            CurrentSound = CurrentSound;
             var soundEffect = FileHandle<ALSoundEffect>.GetInstance().Get(sound.Accessor);
             do
             {

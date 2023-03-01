@@ -5,16 +5,16 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
 
-namespace Lururen.Client.EntityComponentSystem.Planar.Components
+namespace Lururen.Client.EntityComponentSystem.Components
 {
     /// <summary>
     /// Provides camera abstraction in 2D context.
     /// </summary>
-    public class Camera2D : Component
+    public class Camera : Component
     {
         public ALSoundDevice SoundDevice;
 
-        public Camera2D(Entity entity) : base(entity)
+        public Camera(Entity entity) : base(entity)
         {
             SoundDevice = new ALSoundDevice();
         }
@@ -51,7 +51,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Components
         /// it may return any of active cameras.
         /// </summary>
         /// <returns></returns>
-        public static Camera2D? GetActiveCamera()
+        public static Camera? GetActiveCamera()
         {
             // Check for active instead
             //return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera2D));

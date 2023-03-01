@@ -3,10 +3,10 @@ using ResourceLocation = Lururen.Client.ResourceManagement.ResourceLocation;
 using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Window;
 using Lururen.Client.EntityComponentSystem.Planar;
-using Lururen.Client.EntityComponentSystem;
 using Lururen.Client.Base;
 using System.Reflection.Metadata.Ecma335;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
+using Lururen.Client.EntityComponentSystem.Components;
+using Lururen.Client.EntityComponentSystem.Base;
 
 namespace GraphicsTestApp
 {
@@ -24,7 +24,7 @@ namespace GraphicsTestApp
             },
             new()
             {
-                TargetType = typeof(Camera2D)
+                TargetType = typeof(Camera)
             }
         } };
     }

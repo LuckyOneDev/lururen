@@ -1,4 +1,6 @@
-﻿namespace Lururen.Client.EntityComponentSystem.Generic
+﻿using Lururen.Client.EntityComponentSystem.Base;
+
+namespace Lururen.Client.EntityComponentSystem.Generic
 {
     /// <summary>
     /// Basic component whitch should be bound to IEntity.

@@ -10,7 +10,7 @@ using SixLabors.ImageSharp;
 using StbImageSharp;
 using System.ComponentModel;
 
-namespace Lururen.Client.EntityComponentSystem.Planar.Systems
+namespace Lururen.Client.EntityComponentSystem.Systems
 {
     /// <summary>
     /// Implements rendering pipeline. 
@@ -21,11 +21,11 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         private Dictionary<FileAccessor, List<SpriteComponent>> Components = new();
         private List<SpriteComponent> NoTextureSprites { get; set; } = new();
         protected static GLWindow Window { get; set; }
-        
+
         public void Init(GLWindow window)
         {
             // Enable depth test.
-            GL.Enable(EnableCap.DepthTest); 
+            GL.Enable(EnableCap.DepthTest);
             // Initialize imaging library. So images are compactible with OpenGL
             StbImage.stbi_set_flip_vertically_on_load(1);
             Window = window;
@@ -55,7 +55,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
             }
         }
 
-        protected static bool IsVisible(SpriteComponent spriteRenderer, Camera2D camera)
+        protected static bool IsVisible(SpriteComponent spriteRenderer, Camera camera)
         {
             var diagonalA = (float)Math.Sqrt(Math.Pow(spriteRenderer.Texture.Width, 2) + Math.Pow(spriteRenderer.Texture.Height, 2));
             var diagonalB = (float)Math.Sqrt(Math.Pow(camera.ViewportSize.X, 2) + Math.Pow(camera.ViewportSize.Y, 2));
@@ -84,7 +84,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         /// <param name="sprites"></param>
         /// <param name="camera"></param>
         /// <returns></returns>
-        protected static List<SpriteComponent> FilterSprites(List<SpriteComponent> sprites, Camera2D camera)
+        protected static List<SpriteComponent> FilterSprites(List<SpriteComponent> sprites, Camera camera)
         {
             return sprites.AsParallel().Where(x => IsVisible(x, camera) && x.IsActive()).ToList();
         }
@@ -95,7 +95,7 @@ namespace Lururen.Client.EntityComponentSystem.Planar.Systems
         /// <param name="deltaTime"></param>
         public void Update(double deltaTime)
         {
-            var camera = Camera2D.GetActiveCamera();
+            var camera = Camera.GetActiveCamera();
             CheckNoTextureSprites();
 
             if (camera != null)

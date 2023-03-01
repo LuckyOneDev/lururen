@@ -2,7 +2,7 @@
 using Lururen.Client.EntityComponentSystem.Generic;
 using static OpenTK.Compute.OpenCL.CLGL;
 
-namespace Lururen.Client.EntityComponentSystem
+namespace Lururen.Client.EntityComponentSystem.Base
 {
     /// <summary>
     /// Default implementation of IEntity<Component> interface.
@@ -25,7 +25,7 @@ namespace Lururen.Client.EntityComponentSystem
         {
             EntityComponentManager.GetInstance().AddEntity(this);
             Transform = new Transform();
-            this.World = world;
+            World = world;
         }
 
         public Transform Transform { get; }

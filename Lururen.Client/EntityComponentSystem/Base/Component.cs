@@ -2,7 +2,7 @@
 using Lururen.Client.Window;
 using Lururen.Common.EntitySystem;
 
-namespace Lururen.Client.EntityComponentSystem
+namespace Lururen.Client.EntityComponentSystem.Base
 {
     /// <summary>
     /// Default implementation of IComponent interface.
@@ -32,7 +32,7 @@ namespace Lururen.Client.EntityComponentSystem
             if (this is T thisCasted)
             {
                 system.Register(thisCasted);
-            } 
+            }
             else
             {
                 throw new ArgumentException("System was not of corresponding type");
