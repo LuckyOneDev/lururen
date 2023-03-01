@@ -1,4 +1,4 @@
-﻿using Lururen.Client.Window;
+﻿using Lururen.Client.Base;
 
 namespace Lururen.Client.EntityComponentSystem.Generic
 {

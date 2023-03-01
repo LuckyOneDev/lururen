@@ -1,4 +1,4 @@
-﻿using Lururen.Client.Window;
+﻿using Lururen.Client.Base;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;

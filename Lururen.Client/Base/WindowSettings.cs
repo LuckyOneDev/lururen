@@ -3,7 +3,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Common.Input;
 using OpenTK.Windowing.Desktop;
 
-namespace Lururen.Client.Window
+namespace Lururen.Client.Base
 {
     public record WindowSettings
     {
