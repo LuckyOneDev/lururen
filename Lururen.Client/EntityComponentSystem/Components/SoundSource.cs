@@ -48,5 +48,12 @@ namespace Lururen.Client.EntityComponentSystem.Components
             base.Update(deltaTime);
             ALSoundSource.SetPos(new Vector3(Transform.Position));
         }
+
+        public override void Dispose()
+        {
+            Register(this);
+            ALSoundSource.Dispose();
+            base.Dispose();
+        }
     }
 }

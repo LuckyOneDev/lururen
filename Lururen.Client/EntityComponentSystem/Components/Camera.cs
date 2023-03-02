@@ -59,5 +59,11 @@ namespace Lururen.Client.EntityComponentSystem.Components
         {
             return -Transform.Rotation;
         }
+
+        public override void Dispose()
+        {
+            Register(this);
+            base.Dispose();
+        }
     }
 }

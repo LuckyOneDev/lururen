@@ -4,6 +4,8 @@ using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Base;
 using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Base;
+using OpenTK.Mathematics;
+using System.Numerics;
 
 namespace GraphicsTestApp
 {
@@ -24,6 +26,21 @@ namespace GraphicsTestApp
                 TargetType = typeof(Camera)
             }
         } };
+
+        public static Prefab Wall => new Prefab()
+        {
+            Components = new()
+        {
+            new()
+            {
+                TargetType = typeof(SpriteComponent),
+                FieldValues = new()
+                {
+                    { (typeof(SpriteComponent).GetProperty(nameof(SpriteComponent.Texture)), new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded)) },
+                }
+            }
+        }
+        };
     }
 
     public class TestClient : Application2D
@@ -108,6 +125,7 @@ namespace GraphicsTestApp
             base.Init();
 
             player = Instantiate(PrefabCollection.Player);
+            Instantiate(PrefabCollection.Wall).Transform.Position = player.Transform.Position;
         }
     }
 }

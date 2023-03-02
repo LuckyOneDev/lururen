@@ -19,10 +19,12 @@ namespace Lururen.Client.Graphics.Helpers
             return SharedObjects.SelectMany(x => x.Item1).ToArray();
         }
 
-        public void SetBuffers()
+        public void SetBuffers() 
         {
+            var joinedVertices = GetJoined();
+
             OpenGLHelper.SetBuffer(BaseIndices, BufferTarget.ElementArrayBuffer);
-            OpenGLHelper.SetBuffer(GetJoined(), BufferTarget.ArrayBuffer);
+            OpenGLHelper.SetBuffer(joinedVertices, BufferTarget.ArrayBuffer);
         }
 
         protected override bool CheckEquality(float[] a, float[] b) =>

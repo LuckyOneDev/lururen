@@ -22,7 +22,12 @@ namespace Lururen.Client.EntityComponentSystem.Base
         protected void Register<T>(T comp) where T : IComponent
         {
             Entity.World.Application.SystemManager.RegisterComponent(comp); // Wtf this lift
-        } 
+        }
+
+        protected void Unregister<T>(T comp) where T : IComponent
+        {
+            Entity.World.Application.SystemManager.UnregisterComponent(comp); // Wtf this lift
+        }
 
         public virtual void Update(double deltaTime) { }
 

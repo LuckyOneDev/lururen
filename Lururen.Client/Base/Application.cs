@@ -50,6 +50,20 @@ namespace Lururen.Client.Base
             });
         }
 
+        /// <summary>
+        /// Reroutes component unregister calls.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="component"></param>
+        public void UnregisterComponent<T>(T component) where T : IComponent
+        {
+            Systems[typeof(T)].ForEach(system =>
+            {
+                var castedSystem = system as ISystem<T>;
+                castedSystem!.Unregister(component);
+            });
+        }
+
         public List<T> GetSystems<T>()
         {
             return Systems[typeof(T)] as List<T>;
