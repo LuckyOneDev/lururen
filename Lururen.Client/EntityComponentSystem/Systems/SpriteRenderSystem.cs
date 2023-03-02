@@ -1,5 +1,6 @@
-﻿using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
+﻿using Lururen.Client.Base;
+using Lururen.Client.EntityComponentSystem.Components;
+using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
 using Lururen.Client.ResourceManagement;
@@ -8,7 +9,6 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 using StbImageSharp;
-using System.ComponentModel;
 
 namespace Lururen.Client.EntityComponentSystem.Systems
 {
@@ -21,14 +21,18 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         private Dictionary<FileAccessor, List<SpriteComponent>> Components = new();
         private List<SpriteComponent> NoTextureSprites { get; set; } = new();
         protected static GLWindow Window { get; set; }
-
-        public void Init(GLWindow window)
+        public CameraSystem CameraSystem { get; private set; }
+        public Application Application { get; private set; }
+        public void Init(GLWindow window, CameraSystem camSys, Application app)
         {
             // Enable depth test.
             GL.Enable(EnableCap.DepthTest);
             // Initialize imaging library. So images are compactible with OpenGL
             StbImage.stbi_set_flip_vertically_on_load(1);
             Window = window;
+
+            this.CameraSystem = camSys;
+            this.Application = app;
         }
 
         public void Register(SpriteComponent component)
@@ -95,7 +99,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         /// <param name="deltaTime"></param>
         public void Update(double deltaTime)
         {
-            var camera = Camera.GetActiveCamera();
+            var camera = CameraSystem.GetActiveCamera();
             CheckNoTextureSprites();
 
             if (camera != null)

@@ -1,5 +1,7 @@
-﻿using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
+﻿using Lururen.Client.Base;
+using Lururen.Client.EntityComponentSystem.Base;
+using Lururen.Client.EntityComponentSystem.Components;
+using Lururen.Client.EntityComponentSystem.Generic;
 
 namespace Lururen.Client.EntityComponentSystem.Systems
 {
@@ -9,6 +11,13 @@ namespace Lururen.Client.EntityComponentSystem.Systems
     public class CameraSystem : ISystem<Camera>
     {
         public List<Camera> Cameras = new();
+
+        public Application Application { get; private set; }
+        public void Init(Application app)
+        {
+            this.Application = app;
+        }
+
         public void Register(Camera component)
         {
             Cameras.Add(component);
@@ -22,6 +31,17 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         public void Unregister(Camera component)
         {
             Cameras.Remove(component);
+        }
+
+        /// <summary>
+        /// Gets first active camera. Note that if there are more than one active camera
+        /// it may return any of active cameras.
+        /// </summary>
+        /// <returns></returns>
+        public Camera? GetActiveCamera()
+        {
+            // Check for active instead
+            return Cameras.Find(x => x.IsActive() == true);
         }
     }
 }

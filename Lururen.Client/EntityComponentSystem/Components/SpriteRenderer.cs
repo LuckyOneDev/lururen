@@ -1,5 +1,5 @@
-﻿using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Planar.Systems;
+﻿using Lururen.Client.EntityComponentSystem.Base;
+using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.Graphics.Generic;
 using Lururen.Client.Graphics.Texturing;
 using OpenTK.Graphics.OpenGL4;
@@ -45,7 +45,7 @@ namespace Lururen.Client.EntityComponentSystem.Components
         /// <param name="texture"></param>
         public SpriteComponent(Entity entity) : base(entity)
         {
-            Entity.World.Application.SystemManager.RegisterComponent(this); // Wtf this lift
+            Register(this);
         }
 
         /// <summary>

@@ -1,7 +1,6 @@
 ﻿using Lururen.Client.Audio;
 using Lururen.Client.Audio.Generic;
 using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.EntityComponentSystem.Planar;
 using Lururen.Client.ResourceManagement;
 using OpenTK.Mathematics;
 
@@ -21,6 +20,7 @@ namespace Lururen.Client.EntityComponentSystem.Components
         public bool IsPlaying { get; protected set; } = false;
         public SoundSource(Entity entity) : base(entity)
         {
+            Register(this);
         }
 
         public Sound? CurrentSound { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Lururen.Client.Audio.Generic;
+using Lururen.Client.EntityComponentSystem.Base;
 using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Planar.Systems;
+using Lururen.Client.EntityComponentSystem.Systems;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
@@ -12,11 +13,11 @@ namespace Lururen.Client.EntityComponentSystem.Components
     /// </summary>
     public class Camera : Component
     {
-        public ALSoundDevice SoundDevice;
+        public ALSoundDevice SoundDevice = new ALSoundDevice();
 
         public Camera(Entity entity) : base(entity)
         {
-            SoundDevice = new ALSoundDevice();
+            Register(this);
         }
 
         /// <summary>
@@ -44,18 +45,6 @@ namespace Lururen.Client.EntityComponentSystem.Components
             ViewportSize = SpriteRenderSystem.WindowSize;
             GL.Viewport(0, 0, ViewportSize.X, ViewportSize.Y);
             SoundDevice.SetPosition(new Vector3(Transform.Position));
-        }
-
-        /// <summary>
-        /// Gets first active camera. Note that if there are more than one active camera
-        /// it may return any of active cameras.
-        /// </summary>
-        /// <returns></returns>
-        public static Camera? GetActiveCamera()
-        {
-            // Check for active instead
-            //return Camera2DSystem.GetInstance().Cameras.Find(x => x.GetType() == typeof(Camera2D));
-            throw new NotImplementedException();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,6 +1,5 @@
 ﻿using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.Window;
-using Lururen.Common.EntitySystem;
+
 
 namespace Lururen.Client.EntityComponentSystem.Base
 {
@@ -19,6 +18,11 @@ namespace Lururen.Client.EntityComponentSystem.Base
             Entity = entity;
             Transform = entity.Transform;
         }
+
+        protected void Register<T>(T comp) where T : IComponent
+        {
+            Entity.World.Application.SystemManager.RegisterComponent(comp); // Wtf this lift
+        } 
 
         public virtual void Update(double deltaTime) { }
 

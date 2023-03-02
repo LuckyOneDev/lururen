@@ -1,4 +1,5 @@
-﻿using Lururen.Client.EntityComponentSystem.Generic;
+﻿using Lururen.Client.EntityComponentSystem.Base;
+using Lururen.Client.EntityComponentSystem.Generic;
 
 namespace Lururen.Client.EntityComponentSystem.Systems
 {

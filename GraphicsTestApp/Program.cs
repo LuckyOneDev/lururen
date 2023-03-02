@@ -1,8 +1,5 @@
 ﻿using GraphicsTestApp;
-using Lururen.Client.Audio;
-using Lururen.Client.Audio.Generic;
-using Lururen.Client.Window;
-using Lururen.Client.ResourceManagement;
+using Lururen.Client.Base;
 
 var client = new TestClient();
 client.Start(new WindowSettings

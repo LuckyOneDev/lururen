@@ -28,6 +28,8 @@ namespace Lururen.Client.EntityComponentSystem.Generic
     /// <typeparam name="T"></typeparam>
     public interface ISystem<T> : ISystem where T : IComponent
     {
+        public Application Application { get; }
+
         /// <summary>
         /// Registers component in system and initializes it.
         /// </summary>

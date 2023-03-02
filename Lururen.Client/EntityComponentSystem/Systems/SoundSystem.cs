@@ -1,6 +1,7 @@
 ﻿using Lururen.Client.Audio.Generic;
+using Lururen.Client.Base;
+using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,10 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         List<SoundSource> Sources { get; set; } = new();
         List<SoundListener> Listeners { get; set; } = new();
 
-        public void Init()
+        public Application Application { get; private set; }
+        public void Init(Application app)
         {
+            this.Application = app;
         }
 
         public void Register(SoundSource component)

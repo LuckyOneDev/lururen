@@ -1,4 +1,4 @@
-﻿using Lururen.Client.EntityComponentSystem.Planar.Components;
+﻿using Lururen.Client.EntityComponentSystem.Components;
 
 namespace Lururen.Client.EntityComponentSystem.Generic
 {

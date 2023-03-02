@@ -1,15 +1,13 @@
-﻿using Lururen.Client.Base;
-using Lururen.Client.EntityComponentSystem;
+﻿using Lururen.Client.EntityComponentSystem.Base;
 using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Planar.Components;
-using Lururen.Client.EntityComponentSystem.Planar.Systems;
+using Lururen.Client.EntityComponentSystem.Systems;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
 using Lururen.Common.Extensions;
 using OpenTK.Windowing.Desktop;
 
-namespace Lururen.Client.Window
+namespace Lururen.Client.Base
 {
     using InitEvent = Action;
 
@@ -28,13 +26,13 @@ namespace Lururen.Client.Window
         public Dictionary<Type, List<ISystem>> Systems { get; private set; } = new();
         public void RegisterSystem<T>(ISystem<T> system) where T : IComponent
         {
-            this.Systems.AddOrCreateList(typeof(T), system);
+            Systems.AddOrCreateList(typeof(T), system);
             system.Init(Application);
         }
 
         public void UnregisterSystem<T>(ISystem<T> system) where T : IComponent
         {
-            this.Systems.RemoveFromList(system);
+            Systems.RemoveFromList(system);
             system.Destroy();
         }
 
@@ -50,6 +48,11 @@ namespace Lururen.Client.Window
                 var castedSystem = system as ISystem<T>;
                 castedSystem!.Register(component);
             });
+        }
+
+        public List<T> GetSystems<T>()
+        {
+            return Systems[typeof(T)] as List<T>;
         }
     }
 
@@ -76,8 +79,8 @@ namespace Lururen.Client.Window
             if (found is not null)
             {
                 SetActive(found);
-            } 
-            else 
+            }
+            else
             {
                 throw new Exception();
             }
@@ -92,7 +95,7 @@ namespace Lururen.Client.Window
     {
         public Application()
         {
-            SystemManager = new(this); 
+            SystemManager = new(this);
             WorldManager = new(this);
         }
 
@@ -143,6 +146,10 @@ namespace Lururen.Client.Window
 
         protected virtual void Update(double deltaTime)
         {
+            SystemManager.Systems.Values.ToList().ForEach(system =>
+            {
+                system.ForEach(x => x.Update(deltaTime));
+            });
         }
 
         protected virtual void Render(double deltaTime)
@@ -170,10 +177,15 @@ namespace Lururen.Client.Window
         protected override void Init()
         {
             base.Init();
-            SystemManager.RegisterSystem(new SpriteRenderSystem());
-            SystemManager.RegisterSystem(new CameraSystem());
 
+            var spriteRender = new SpriteRenderSystem();
+            var camSystem = new CameraSystem();
             var soundSystem = new SoundSystem();
+
+            spriteRender.Init(Window, camSystem, this);
+
+            SystemManager.RegisterSystem(spriteRender);
+            SystemManager.RegisterSystem(camSystem);
             SystemManager.RegisterSystem<SoundSource>(soundSystem);
             SystemManager.RegisterSystem<SoundListener>(soundSystem);
         }
