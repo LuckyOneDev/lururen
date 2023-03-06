@@ -14,7 +14,7 @@ namespace Lururen.Client.EntityComponentSystem.Components
         public float Speed = 1;
     }
 
-    public class SoundSource : Component
+    public sealed class SoundSource : Component
     {
         internal ALSoundSoruce ALSoundSource = new();
         public bool IsPlaying { get; protected set; } = false;

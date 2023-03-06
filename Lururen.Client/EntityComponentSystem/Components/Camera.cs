@@ -11,7 +11,7 @@ namespace Lururen.Client.EntityComponentSystem.Components
     /// <summary>
     /// Provides camera abstraction in 2D context.
     /// </summary>
-    public class Camera : Component
+    public sealed class Camera : Component
     {
         public ALSoundDevice SoundDevice = new ALSoundDevice();
 

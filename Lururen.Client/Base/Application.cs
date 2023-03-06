@@ -195,6 +195,7 @@ namespace Lururen.Client.Base
             var spriteRender = new SpriteRenderSystem();
             var camSystem = new CameraSystem();
             var soundSystem = new SoundSystem();
+            var ucSystem = new UserComponentSystem();
 
             spriteRender.Init(Window, camSystem, this);
 
@@ -202,6 +203,7 @@ namespace Lururen.Client.Base
             SystemManager.RegisterSystem(camSystem);
             SystemManager.RegisterSystem<SoundSource>(soundSystem);
             SystemManager.RegisterSystem<SoundListener>(soundSystem);
+            SystemManager.RegisterSystem(ucSystem);
         }
     }
 }

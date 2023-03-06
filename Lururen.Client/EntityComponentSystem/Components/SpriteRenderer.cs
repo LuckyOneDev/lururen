@@ -11,7 +11,7 @@ namespace Lururen.Client.EntityComponentSystem.Components
     /// <summary>
     /// Handles Texture2D rendering in 2D space.
     /// </summary>
-    public class SpriteComponent : Component
+    public sealed class SpriteComponent : Component
     {
         private Texture2D texture;
         public Texture2D Texture
