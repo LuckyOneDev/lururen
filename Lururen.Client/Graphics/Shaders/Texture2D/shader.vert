@@ -9,7 +9,7 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-uniform int layer = 0;
+uniform float layer = 0;
 
 void main(void)
 {

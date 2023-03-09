@@ -112,6 +112,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
             SpriteComponent.Shader.SetMatrix4("model", model);
             SpriteComponent.Shader.SetMatrix4("view", view);
             SpriteComponent.Shader.SetMatrix4("projection", projection);
+            SpriteComponent.Shader.SetFloat("layer", sprite.Transform.Position.Z);
         }
 
         public void Render(SpriteComponent sprite, Camera camera)
