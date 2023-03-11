@@ -45,7 +45,6 @@ namespace Lururen.Client.EntityComponentSystem.Components
 
         public override void Update(double deltaTime)
         {
-            base.Update(deltaTime);
             ALSoundSource.SetPos(new Vector3(Transform.Position));
         }
 
@@ -54,6 +53,10 @@ namespace Lururen.Client.EntityComponentSystem.Components
             Register(this);
             ALSoundSource.Dispose();
             base.Dispose();
+        }
+
+        public override void Init()
+        {
         }
     }
 }

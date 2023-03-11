@@ -8,5 +8,13 @@ namespace Lururen.Client.EntityComponentSystem.Components
         public SoundListener(Entity entity) : base(entity)
         {
         }
+
+        public override void Init()
+        {
+        }
+
+        public override void Update(double deltaTime)
+        {
+        }
     }
 }

@@ -23,24 +23,19 @@ namespace Lururen.Client.EntityComponentSystem.Systems
     {
         private Dictionary<FileAccessor, List<SpriteComponent>> Components = new();
         private List<SpriteComponent> NoTextureSprites { get; set; } = new();
-        protected static GLWindow Window { get; set; }
+        protected GLWindow Window { get; set; }
         public CameraSystem CameraSystem { get; private set; }
         public Application Application { get; private set; }
 
         public void Init(Application application)
         {
             this.Application = application;
-            this.Application.Window!.OnRender += Update;
+            this.Application.Window!.OnRender += Render;
         }
 
         public void BindSystems(GLWindow window, CameraSystem camSys)
         {
-            // Enable depth test.
-            GL.Enable(EnableCap.DepthTest);
-            // Initialize imaging library. So images are compactible with OpenGL
-            StbImage.stbi_set_flip_vertically_on_load(1);
-            Window = window;
-
+            this.Window = window;
             this.CameraSystem = camSys;
         }
 
@@ -106,13 +101,14 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         /// Rendering pipeline
         /// </summary>
         /// <param name="deltaTime"></param>
-        public void Update(double deltaTime)
+        public void Render(double deltaTime)
         {
             var camera = CameraSystem.GetActiveCamera();
             CheckNoTextureSprites();
 
             if (camera != null)
             {
+                GL.Viewport(0, 0, camera.ViewportSize.X, camera.ViewportSize.Y);
                 SpriteComponent.GlShader.Use();
                 GLRect.Use();
 
@@ -151,6 +147,6 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         /// <summary>
         /// Size of current game window.
         /// </summary>
-        public static Vector2i WindowSize => Window.ClientSize;
+        public Vector2i WindowSize => Window.ClientSize;
     }
 }

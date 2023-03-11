@@ -25,25 +25,15 @@ namespace Lururen.Client.EntityComponentSystem.Components
         /// </summary>
         public Vector2i ViewportSize { get; set; }
 
-        /// <summary>
-        /// Sets viewport size to screen size.
-        /// </summary>
-        public void ResetViewportSize()
+        public override void Init()
         {
-            ViewportSize = SpriteRenderSystem.WindowSize;
-        }
-
-        public override void Init<T>(ISystem<T> system)
-        {
-            base.Init(system);
-            ViewportSize = SpriteRenderSystem.WindowSize;
             SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
 
         public override void Update(double deltaTime)
         {
             ViewportSize = SpriteRenderSystem.WindowSize;
-            GL.Viewport(0, 0, ViewportSize.X, ViewportSize.Y);
+            
             SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
 

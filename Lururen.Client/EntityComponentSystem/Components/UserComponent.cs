@@ -1,14 +1,9 @@
 ﻿using Lururen.Client.EntityComponentSystem.Base;
 using Lururen.Client.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Lururen.Client.EntityComponentSystem.Components
 {
-    public class UserComponent : Component
+    public abstract class UserComponent : Component
     {
         protected InputManager Input;
 
@@ -23,5 +18,9 @@ namespace Lururen.Client.EntityComponentSystem.Components
             Unregister(this);
             base.Dispose();
         }
+
+        public abstract override void Init();
+
+        public abstract override void Update(double deltaTime);
     }
 }

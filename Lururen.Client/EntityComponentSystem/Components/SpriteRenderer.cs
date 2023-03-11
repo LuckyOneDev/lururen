@@ -106,5 +106,9 @@ namespace Lururen.Client.EntityComponentSystem.Components
                 0,
                 GetBufferOffset() * 4); // I have no clue why is this 4. OpenGL is hard.
         }
+
+        public override void Init()
+        {
+        }
     }
 }

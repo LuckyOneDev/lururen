@@ -6,7 +6,7 @@ namespace Lururen.Client.EntityComponentSystem.Base
     /// <summary>
     /// Default implementation of IComponent interface.
     /// </summary>
-    public class Component : IComponent
+    public abstract class Component : IComponent
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public Entity? Entity { get; set; }
@@ -29,27 +29,16 @@ namespace Lururen.Client.EntityComponentSystem.Base
             Entity.World.Application.SystemManager.UnregisterComponent(comp); // Wtf this lift
         }
 
-        public virtual void Update(double deltaTime) { }
-
         public virtual void Dispose()
         {
             Entity = null;
         }
 
-        public virtual void Init<T>(ISystem<T> system) where T : IComponent
-        {
-            if (this is T thisCasted)
-            {
-                system.Register(thisCasted);
-            }
-            else
-            {
-                throw new ArgumentException("System was not of corresponding type");
-            }
-        }
+        public abstract void Init();
+        public abstract void Update(double deltaTime);
 
         private bool Active { get; set; } = true;
-        Entity? IComponent.Entity { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        Entity? IComponent.Entity { get; set; }
 
         public void SetActive(bool state)
         {

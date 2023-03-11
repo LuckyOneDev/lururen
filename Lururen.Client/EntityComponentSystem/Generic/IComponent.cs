@@ -17,7 +17,7 @@ namespace Lururen.Client.EntityComponentSystem.Generic
         /// Init method is called only once after component is successufly registered in corresponding system.
         /// </summary>
         /// <param name="entity"></param>
-        public void Init<T>(ISystem<T> system) where T : IComponent;
+        public void Init();
 
         /// <summary>
         /// Called every time corresponding system needs to update this component.
