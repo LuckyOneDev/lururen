@@ -33,7 +33,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
             this.Application.Window!.OnRender += Update;
         }
 
-        public void Init(GLWindow window, CameraSystem camSys, Application app)
+        public void BindSystems(GLWindow window, CameraSystem camSys)
         {
             // Enable depth test.
             GL.Enable(EnableCap.DepthTest);
