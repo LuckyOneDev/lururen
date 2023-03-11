@@ -16,6 +16,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         public void Init(Application app)
         {
             this.Application = app;
+            this.Application.Window!.OnUpdate += Update;
         }
 
         public void Register(Camera component)
@@ -42,6 +43,10 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         {
             // Check for active instead
             return Cameras.Find(x => x.IsActive() == true);
+        }
+
+        public void Destroy()
+        {
         }
     }
 }

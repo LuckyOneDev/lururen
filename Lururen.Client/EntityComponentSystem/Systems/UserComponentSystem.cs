@@ -14,6 +14,11 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         List<UserComponent> Components { get; set; } = new();
         public Application Application { get; set; }
 
+        public void Init(Application application)
+        {
+            this.Application = application;
+            this.Application.Window!.OnUpdate += Update;
+        }
         public void Register(UserComponent component)
         {
             Components.Add(component);
@@ -30,6 +35,10 @@ namespace Lururen.Client.EntityComponentSystem.Systems
             {
                 item.Update(deltaTime);
             }
+        }
+
+        public void Destroy()
+        {
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         public void Init(Application app)
         {
             this.Application = app;
+            this.Application.Window!.OnUpdate += Update;
         }
 
         public void Register(SoundSource component)
@@ -47,6 +48,10 @@ namespace Lururen.Client.EntityComponentSystem.Systems
             {
                 item.Update(deltaTime);
             }
+        }
+
+        public void Destroy()
+        {
         }
     }
 }

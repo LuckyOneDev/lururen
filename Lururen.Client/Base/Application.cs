@@ -114,7 +114,7 @@ namespace Lururen.Client.Base
         }
 
         public WindowSettings Settings { get; private set; } = default;
-        protected GLWindow? Window { get; set; } = null;
+        internal GLWindow? Window { get; set; } = null;
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
         public SystemManager SystemManager { get; }
@@ -159,10 +159,6 @@ namespace Lururen.Client.Base
 
         protected virtual void Update(double deltaTime)
         {
-            SystemManager.Systems.Values.ToList().ForEach(system =>
-            {
-                system.ForEach(x => x.Update(deltaTime));
-            });
         }
 
         protected virtual void Render(double deltaTime)

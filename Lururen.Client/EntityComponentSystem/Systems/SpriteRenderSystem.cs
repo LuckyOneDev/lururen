@@ -26,6 +26,13 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         protected static GLWindow Window { get; set; }
         public CameraSystem CameraSystem { get; private set; }
         public Application Application { get; private set; }
+
+        public void Init(Application application)
+        {
+            this.Application = application;
+            this.Application.Window!.OnRender += Update;
+        }
+
         public void Init(GLWindow window, CameraSystem camSys, Application app)
         {
             // Enable depth test.
@@ -35,7 +42,6 @@ namespace Lururen.Client.EntityComponentSystem.Systems
             Window = window;
 
             this.CameraSystem = camSys;
-            this.Application = app;
         }
 
         public void Register(SpriteComponent component)
@@ -134,6 +140,12 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         public void Unregister(SpriteComponent component)
         {
             Components.RemoveFromList(component);
+        }
+
+
+
+        public void Destroy()
+        {
         }
 
         /// <summary>
