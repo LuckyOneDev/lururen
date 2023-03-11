@@ -97,38 +97,6 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         }
 
         /// <summary>
-        /// Computes shader unifroms and sets them.
-        /// </summary>
-        /// <param name="camera"></param>
-        private void ComputeShaderValues(SpriteComponent sprite, Camera camera)
-        {
-            var correctedPosition = sprite.Transform.Position + camera.GetPositionCorrector() + new Vector3(-sprite.Pivot.X * sprite.Texture.Width, -sprite.Pivot.Y * sprite.Texture.Height, 0);
-            var correctedRotation = sprite.Transform.Rotation + camera.GetRotationCorrector();
-
-            Matrix4 model = Matrix4.CreateRotationZ(correctedRotation);
-            Matrix4 view = Matrix4.CreateTranslation(correctedPosition.X, correctedPosition.Y, correctedPosition.Z);
-            Matrix4 projection = Matrix4.CreateOrthographicOffCenter(0, camera.ViewportSize.X, 0, camera.ViewportSize.Y, 0, 100f);
-
-            SpriteComponent.GlShader.SetMatrix4("model", model);
-            SpriteComponent.GlShader.SetMatrix4("view", view);
-            SpriteComponent.GlShader.SetMatrix4("projection", projection);
-            SpriteComponent.GlShader.SetFloat("layer", sprite.Transform.Position.Z);
-        }
-
-        public void RenderSprite(SpriteComponent sprite, Camera camera)
-        {
-            ComputeShaderValues(sprite, camera);
-
-            // Buffer is guaranteed to be filled with data already.
-            GL.DrawElementsBaseVertex(
-                PrimitiveType.Triangles,
-                GLRect.indices.Length,
-                DrawElementsType.UnsignedInt,
-                0,
-                sprite.GetBufferOffset() * 4); // I have no clue why is this 4. OpenGL is hard.
-        }
-
-        /// <summary>
         /// Rendering pipeline
         /// </summary>
         /// <param name="deltaTime"></param>
@@ -154,7 +122,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
                         visibleSprites.ForEach(sprite =>
                         {
                             sprite.Update(deltaTime);
-                            RenderSprite(sprite, camera);
+                            sprite.Render(camera);
                         });
                     }
                 }
