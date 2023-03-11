@@ -109,10 +109,10 @@ namespace Lururen.Client.EntityComponentSystem.Systems
             Matrix4 view = Matrix4.CreateTranslation(correctedPosition.X, correctedPosition.Y, correctedPosition.Z);
             Matrix4 projection = Matrix4.CreateOrthographicOffCenter(0, camera.ViewportSize.X, 0, camera.ViewportSize.Y, 0, 100f);
 
-            SpriteComponent.Shader.SetMatrix4("model", model);
-            SpriteComponent.Shader.SetMatrix4("view", view);
-            SpriteComponent.Shader.SetMatrix4("projection", projection);
-            SpriteComponent.Shader.SetFloat("layer", sprite.Transform.Position.Z);
+            SpriteComponent.GlShader.SetMatrix4("model", model);
+            SpriteComponent.GlShader.SetMatrix4("view", view);
+            SpriteComponent.GlShader.SetMatrix4("projection", projection);
+            SpriteComponent.GlShader.SetFloat("layer", sprite.Transform.Position.Z);
         }
 
         public void RenderSprite(SpriteComponent sprite, Camera camera)
@@ -139,20 +139,24 @@ namespace Lururen.Client.EntityComponentSystem.Systems
 
             if (camera != null)
             {
-                SpriteComponent.Shader.Use();
+                SpriteComponent.GlShader.Use();
                 GLRect.Use();
 
                 foreach (var entry in Components)
                 {
                     var accessor = entry.Key;
                     var texture = FileHandle<GLTexture>.GetInstance().Get(accessor);
-                    texture.Use();
+                    
                     var visibleSprites = FilterSprites(entry.Value, camera);
-                    visibleSprites.ForEach(sprite =>
+                    if (visibleSprites.Count > 0)
                     {
-                        sprite.Update(deltaTime);
-                        RenderSprite(sprite, camera);
-                    });
+                        texture.Use();
+                        visibleSprites.ForEach(sprite =>
+                        {
+                            sprite.Update(deltaTime);
+                            RenderSprite(sprite, camera);
+                        });
+                    }
                 }
 
                 OpenGLHelper.CheckErrors();

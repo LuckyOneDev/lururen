@@ -22,7 +22,7 @@ namespace Lururen.Client.EntityComponentSystem.Components
             }
             set
             {
-                Rect = GLRect.FromSizes(value.Width * Transform.Scale, value.Height * Transform.Scale);
+                GlRect = GLRect.FromSizes(value.Width * Transform.Scale, value.Height * Transform.Scale);
                 texture = value;
             }
         }
@@ -34,9 +34,9 @@ namespace Lururen.Client.EntityComponentSystem.Components
         /// </summary>
         public Vector2 Pivot { get; set; } = Vector2.Zero;
 
-        internal static GLShader Shader = GLShader.FromResource("Lururen.Client.Graphics.Shaders.Texture2D");
+        internal static GLShader GlShader = GLShader.FromResource("Lururen.Client.Graphics.Shaders.Texture2D");
 
-        protected GLRect Rect { get; set; }
+        protected GLRect GlRect { get; set; }
 
         /// <summary>
         /// Creates instance of SpriteRenderer.
@@ -51,16 +51,16 @@ namespace Lururen.Client.EntityComponentSystem.Components
         public override void Update(double deltaTime)
         {
             // Size correction 
-            Rect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
+            GlRect.SetSizes(Texture.Width * Transform.Scale, Texture.Height * Transform.Scale);
         }
 
         public override void Dispose()
         {
             Unregister(this);
             base.Dispose();
-            Rect.Dispose();
+            GlRect.Dispose();
         }
 
-        internal int GetBufferOffset() => Rect.GetBufferOffset();
+        internal int GetBufferOffset() => GlRect.GetBufferOffset();
     }
 }
