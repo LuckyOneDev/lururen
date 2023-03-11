@@ -114,7 +114,6 @@ namespace Lururen.Client.Base
         }
 
         public WindowSettings Settings { get; private set; } = default;
-        public List<World> Worlds { get; private set; } = new();
         protected GLWindow? Window { get; set; } = null;
         public InputManager InputManager { get; private set; }
         public EntityComponentManager EntityManager { get; private set; }
