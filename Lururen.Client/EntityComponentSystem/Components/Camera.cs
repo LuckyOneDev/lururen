@@ -32,8 +32,6 @@ namespace Lururen.Client.EntityComponentSystem.Components
 
         public override void Update(double deltaTime)
         {
-            ViewportSize = SpriteRenderSystem.WindowSize;
-            
             SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
 

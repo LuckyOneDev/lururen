@@ -108,6 +108,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
 
             if (camera != null)
             {
+                camera.ViewportSize = WindowSize;
                 GL.Viewport(0, 0, camera.ViewportSize.X, camera.ViewportSize.Y);
                 SpriteComponent.GlShader.Use();
                 GLRect.Use();

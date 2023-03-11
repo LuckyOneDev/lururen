@@ -16,9 +16,8 @@ namespace GraphicsTestApp
         {
         }
 
-        public override void Init<T>(ISystem<T> system)
+        public override void Init()
         {
-            base.Init(system);
         }
 
         public override void Update(double deltaTime)
