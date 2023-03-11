@@ -29,6 +29,11 @@ namespace Lururen.Client.EntityComponentSystem.Systems
 
         public void Init(Application application)
         {
+            // Enable depth test.
+            GL.Enable(EnableCap.DepthTest);
+            // Initialize imaging library. So images are compactible with OpenGL
+            StbImage.stbi_set_flip_vertically_on_load(1);
+
             this.Application = application;
             this.Application.Window!.OnRender += Render;
         }
