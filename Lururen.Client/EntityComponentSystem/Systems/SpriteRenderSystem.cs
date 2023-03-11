@@ -115,7 +115,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
             SpriteComponent.Shader.SetFloat("layer", sprite.Transform.Position.Z);
         }
 
-        public void Render(SpriteComponent sprite, Camera camera)
+        public void RenderSprite(SpriteComponent sprite, Camera camera)
         {
             ComputeShaderValues(sprite, camera);
 
@@ -151,7 +151,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
                     visibleSprites.ForEach(sprite =>
                     {
                         sprite.Update(deltaTime);
-                        Render(sprite, camera);
+                        RenderSprite(sprite, camera);
                     });
                 }
 
