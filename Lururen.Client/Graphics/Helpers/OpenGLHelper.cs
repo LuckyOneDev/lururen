@@ -99,5 +99,14 @@ namespace Lururen.Client.Graphics.Helpers
             GL.VertexAttribPointer(location, vertexSize, VertexAttribPointerType.Float, false, stride * sizeof(float), pointer * sizeof(float));
             GL.EnableVertexAttribArray(location);
         }
+
+        internal static void CheckErrors()
+        {
+            var error = GL.GetError();
+            if (error != ErrorCode.NoError)
+            {
+                throw new Exception($"OpenGL error {error}");
+            }
+        }
     }
 }

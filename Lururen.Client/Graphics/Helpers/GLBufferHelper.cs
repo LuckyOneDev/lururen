@@ -21,8 +21,10 @@ namespace Lururen.Client.Graphics.Helpers
 
         public void SetBuffers()
         {
+            var joinedVertices = GetJoined();
+
             OpenGLHelper.SetBuffer(BaseIndices, BufferTarget.ElementArrayBuffer);
-            OpenGLHelper.SetBuffer(GetJoined(), BufferTarget.ArrayBuffer);
+            OpenGLHelper.SetBuffer(joinedVertices, BufferTarget.ArrayBuffer);
         }
 
         protected override bool CheckEquality(float[] a, float[] b) =>

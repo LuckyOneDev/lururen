@@ -1,9 +1,11 @@
-﻿using Lururen.Client.EntityComponentSystem.Planar;
-using Lururen.Client.ResourceManagement;
-using OpenTK.Mathematics;
-
-namespace Lururen.Client.Audio.Generic
+﻿namespace Lururen.Client.EntityComponentSystem.Sound
 {
+    using Lururen.Client.Audio;
+    using Lururen.Client.Audio.Generic;
+    using Lururen.Client.EntityComponentSystem.Base;
+    using Lururen.Client.ResourceManagement;
+    using OpenTK.Mathematics;
+
     public record SoundPlayProperties
     {
         public bool Looping = false;
@@ -12,12 +14,13 @@ namespace Lururen.Client.Audio.Generic
         public float Speed = 1;
     }
 
-    public class SoundSource : Component2D
+    public sealed class SoundSource : Component
     {
         internal ALSoundSoruce ALSoundSource = new();
         public bool IsPlaying { get; protected set; } = false;
-        public SoundSource(Entity2D entity) : base(entity)
+        public SoundSource(Entity entity) : base(entity)
         {
+            Register(this);
         }
 
         public Sound? CurrentSound { get; set; }
@@ -25,7 +28,7 @@ namespace Lururen.Client.Audio.Generic
 
         public async Task Play(Sound sound, SoundPlayProperties properties = default)
         {
-            this.CurrentSound = CurrentSound;
+            CurrentSound = CurrentSound;
             var soundEffect = FileHandle<ALSoundEffect>.GetInstance().Get(sound.Accessor);
             do
             {
@@ -42,8 +45,18 @@ namespace Lururen.Client.Audio.Generic
 
         public override void Update(double deltaTime)
         {
-            base.Update(deltaTime);
             ALSoundSource.SetPos(new Vector3(Transform.Position));
+        }
+
+        public override void Dispose()
+        {
+            Register(this);
+            ALSoundSource.Dispose();
+            base.Dispose();
+        }
+
+        public override void Init()
+        {
         }
     }
 }

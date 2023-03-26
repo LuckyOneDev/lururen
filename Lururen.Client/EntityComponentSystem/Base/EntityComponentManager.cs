@@ -1,4 +1,4 @@
-﻿namespace Lururen.Client.EntityComponentSystem
+﻿namespace Lururen.Client.EntityComponentSystem.Base
 {
     /// <summary>
     /// Provides general purpose entity and component list.
@@ -8,7 +8,7 @@
     {
         protected Dictionary<Guid, Entity> Entities { get; set; } = new();
         protected Dictionary<Guid, Component> Components { get; set; } = new();
-        
+
         #region Singleton
 
         private static EntityComponentManager instance;
@@ -31,7 +31,7 @@
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T? GetEntityByType<T>() where T : Entity => (T?)Entities.Values.FirstOrDefault(x => x.GetType() == typeof(T));
+        public Entity? GetEntityById(Guid entId) => Entities.GetValueOrDefault(entId);
 
         /// <summary>
         /// Gets entity by its id.
@@ -42,7 +42,7 @@
         public T? GetEntity<T>(Guid entityId) where T : Entity
         {
             return Entities[entityId] as T;
-        } 
+        }
 
         /// <summary>
         /// Adds entity to collection.

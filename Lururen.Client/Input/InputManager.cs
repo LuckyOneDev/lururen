@@ -8,8 +8,8 @@ namespace Lururen.Client.Input
     public delegate void KeyPressEvent(Keys key);
     public class InputManager
     {
-        Game Window { get; set; }
-        public InputManager(Game Window)
+        GLWindow Window { get; set; }
+        public InputManager(GLWindow Window)
         {
             this.Window = Window;
         }

@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using Lururen.Common;
+using System.Collections.ObjectModel;
 using System.Reflection;
-using Lururen.Common;
 
 namespace Lururen.Client.ResourceManagement
 {

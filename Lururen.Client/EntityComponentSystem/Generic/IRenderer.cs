@@ -1,7 +1,7 @@
-﻿using Lururen.Client.EntityComponentSystem.Planar.Components;
-
-namespace Lururen.Client.EntityComponentSystem.Generic
+﻿namespace Lururen.Client.EntityComponentSystem.Generic
 {
+    using Lururen.Client.EntityComponentSystem.Camera;
+
     /// <summary>
     /// Base type for all visible components.
     /// </summary>
@@ -11,6 +11,6 @@ namespace Lururen.Client.EntityComponentSystem.Generic
         /// Render event is bound to corresponding system render frame event.
         /// </summary>
         /// <param name="camera"></param>
-        public void Render(Camera2D camera);
+        public void Render(Camera camera);
     }
 }

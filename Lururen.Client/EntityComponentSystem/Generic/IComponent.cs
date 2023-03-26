@@ -1,4 +1,6 @@
-﻿namespace Lururen.Client.EntityComponentSystem.Generic
+﻿using Lururen.Client.EntityComponentSystem.Base;
+
+namespace Lururen.Client.EntityComponentSystem.Generic
 {
     /// <summary>
     /// Basic component whitch should be bound to IEntity.
@@ -28,6 +30,12 @@
         /// Determines if component should be considered by corresponding system.
         /// Set to true when component is successfully registered.
         /// </summary>
-        public bool Active { get; set; }
+        public void SetActive(bool state);
+
+        /// <summary>
+        /// Determines if component should be considered by corresponding system.
+        /// Set to true when component is successfully registered.
+        /// </summary>
+        public bool IsActive();
     }
 }

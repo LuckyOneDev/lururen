@@ -1,4 +1,6 @@
-﻿namespace Lururen.Client.EntityComponentSystem.Generic
+﻿using Lururen.Client.EntityComponentSystem.Base;
+
+namespace Lururen.Client.EntityComponentSystem.Generic
 {
     /// <summary>
     /// Basic type for all object that should be used in game.
@@ -17,7 +19,7 @@
         /// </summary>
         /// <param name="component"></param>
         /// <returns></returns>
-        public T1 AddComponent<T1>(T1 component) where T1 : T;
+        public T1 AddComponent<T1>() where T1 : T;
 
         /// <summary>
         /// Retrieves any component of given type.
@@ -39,5 +41,18 @@
         /// </summary>
         /// <param name="component"></param>
         public void RemoveComponent(T component);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        bool IsActive();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="state"></param>
+        void SetActive(bool state);
+        Component AddComponent(Type componentType);
     }
 }

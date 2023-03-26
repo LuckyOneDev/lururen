@@ -1,5 +1,4 @@
-﻿using OpenTK;
-using OpenTK.Audio.OpenAL;
+﻿using OpenTK.Audio.OpenAL;
 using OpenTK.Mathematics;
 
 namespace Lururen.Client.Audio.Generic
@@ -30,7 +29,7 @@ namespace Lururen.Client.Audio.Generic
             ALC.MakeContextCurrent(this.Context);
             AL.Listener(ALListener3f.Position, pos.X, pos.Y, pos.Z);
         }
-          
+
         public void Dispose()
         {
             ALC.DestroyContext(this.Context);
