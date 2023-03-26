@@ -1,6 +1,4 @@
-﻿using Lururen.Client.EntityComponentSystem.Base;
-
-namespace Lururen.Client.Base
+﻿namespace Lururen.Client.EntityComponentSystem.Base
 {
     public class Prefab
     {
@@ -9,7 +7,7 @@ namespace Lururen.Client.Base
 
         public Prefab(ConfigurationDelegate configurator)
         {
-            this.Configurator = configurator;
+            Configurator = configurator;
         }
     }
 }

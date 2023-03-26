@@ -1,5 +1,4 @@
-﻿using Lururen.Client.Base;
-using Lururen.Client.EntityComponentSystem.Base;
+﻿using Lururen.Client.EntityComponentSystem.Base;
 using Lururen.Client.Input;
 
 namespace Lururen.Client.EntityComponentSystem.User
