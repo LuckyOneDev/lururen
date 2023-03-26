@@ -1,7 +1,7 @@
 ﻿using Lururen.Client.EntityComponentSystem.Base;
 using Lururen.Client.EntityComponentSystem.Generic;
 
-namespace Lururen.Client.EntityComponentSystem.Components
+namespace Lururen.Client.EntityComponentSystem.Sound
 {
     public sealed class SoundListener : Component
     {

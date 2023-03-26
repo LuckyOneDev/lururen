@@ -1,9 +1,8 @@
 ﻿using Lururen.Client.Base;
 using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Generic;
 
-namespace Lururen.Client.EntityComponentSystem.Systems
+namespace Lururen.Client.EntityComponentSystem.Camera
 {
     /// <summary>
     /// Handles cameras.
@@ -15,8 +14,8 @@ namespace Lururen.Client.EntityComponentSystem.Systems
         public Application Application { get; private set; }
         public void Init(Application app)
         {
-            this.Application = app;
-            this.Application.Window!.OnUpdate += Update;
+            Application = app;
+            Application.Window!.OnUpdate += Update;
         }
 
         public void Register(Camera component)

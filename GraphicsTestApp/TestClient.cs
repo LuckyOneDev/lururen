@@ -2,11 +2,12 @@
 using ResourceLocation = Lururen.Client.ResourceManagement.ResourceLocation;
 using Lururen.Client.Graphics.Texturing;
 using Lururen.Client.Base;
-using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Base;
 using OpenTK.Mathematics;
 using System.Numerics;
 using Vector2 = OpenTK.Mathematics.Vector2;
+using Lururen.Client.EntityComponentSystem.Camera;
+using Lururen.Client.EntityComponentSystem.Sprite;
 
 namespace GraphicsTestApp
 {

@@ -2,7 +2,7 @@
 using Lururen.Client.EntityComponentSystem.Base;
 using Lururen.Client.Input;
 
-namespace Lururen.Client.EntityComponentSystem.Components
+namespace Lururen.Client.EntityComponentSystem.User
 {
     /// <summary>
     /// Generic user component. Contains everything for interaction with engine.
@@ -29,7 +29,7 @@ namespace Lururen.Client.EntityComponentSystem.Components
 
         public Entity Instantiate(Prefab prefab, float x = 0, float y = 0, float layer = 0)
         {
-            return this.Entity!.World.CreateEntity(prefab);
+            return Entity!.World.CreateEntity(prefab);
         }
     }
 }

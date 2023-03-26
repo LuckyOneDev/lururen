@@ -1,5 +1,4 @@
 ﻿using Lururen.Client.Base;
-using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Generic;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lururen.Client.EntityComponentSystem.Systems
+namespace Lururen.Client.EntityComponentSystem.User
 {
     internal class UserComponentSystem : ISystem<UserComponent>
     {
@@ -16,8 +15,8 @@ namespace Lururen.Client.EntityComponentSystem.Systems
 
         public void Init(Application application)
         {
-            this.Application = application;
-            this.Application.Window!.OnUpdate += Update;
+            Application = application;
+            Application.Window!.OnUpdate += Update;
         }
         public void Register(UserComponent component)
         {

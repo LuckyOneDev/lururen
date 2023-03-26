@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.ComponentModel.DataAnnotations;
 
-namespace Lururen.Client.EntityComponentSystem.Components
+namespace Lururen.Client.EntityComponentSystem.Sprite
 {
     /// <summary>
     /// Handles Texture2D rendering in 2D space.
@@ -17,7 +17,7 @@ namespace Lururen.Client.EntityComponentSystem.Components
         /// Shader used by this component.
         /// </summary>
         internal static GLShader GlShader = GLShader.FromResource("Lururen.Client.Graphics.Shaders.Texture2D");
-        
+
         /// <summary>
         /// Sprite's texture.
         /// </summary>
@@ -89,11 +89,11 @@ namespace Lururen.Client.EntityComponentSystem.Components
             Matrix4 projection = Matrix4.CreateOrthographicOffCenter(0, camera.ViewportSize.X, 0, camera.ViewportSize.Y, 0, 100f);
             Matrix4 pivot = Matrix4.CreateTranslation(new Vector3(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height, 0));
 
-            SpriteComponent.GlShader.SetMatrix4("model", model);
-            SpriteComponent.GlShader.SetMatrix4("pivot", pivot);
-            SpriteComponent.GlShader.SetMatrix4("view", view);
-            SpriteComponent.GlShader.SetMatrix4("projection", projection);
-            SpriteComponent.GlShader.SetFloat("layer", Transform.Position.Z);
+            GlShader.SetMatrix4("model", model);
+            GlShader.SetMatrix4("pivot", pivot);
+            GlShader.SetMatrix4("view", view);
+            GlShader.SetMatrix4("projection", projection);
+            GlShader.SetFloat("layer", Transform.Position.Z);
         }
 
         public void Render(Camera camera)

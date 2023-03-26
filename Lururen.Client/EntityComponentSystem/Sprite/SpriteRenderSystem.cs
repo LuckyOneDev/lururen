@@ -1,6 +1,6 @@
 ﻿using Lururen.Client.Base;
 using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.EntityComponentSystem.Components;
+using Lururen.Client.EntityComponentSystem.Camera;
 using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.Graphics;
 using Lururen.Client.Graphics.Generic;
@@ -13,7 +13,7 @@ using OpenTK.Mathematics;
 using SixLabors.ImageSharp;
 using StbImageSharp;
 
-namespace Lururen.Client.EntityComponentSystem.Systems
+namespace Lururen.Client.EntityComponentSystem.Sprite
 {
     /// <summary>
     /// Implements rendering pipeline. 
@@ -34,14 +34,14 @@ namespace Lururen.Client.EntityComponentSystem.Systems
             // Initialize imaging library. So images are compactible with OpenGL
             StbImage.stbi_set_flip_vertically_on_load(1);
 
-            this.Application = application;
-            this.Application.Window!.OnRender += Render;
+            Application = application;
+            Application.Window!.OnRender += Render;
         }
 
         public void BindSystems(GLWindow window, CameraSystem camSys)
         {
-            this.Window = window;
-            this.CameraSystem = camSys;
+            Window = window;
+            CameraSystem = camSys;
         }
 
         public void Register(SpriteComponent component)
@@ -122,7 +122,7 @@ namespace Lururen.Client.EntityComponentSystem.Systems
                 {
                     var accessor = entry.Key;
                     var texture = FileHandle<GLTexture>.GetInstance().Get(accessor);
-                    
+
                     var visibleSprites = FilterSprites(entry.Value, camera);
                     if (visibleSprites.Count > 0)
                     {

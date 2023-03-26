@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
 
-namespace Lururen.Client.EntityComponentSystem.Components
+namespace Lururen.Client.EntityComponentSystem.Camera
 {
     /// <summary>
     /// Provides camera abstraction in 2D context.

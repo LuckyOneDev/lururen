@@ -1,6 +1,4 @@
-﻿using Lururen.Client.EntityComponentSystem.Components;
-
-namespace Lururen.Client.EntityComponentSystem.Generic
+﻿namespace Lururen.Client.EntityComponentSystem.Generic
 {
     /// <summary>
     /// Base type for all visible components.

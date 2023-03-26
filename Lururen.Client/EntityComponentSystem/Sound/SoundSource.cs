@@ -4,7 +4,7 @@ using Lururen.Client.EntityComponentSystem.Base;
 using Lururen.Client.ResourceManagement;
 using OpenTK.Mathematics;
 
-namespace Lururen.Client.EntityComponentSystem.Components
+namespace Lururen.Client.EntityComponentSystem.Sound
 {
     public record SoundPlayProperties
     {

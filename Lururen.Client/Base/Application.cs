@@ -1,6 +1,6 @@
 ﻿using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Generic;
+using Lururen.Client.EntityComponentSystem.Sound;
 using Lururen.Client.EntityComponentSystem.Systems;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
