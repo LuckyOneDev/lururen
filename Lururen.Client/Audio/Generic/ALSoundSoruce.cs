@@ -1,7 +1,5 @@
 ﻿using OpenTK.Audio.OpenAL;
-using OpenTK.Compute.OpenCL;
 using OpenTK.Mathematics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Lururen.Client.Audio.Generic
 {
@@ -47,7 +45,7 @@ namespace Lururen.Client.Audio.Generic
 
             AL.SourcePlay(sourceHandle);
 
-            this.State = ALSourceState.Playing;  
+            this.State = ALSourceState.Playing;
             var error = ALError.NoError;
 
             while (this.State == ALSourceState.Playing && error == ALError.NoError)
@@ -56,7 +54,7 @@ namespace Lururen.Client.Audio.Generic
                 error = AL.GetError();
             }
 
-            if (error != ALError.NoError) 
+            if (error != ALError.NoError)
             {
                 throw new OpenALException($"Could not play sound effect. Error: {error}.");
             }

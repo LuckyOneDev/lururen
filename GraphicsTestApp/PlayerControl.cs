@@ -1,12 +1,6 @@
 ﻿using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.EntityComponentSystem.User;
 using OpenTK.Windowing.GraphicsLibraryFramework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphicsTestApp
 {

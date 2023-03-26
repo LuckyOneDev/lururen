@@ -1,11 +1,4 @@
-﻿using Lururen.Client.Audio.Generic;
-using Lururen.Client.Graphics.Generic;
-using Lururen.Client.ResourceManagement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Lururen.Client.ResourceManagement;
 
 namespace Lururen.Client.Audio
 {

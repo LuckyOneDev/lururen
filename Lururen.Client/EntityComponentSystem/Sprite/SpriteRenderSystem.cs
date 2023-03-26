@@ -1,20 +1,18 @@
-﻿using Lururen.Client.Base;
-using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.EntityComponentSystem.Camera;
-using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.Graphics;
-using Lururen.Client.Graphics.Generic;
-using Lururen.Client.Graphics.Helpers;
-using Lururen.Client.Graphics.Texturing;
-using Lururen.Client.ResourceManagement;
-using Lururen.Common.Extensions;
-using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
-using SixLabors.ImageSharp;
-using StbImageSharp;
-
-namespace Lururen.Client.EntityComponentSystem.Sprite
+﻿namespace Lururen.Client.EntityComponentSystem.Sprite
 {
+    using Lururen.Client.Base;
+    using Lururen.Client.EntityComponentSystem.Camera;
+    using Lururen.Client.EntityComponentSystem.Generic;
+    using Lururen.Client.Graphics;
+    using Lururen.Client.Graphics.Generic;
+    using Lururen.Client.Graphics.Helpers;
+    using Lururen.Client.ResourceManagement;
+    using Lururen.Common.Extensions;
+    using OpenTK.Graphics.OpenGL4;
+    using OpenTK.Mathematics;
+    using SixLabors.ImageSharp;
+    using StbImageSharp;
+
     /// <summary>
     /// Implements rendering pipeline. 
     /// Calls SpriteRenderers with needed optmizations.

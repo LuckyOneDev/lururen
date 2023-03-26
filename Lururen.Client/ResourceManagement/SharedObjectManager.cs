@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-
-namespace Lururen.Client.ResourceManagement
+﻿namespace Lururen.Client.ResourceManagement
 {
     /// <summary>
     /// Collection that uses less space in memory by storing only unique objects giving non-changing indexes to them.
@@ -33,7 +30,7 @@ namespace Lururen.Client.ResourceManagement
                 SharedObjects.Add((value, 1));
 
                 return maxMappingIndex;
-            } 
+            }
             else
             {
                 // Increase reference count
@@ -60,7 +57,8 @@ namespace Lururen.Client.ResourceManagement
                 SharedObjects[actualIndex] = (SharedObjects[actualIndex].Value, SharedObjects[actualIndex].ReferenceCount - 1);
                 // Add new entry (or find another existing, which Add() does)
                 return Add(value);
-            } else
+            }
+            else
             {
                 // Just rewrite data
                 SharedObjects[actualIndex] = (value, 1);
@@ -77,7 +75,7 @@ namespace Lururen.Client.ResourceManagement
             SharedObjects[actualIndex] = (SharedObjects[actualIndex].Item1, SharedObjects[actualIndex].Item2 - 1);
 
             // Noone references entry anymore
-            if (SharedObjects[actualIndex].ReferenceCount == 0) 
+            if (SharedObjects[actualIndex].ReferenceCount == 0)
             {
                 // Remove entry
                 SharedObjects.RemoveAt(actualIndex);

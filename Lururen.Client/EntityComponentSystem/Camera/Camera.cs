@@ -1,8 +1,5 @@
 ﻿using Lururen.Client.Audio.Generic;
 using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.EntityComponentSystem.Systems;
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
 

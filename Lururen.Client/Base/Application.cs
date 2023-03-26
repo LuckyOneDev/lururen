@@ -1,16 +1,15 @@
 ﻿using Lururen.Client.EntityComponentSystem.Base;
+using Lururen.Client.EntityComponentSystem.Camera;
 using Lururen.Client.EntityComponentSystem.Generic;
 using Lururen.Client.EntityComponentSystem.Sound;
-using Lururen.Client.EntityComponentSystem.Systems;
+using Lururen.Client.EntityComponentSystem.Sprite;
+using Lururen.Client.EntityComponentSystem.User;
 using Lururen.Client.Graphics;
 using Lururen.Client.Input;
 using Lururen.Common.Extensions;
-using OpenTK.Windowing.Desktop;
 
 namespace Lururen.Client.Base
 {
-    using InitEvent = Action;
-
     public delegate void UpdateEvent(double deltaTime);
 
     public delegate void ResizeEvent(int width, int height);

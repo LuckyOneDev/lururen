@@ -1,11 +1,11 @@
-﻿using Lururen.Client.Audio;
-using Lururen.Client.Audio.Generic;
-using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.ResourceManagement;
-using OpenTK.Mathematics;
-
-namespace Lururen.Client.EntityComponentSystem.Sound
+﻿namespace Lururen.Client.EntityComponentSystem.Sound
 {
+    using Lururen.Client.Audio;
+    using Lururen.Client.Audio.Generic;
+    using Lururen.Client.EntityComponentSystem.Base;
+    using Lururen.Client.ResourceManagement;
+    using OpenTK.Mathematics;
+
     public record SoundPlayProperties
     {
         public bool Looping = false;

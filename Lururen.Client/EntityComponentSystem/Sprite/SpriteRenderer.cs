@@ -1,13 +1,12 @@
-﻿using Lururen.Client.EntityComponentSystem.Base;
-using Lururen.Client.EntityComponentSystem.Generic;
-using Lururen.Client.Graphics.Generic;
-using Lururen.Client.Graphics.Texturing;
-using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
-using System.ComponentModel.DataAnnotations;
-
-namespace Lururen.Client.EntityComponentSystem.Sprite
+﻿namespace Lururen.Client.EntityComponentSystem.Sprite
 {
+    using Lururen.Client.EntityComponentSystem.Base;
+    using Lururen.Client.EntityComponentSystem.Camera;
+    using Lururen.Client.Graphics.Generic;
+    using Lururen.Client.Graphics.Texturing;
+    using OpenTK.Graphics.OpenGL4;
+    using OpenTK.Mathematics;
+
     /// <summary>
     /// Handles Texture2D rendering in 2D space.
     /// </summary>

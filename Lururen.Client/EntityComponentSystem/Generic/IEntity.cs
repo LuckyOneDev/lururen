@@ -35,7 +35,7 @@ namespace Lururen.Client.EntityComponentSystem.Generic
         /// <typeparam name="T1"></typeparam>
         /// <returns></returns>
         public List<T1> GetComponents<T1>() where T1 : T;
-        
+
         /// <summary>
         /// Removes component from this entity's component collection and disposes it.
         /// </summary>
