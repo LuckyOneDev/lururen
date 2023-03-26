@@ -22,9 +22,22 @@ namespace GraphicsTestApp
 
         public override void Update(double deltaTime)
         {
+            const float moveSpeed = 10f;
+            const float rotSpeed = 1f;
+
             if (Input.IsKeyDown(Keys.A))
             {
-                this.Transform.Position.X -= (float)deltaTime;
+                this.Transform.Rotation -= rotSpeed * (float)deltaTime;
+            }
+
+            if (Input.IsKeyDown(Keys.D))
+            {
+                this.Transform.Rotation += rotSpeed * (float)deltaTime;
+            }
+
+            if (Input.IsKeyDown(Keys.W))
+            {
+                this.Transform.Position.Y += moveSpeed * (float)deltaTime;
             }
         }
     }

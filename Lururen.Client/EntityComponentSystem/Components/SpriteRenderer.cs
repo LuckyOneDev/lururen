@@ -81,14 +81,16 @@ namespace Lururen.Client.EntityComponentSystem.Components
         /// <param name="camera"></param>
         private void ComputeShaderValues(Camera camera)
         {
-            var correctedPosition = Transform.Position + camera.GetPositionCorrector() + new Vector3(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height, 0);
+            var correctedPosition = Transform.Position + camera.GetPositionCorrector();
             var correctedRotation = Transform.Rotation + camera.GetRotationCorrector();
 
             Matrix4 model = Matrix4.CreateRotationZ(correctedRotation);
-            Matrix4 view = Matrix4.CreateTranslation(correctedPosition.X, correctedPosition.Y, correctedPosition.Z);
+            Matrix4 view = Matrix4.CreateTranslation(correctedPosition);
             Matrix4 projection = Matrix4.CreateOrthographicOffCenter(0, camera.ViewportSize.X, 0, camera.ViewportSize.Y, 0, 100f);
+            Matrix4 pivot = Matrix4.CreateTranslation(new Vector3(-Pivot.X * Texture.Width, -Pivot.Y * Texture.Height, 0));
 
             SpriteComponent.GlShader.SetMatrix4("model", model);
+            SpriteComponent.GlShader.SetMatrix4("pivot", pivot);
             SpriteComponent.GlShader.SetMatrix4("view", view);
             SpriteComponent.GlShader.SetMatrix4("projection", projection);
             SpriteComponent.GlShader.SetFloat("layer", Transform.Position.Z);

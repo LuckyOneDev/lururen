@@ -6,17 +6,29 @@ using Lururen.Client.EntityComponentSystem.Components;
 using Lururen.Client.EntityComponentSystem.Base;
 using OpenTK.Mathematics;
 using System.Numerics;
+using Vector2 = OpenTK.Mathematics.Vector2;
 
 namespace GraphicsTestApp
 {
     public static class PrefabCollection
     {
+        public static Prefab Camera => new Prefab((Entity ent) =>
+        {
+            ent.AddComponent<Camera>();
+        });
+
         public static Prefab Player => new Prefab((Entity ent) =>
         {
             var sc = ent.AddComponent<SpriteComponent>();
             sc.Texture = new Texture2D("GraphicsTestApp.megumin.png", ResourceLocation.Embeded);
-            ent.AddComponent<Camera>();
+            sc.Pivot = new Vector2(0.5f, 0.5f);
             ent.AddComponent<PlayerControl>();
+        });
+
+        public static Prefab Wall => new Prefab((Entity ent) =>
+        {
+            var sc = ent.AddComponent<SpriteComponent>();
+            sc.Texture = new Texture2D("GraphicsTestApp.wall.jpg", ResourceLocation.Embeded);
         });
     }
 
@@ -26,6 +38,11 @@ namespace GraphicsTestApp
         {
             base.Init();
             var player = Instantiate(PrefabCollection.Player);
+            var ca = Instantiate(PrefabCollection.Camera);
+            for (int i = 0; i < 10; i++)
+            {
+                var a = Instantiate(PrefabCollection.Wall, i, i % 2, -1);
+            }
         }
     }
 }
