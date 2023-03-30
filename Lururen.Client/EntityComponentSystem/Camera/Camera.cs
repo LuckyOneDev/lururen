@@ -1,5 +1,6 @@
 ﻿using Lururen.Client.Audio.Generic;
 using Lururen.Client.EntityComponentSystem.Base;
+using Lururen.Client.EntityComponentSystem.Sound;
 using OpenTK.Mathematics;
 using System.Runtime.CompilerServices;
 
@@ -10,11 +11,12 @@ namespace Lururen.Client.EntityComponentSystem.Camera
     /// </summary>
     public sealed class Camera : Component
     {
-        public ALSoundDevice SoundDevice = new ALSoundDevice();
+        public SoundListener SoundListener;
 
         public Camera(Entity entity) : base(entity)
         {
             Register(this);
+            SoundListener = new SoundListener(entity);
         }
 
         /// <summary>
@@ -24,12 +26,10 @@ namespace Lururen.Client.EntityComponentSystem.Camera
 
         public override void Init()
         {
-            SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
 
         public override void Update(double deltaTime)
         {
-            SoundDevice.SetPosition(new Vector3(Transform.Position));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -47,8 +47,9 @@ namespace Lururen.Client.EntityComponentSystem.Camera
 
         public override void Dispose()
         {
-            Register(this);
+            Unregister(this);
             base.Dispose();
+            SoundListener.Dispose();
         }
     }
 }
