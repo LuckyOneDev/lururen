@@ -26,9 +26,9 @@ namespace Lururen.Client.EntityComponentSystem.User
 
         public abstract override void Update(double deltaTime);
 
-        public Entity Instantiate(Prefab prefab, float x = 0, float y = 0, float layer = 0)
+        public Entity Instantiate(Prefab prefab, float x = 0, float y = 0, float z = 0)
         {
-            return Entity!.World.CreateEntity(prefab);
+            return Entity!.World.CreateEntity(prefab, x, y, z);
         }
     }
 }
