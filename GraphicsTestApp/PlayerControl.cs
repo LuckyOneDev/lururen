@@ -19,17 +19,17 @@ namespace GraphicsTestApp
             const float moveSpeed = 10f;
             const float rotSpeed = 1f;
 
-            if (Input.IsKeyDown(Keys.A))
+            if (Input.Keyboard.IsKeyDown(Keys.A))
             {
                 this.Transform.Rotation -= rotSpeed * (float)deltaTime;
             }
 
-            if (Input.IsKeyDown(Keys.D))
+            if (Input.Keyboard.IsKeyDown(Keys.D))
             {
                 this.Transform.Rotation += rotSpeed * (float)deltaTime;
             }
 
-            if (Input.IsKeyDown(Keys.W))
+            if (Input.Keyboard.IsKeyDown(Keys.W))
             {
                 this.Transform.Position.Y += moveSpeed * (float)deltaTime;
             }
