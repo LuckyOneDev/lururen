@@ -164,9 +164,9 @@ namespace Lururen.Client.Base
         {
         }
 
-        public Entity Instantiate(Prefab prefab, float x = 0, float y = 0, float layer = 0)
+        public Entity Instantiate(Prefab prefab, float x = 0, float y = 0, float z = 0)
         {
-            return WorldManager.Active.CreateEntity(prefab);
+            return WorldManager.Active.CreateEntity(prefab, x, y, z);
         }
     }
 }
