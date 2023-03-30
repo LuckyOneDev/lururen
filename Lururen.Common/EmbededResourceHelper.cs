@@ -4,9 +4,8 @@ namespace Lururen.Common
 {
     public static class EmbededResourceHelper
     {
-        private static byte[] ReadAllBytes(this BinaryReader reader)
+        private static byte[] ReadAllBytes(this BinaryReader reader, int bufferSize = 4096)
         {
-            const int bufferSize = 4096;
             using (var ms = new MemoryStream())
             {
                 byte[] buffer = new byte[bufferSize];
